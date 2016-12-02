@@ -6,7 +6,7 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version  "2.18.2"
 \include "english.ly"
 \include "hymnstyle.ly"
 
@@ -143,7 +143,7 @@ verseFive = \lyricmode {
   \set stanza = "5."
   All praise, e -- ter -- nal Son, to Thee
   Whose ad -- vent sets Thy peo -- ple free,
-  Whom, with the Father, we a -- dore,
+  Whom, with the Fa -- ther, we a -- dore,
   And Ho -- ly Spir -- it, ev -- er -- more.
 }
 

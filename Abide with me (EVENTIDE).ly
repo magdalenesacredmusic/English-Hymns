@@ -6,17 +6,25 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-   poet = \markup{ \fontsize #4 \smallCaps "Abide With Me"  }
-    meter = \markup { \small { Music: EVENTIDE, 10.10.10.10., W.H. Monk (1823 – 1889)} }
-    piece = \markup { \small {Text: H.F. Lyle (1793-1847) }}
-    %breakbefore
-    %copyright = ""
-    tagline = ""
+top = \markup {
+\fill-line {
+      \column {
+          \line {EVENTIDE  10 10 10 10}
+      }
+      \column{
+      \line {W.H. Monk (1823 – 1889)}
+      }
+}
+}
+
+bottom = \markup  {
+ \fill-line {
+     \null { "H.F. Lyle (1793-1847)" }
+  } 
 }
 
 global = {
@@ -158,6 +166,17 @@ verseFive = \lyricmode {
 	In life, in death, O Lord, a -- bide with me.
 }
 
+
+
+\book {
+  \include "hymn_paper.ly"
+
+\top
+
+  \header {
+    tagline = ""
+  }
+
 \score {
   \context ChoirStaff <<
     \context Staff = upper <<
@@ -185,7 +204,43 @@ verseFive = \lyricmode {
        tempoWholesPerMinute = #(ly:make-moment 80 4)
            }
        }
-  \layout { }
+    \include "hymn_layout.ly"
+  }
+  \bottom
 }
 
-%From the English Hymnal, 1906. Transciption partly due to work of Geoff %Horton, http://www.geoffhorton.com/
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  #(set-global-staff-size 16)
+  %#(layout-set-staff-size 15)
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive }
+    >>
+    \include "hymn_melody_layout.ly"
+  }
+  %{ \markup \override #'(baseline-skip . 1.7) {
+    \vspace #0.7
+    \teeny
+    \column {
+      \line { Music: EVENTIDE, 10.10.10.10., W.H. Monk (1823 – 1889) }
+      \line{ Text: H.F. Lyle (1793-1847) }
+    }
+  } %}
+\bottom
+}

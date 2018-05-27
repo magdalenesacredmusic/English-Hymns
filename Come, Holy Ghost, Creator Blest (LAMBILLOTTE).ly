@@ -159,7 +159,7 @@ verseFour = \lyricmode {
 }
 
 
-\score {
+\score { \transpose c bf,
   \context ChoirStaff <<
     \context Staff = upper <<
       \context Voice =

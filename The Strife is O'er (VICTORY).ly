@@ -6,19 +6,11 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.0-1"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "The Strife is O'er"  }
-  meter = \markup { \small { Music: VICTORY, 88.84.; G.P. Palestrina, 1591; arr. W.H. Monk, 1861 } }
-  %piece = \markup { \small {Text: \italic "Finita jam sunt praelia," 18th %cent; tr. F. Pott, 1861 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
 
-}
 
 global = {
   \key d \major
@@ -36,10 +28,7 @@ melody = \relative c'' {
   a4 a d |
   cs2. |
   d2.  \bar "|."
-}
 
-melodyb = \relative c'' {
-  \global
   \bar ".|:" a4 a a |
   b2 a4 |
   a( g) fs4 |
@@ -67,10 +56,7 @@ alto = \relative c' {
   d4 d fs |
   e2. |
   fs |
-}
 
-altob = \relative c' {
-  \global
   fs4 fs fs |
   g2 fs4 |
   fs( b,) d |
@@ -97,10 +83,7 @@ tenor = \relative c' {
   fs4 a a |
   a2. |
   a |
-}
 
-tenorb = \relative c' {
-  \global
   d4 d d |
   d2 d4 |
   cs( e) d|
@@ -127,10 +110,7 @@ bass = \relative c {
   d'4 fs d |
   a2. |
   d |
-}
-
-bassb = \relative c {
-  \global
+%%%%%%%
   d4 d d |
   g2 d4 |
   fs( e) b' |
@@ -148,11 +128,9 @@ bassb = \relative c {
   d
 }
 
-antiphon = \lyricmode {
-  Al -- le -- lu -- ia, al -- le -- lu -- ia, al -- le -- lu -- ia.
-}
 
 verseOne = \lyricmode {
+    Al -- le -- lu -- ia, al -- le -- lu -- ia, al -- le -- lu -- ia.
   \set stanza = "1."
   The strife is o'er, the bat -- tle done;
   Now is the Vic -- tor's tri -- umph won;
@@ -161,16 +139,17 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
+  _ _ _ _ _ _ _ _ _ _ _ _
   \set stanza = "2."
   Death's migh -- tiest pow'rs have done their worst,
   And Je -- sus hath his foes dis -- persed;
   Let shouts of praise and joy out -- burst:
   Al -- le -- lu -- ia!
-
 }
 
 
 verseThree = \lyricmode {
+    _ _ _ _ _ _ _ _ _ _ _ _
   \set stanza = "3."
   On the third morn he rose a -- gain
   Glo -- rious in ma -- jes -- ty to reign;
@@ -179,6 +158,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
+    _ _ _ _ _ _ _ _ _ _ _ _
   \set stanza = "4."
   He brake the age -- bound chains of hell;
   The bars from heav'n's high por -- tals fell;
@@ -187,6 +167,7 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
+    _ _ _ _ _ _ _ _ _ _ _ _
   \set stanza = "5."
   Lord, by the stripes which wound -- ed Thee
   From death's dread sting Thy ser -- vants free,
@@ -194,68 +175,78 @@ verseFive = \lyricmode {
   Al -- le -- lu -- ia!
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = ant \lyricsto sopranos \antiphon
+
+%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%
+
+\book {
+  \include "hymn_paper.ly"
+
+\header {
+  poet = \markup{ \fontsize #4 \smallCaps "The Strife is O'er"  }
+  meter = \markup { \small { Music: VICTORY, 88.84.; G.P. Palestrina, 1591; arr. W.H. Monk, 1861 } }
+  piece = \markup { \small {Text: \italic "Finita jam sunt praelia," 18th cent; tr. F. Pott, 1861 }}
+  %breakbefore
+  %copyright = ""
+  tagline = ""
+
+}
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \header {
-    piece = \markup { \small {Text: \italic "Finita jam sunt praelia," 18th cent; tr. F. Pott, 1861 }}
-  }
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 100 4)
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
     }
-  }
-  \layout {
-  ragged-last = ##f
+    \include "hymn_layout.ly"
   }
 }
 
-
-%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%
-
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melodyb >> }
-      \context Voice =
-      altos { \voiceTwo << \altob >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-      \context Lyrics = five \lyricsto sopranos \verseFive
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenorb >> }
-      \context Voice =
-      basses { \voiceTwo << \bassb >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 100 4)
+    \include "hymn_layout.ly"
+  }
+  \markup \override #'(baseline-skip . 1.7) {
+    \vspace #0.7
+    \teeny
+    \column {
+      \line { Music: VICTORY, 88.84.; G.P. Palestrina, 1591; arr. W.H. Monk, 1861 }
+      \line { Text: \italic "Finita jam sunt praelia," 18th cent; tr. F. Pott, 1861 }
     }
   }
-  \layout {}
+
 }

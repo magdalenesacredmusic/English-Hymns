@@ -6,16 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+\fill-line {
+      \column {
+          \line {DIX 77 77 77}
+      }
+      \column{
+      \line {Conrad Kocher; arr. W.H. Monk, 1861}
+      }
+}
+}
+
+bottom = \markup  {
+ \fill-line {
+   \null 
+   \right-column {
+     \line {William Chatterton Dix, 1861}
+   }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "As with Gladness Men of Old"  }
-  meter = \markup { \small { Music: DIX, 77.77.77.; C. Kocker; arr. W.H. Monk, 1861} }
-  piece = \markup { \small {Text: W. Chatterton Dix, 1861 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -148,34 +163,65 @@ verseFive = \lyricmode {
   Al -- le -- lu -- ias to our King.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-      \context Lyrics = five \lyricsto sopranos \verseFive
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 96 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
 
-  \layout { }
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 

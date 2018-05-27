@@ -8,15 +8,31 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 
 \version "2.18.0-1"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "A Mighty Fortress is Our God"  }
-  meter = \markup { \small { Music: EIN FESTE BURG, 8.7.8.7.6.6.6.6.7; Martin Luther, 1529 } }
-  piece = \markup { \small {Text: \sans  "Ein feste burg," Martin Luther, 1529; tr. Fredrick H. Hedge, 1852 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+%%%%%%%%
+%%%%%%%%
+%%%%%%%%
+
+top = \markup {
+\fill-line {
+      \column {
+          \line {EIN FESTE BURG  87 87 66 66 7}
+      }
+      \column{
+      \line { Martin Luther, 1529}
+      }
+}
+}
+
+bottom = \markup  {
+ \fill-line {
+   \null 
+   \right-column {
+     \line {\italic "Ein feste burg"}
+     \line {"Martin Luther, 1529; tr. Fredrick H. Hedge, 1852"}
+   }
+  } 
 }
 
 global = {
@@ -30,30 +46,30 @@ melody = \relative c'' {
   \global
   \partial 4
   c4 |
-  c4 c g8[ a] b4 | 
-  c8[ b] a4 g c |
-  b a g a | 
-  f8[( e] d4) c4 \bar "||"
-  
-    c'4 |
   c4 c g8[ a] b4 |
   c8[ b] a4 g c |
   b a g a |
-  f8([ e] d4) c \bar "||" 
-  
-    c4 |
+  f8[( e] d4) c4 \bar "||"
+
+  c'4 |
+  c4 c g8[ a] b4 |
+  c8[ b] a4 g c |
+  b a g a |
+  f8([ e] d4) c \bar "||"
+
+  c4 |
   g' a g fs |
   g2. c,4 |
   g' g a b |
   c2.  \bar "||"
-  
-    b4 |
+
+  b4 |
   c b a a |
   g2. a4 |
   a g a f |
   e2. \bar "||"
-  
-    c'4 |
+
+  c'4 |
   b a g a |
   f8[( e] d4) c \bar "|."
 }
@@ -65,27 +81,27 @@ alto = \relative c' {
   c e d g |
   e fs g e |
   e c c c |
-  a( b) c4 
-  
-    e |
+  a( b) c4
+
+  e |
   c e d g |
   e fs g e |
   e c c c |
   a( b) c
-  
+
   c |
   c e d d8[ c] |
   b2. c4 |
   d e f f |
-  g2. 
-  
-    e4 |
+  g2.
+
+  e4 |
   c d e d8[ c] |
   b2. f'4 |
   f e e d |
-  b2. 
-  
-    c4 |
+  b2.
+
+  c4 |
   f4 f f e |
   d8[( c] b4) c4
 }
@@ -97,27 +113,27 @@ tenor = \relative c' {
   g g b b |
   a d8[ c] b4 a |
   g f e e |
-  f( g) e 
-  
-    g4 |
+  f( g) e
+
+  g4 |
   g g b b |
   a4 d8[ c8] b4 a4 |
   g f e e |
-  f( g) e 
-  
-    e |
+  f( g) e
+
+  e |
   e c' b a |
   g2. e4 |
   g c c d |
-  e2. 
-  
-    g,4 |
+  e2.
+
+  g,4 |
   e8[ fs] g4 g fs |
   g2. c4 |
   c4. bf8 a4 a |
-  gs2. 
-  
-    a4 |
+  gs2.
+
+  a4 |
   a8[ b] c4 d a |
   a( g8[ f]) e4 \bar "|."
 }
@@ -129,23 +145,23 @@ bass = \relative c {
   e c g' e |
   a, d g, a |
   e' f c a |
-  d( g,) c 
-  
-    c |
+  d( g,) c
+
+  c |
   e c g' e |
   a, d g, a |
   e' f c a |
-  d( g,) c 
-  
-      c |
+  d( g,) c
+
+  c |
   c a b8[ c] d4 |
   g,2. a4 |
   b c f8[ e] d4 |
   c2. e4 |
   a, b c d |
-  g2. 
-  
-    f4 |
+  g2.
+
+  f4 |
   f, c' cs d |
   e2. a,4 |
   d c b cs |
@@ -189,31 +205,67 @@ verseFour = \lyricmode {
   His king -- dom is for -- ev --  er.
 }
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-    \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 88 4)
-    }
+
+\book {
+  \include "hymn_paper.ly"
+
+  \header {
+    tagline = ""
   }
-  \layout { }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 88 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}
 
 
 

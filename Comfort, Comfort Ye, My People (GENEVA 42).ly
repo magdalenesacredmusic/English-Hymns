@@ -10,11 +10,20 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymnstyle.ly"
 
+\paper {
+  fonts = #
+  (make-pango-font-tree
+   "Helvetica"
+   "Cloister Black"
+   "Andale Mono"
+   (/ (* staff-height pt) 2.5))
+}
 
 \header {
   poet = \markup{ \fontsize #4 \smallCaps "Comfort, Comfort Ye, My People"  }
   meter = \markup { \small { Music: GENEVA 42, 87.87.77.88.; L. Bourgeois, 1551; harm. C. Goudimel, 1564 } }
-  piece = \markup { \small {Text: \large \override #'(font-name . "CloisterBlack") "Tröstet, tröstet, meine Lieben," J. Olearius, 1671; tr. C. Winkworth, 1863 }}
+  piece = \markup { \small {Text: \large% \override #'(font-name . "CloisterBlack") 
+                            \sans "Tröstet, tröstet, meine Lieben," J. Olearius, 1671; tr. C. Winkworth, 1863 }}
   %breakbefore
   %copyright = ""
   tagline = ""

@@ -6,16 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+\fill-line {
+      \column {
+          \line {ST. THEODULPH   76 76 D}
+      }
+      \column{
+      \line {Melchior Teschner; harm. W.H. Monk}
+      }
+}
+}
+
+bottom = \markup  {
+ \fill-line {
+   \null 
+   \right-column {
+     \line {\italic "Gloria, laus, et honor"}
+     \line {"Palm Sunday Procession, tr. J.M. Neale,"}
+     \line {\italic "Hymns Ancient and Modern"}
+   }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "All Glory, Laud, and Honour"  }
-  meter = \markup { \small { Music: ST. THEODULPH, 7.6.7.6. D; M. Teschner; harm. W.H. Monk } }
-  piece = \markup { \small {Text: \italic "Gloria, laus, et honor," Palm Sunday Procession, tr. J.M. Neale, \italic "Hymns Ancient and Modern" }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -93,8 +110,8 @@ tenor = \relative c {
   \global
   \partial 4
   \repeat volta 2 {
-  c4 |
-  g' c c g |
+  e4 |
+  g c c g |
   g2 g4 
   
     c |
@@ -210,7 +227,13 @@ verseSix = \lyricmode {
 %%%%%%
 %%%%%%
 
-\score {
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+\score { \transpose c bf,
   \context ChoirStaff <<
     \context Staff = upper <<
       \context Voice = refrain {
@@ -245,5 +268,39 @@ verseSix = \lyricmode {
       tempoWholesPerMinute = #(ly:make-moment 84 4)
     }
   }
-  \layout {}
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "refrain" {
+        \refrain
+      }
+            \new Lyrics \lyricsto "refrain" { \refrainText }
+         \new Voice = "tune" {
+        \verses
+      }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+         \new Lyrics \lyricsto "tune" { \verseFive }
+            \new Lyrics \lyricsto "tune" { \verseSix }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }

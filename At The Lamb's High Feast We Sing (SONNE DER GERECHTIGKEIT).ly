@@ -6,9 +6,30 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+\fill-line {
+      \column {
+          \line {SONNE DER GERECHTIGKEIT 77 77}
+      }
+      \column{
+      \line {\italic "Kirchengeseng," Bohemian Brethren, 1566}
+      }
+}
+}
+
+bottom = \markup  {
+ \fill-line {
+   \null 
+   \right-column {
+     \line {\italic "Ad regias Agni dapes," Latin, 6th cent}
+     \line { tr. Robert Campbell, 1849; adapt. \italic "Annus Sanctus," 1884}
+   }
+  } 
+}
 
 divisioMinima = {
   \once \override BreathingSign.stencil = #ly:breathing-sign::divisio-minima
@@ -17,12 +38,7 @@ divisioMinima = {
 }
 
 \header {
-   poet = \markup{ \fontsize #4 \smallCaps "3. At The Lamb's High Feast We Sing"  }
-    meter = \markup { \small { Music: SONNE DER GERECHTIGKEIT, 77.77; \italic "Kirchengeseng," Bohemian Brethren, 1566} }
-    piece = \markup { \small {Text: \italic "Ad regias Agni dapes," Latin, 6th cent.; tr. Robert Campbell, 1849; ad. \italic "Annus Sanctus," 1884 }}
-    %breakbefore
-    %copyright = ""
-    tagline = ""
+  tagline = ""
 }
 
 global = {
@@ -37,10 +53,12 @@ melody = \relative c' {
 	d2 d \bar "|"
 	a' d cs4( b8[ a] b4) b \bar "|"
 	a1 \divisioMinima \bar ""
-	b2 b \bar "|"
+	b2 b \bar "|" \break
+	
 	cs b a4( b a) g \bar "|"
 	fs1 \divisioMinima \bar ""
-	fs4 e fs g \bar "|"
+	fs4 e fs g \bar "|" \break
+	
 	a a d,2 \divisioMinima \bar ""
 	fs4 e fs d \bar "|"
 	cs d e \divisioMinima \bar ""
@@ -127,37 +145,42 @@ verseFour = \lyricmode {
 }
 
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-         sopranos { \voiceOne << \melody >> }
-      \context Voice =
-         altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-	  \context Lyrics = two \lyricsto sopranos \verseTwo
-	  \context Lyrics = three \lyricsto sopranos \verseThree
-	  \context Lyrics = four \lyricsto sopranos \verseFour
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-        tenors { \voiceOne << \tenor >> }
-      \context Voice =
-        basses { \voiceTwo << \bass >> }
-    >>
-  >>
-\midi { 
-   \context {
-       \Score 
-       tempoWholesPerMinute = #(ly:make-moment 60 2)
-            }
-       }
-	\layout {}
-}
-
-
-\markup {
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 60 2)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  \markup {
+    	\vspace #1
+  }
+  
+  \markup {
 	\large {
   \fill-line {
     \hspace #0.1 % moves the column off the left margin;
@@ -215,3 +238,34 @@ verseFour = \lyricmode {
   }
 }
 }
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}
+
+
+

@@ -6,14 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+\fill-line {
+      \column {
+          \line {OLD HUNDREDTH LM}
+      }
+      \column{
+      \line {Louis Bourgeois, \italic "Genevan Psalter," 1551}
+      }
+}
+}
+
+bottom = \markup  {
+ \fill-line {
+   \null 
+   \right-column {
+     \line {\italic ""}
+   }
+  } 
+}
+
 \header {
-   poet = \markup{ \fontsize #4 \smallCaps "All People That On Earth Do Dwell"  }
-    meter = \markup { \small { Music: OLD HUNDREDTH, L.M.; Louis Bourgeois, \italic "Genevan Psalter," 1551} }
-    %breakbefore
-    %copyright = ""
     tagline = ""
 }
 
@@ -30,17 +47,17 @@ melody = \relative c'' {
 	g2 |
 	g4 fs e d |
 	g2 a |
-	b2 \bar "||"
+	b2 \bar "||" 
 
 	b2 |
 	b4 b a g |
 	c2 b |
-	a2 \bar "||"
+	a2 \bar "||" \break
 
 	g2 |
 	a4 b a g |
 	e2 fs |
-	g2 \bar "||"
+	g2 \bar "||" 
 
 	d'2 |
 	b4 g a c |
@@ -390,47 +407,53 @@ bassb = \relative c {
 	g,
 }
 
-%%%%%%%%%%%%%%%%
-%% score 1 %%%%%
-%%%%%%%%%%%%%%%%
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-         sopranos { \voiceOne << \melody >> }
-      \context Voice =
-         altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-	  \context Lyrics = two \lyricsto sopranos \verseTwo
-	  \context Lyrics = three \lyricsto sopranos \verseThree
-	  \context Lyrics = four \lyricsto sopranos \verseFour
-	  \context Lyrics = five \lyricsto sopranos \verseFive
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-        tenors { \voiceOne << \tenor >> }
-      \context Voice =
-        basses { \voiceTwo << \bass >> }
-    >>
-  >>
-\header {
-	piece = \markup { \small {Text: Psalm 100, \italic "Daye's Psalter," W. Kethe, 1561 }}
-}
-\midi { 
-   \context {
-       \Score 
-       tempoWholesPerMinute = #(ly:make-moment 84 4)
-            }
-       }
-	\layout {}
-}
-
-%%%%%%%%%%%%%%%%
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  
+  %%%%%%%%%%%%%%%%
 %% score 2 %%%%%
 %%%%%%%%%%%%%%%%
-\markup { \caps "Alternative Version" - \small "Melody in Tenor" }
+\markup {
+\fill-line {
+      \column {
+          \line {\caps "Alternative Version" - \small "Melody in Tenor"}
+      }
+      \column{
+      \line {Louis Bourgeois, \italic "Genevan Psalter," 1551}
+      }
+}
+}
 
 \score { <<
 	 \new Voice = "melodya" {\melodya }
@@ -451,22 +474,28 @@ bassb = \relative c {
     >>
   >>
 >>
-\header {
-	piece = \markup { \small {Music: Harmony by J. Dowland in \italic "Ravencroft's Psalter," 1621 }}
-}
 \midi { 
    \context {
        \Score 
        tempoWholesPerMinute = #(ly:make-moment 84 4)
             }
        } 
-  \layout {}
+    \include "hymn_layout.ly"
 } 
 
 %%%%%%%%%%%%%%%%
 %% score 3 %%%%%
 %%%%%%%%%%%%%%%%
-\markup { \caps "A Simpler Alternative Version" - \small "Melody in Tenor" }
+\markup {
+\fill-line {
+      \column {
+          \line {\caps "Alternative Version" - \small "Melody in Tenor"}
+      }
+      \column{
+      \line {Harmony by John Dowland}
+      }
+}
+}
 \score { <<
 	 \new Voice = "melodyb" {\melodyb }
   \context ChoirStaff <<
@@ -486,15 +515,40 @@ bassb = \relative c {
     >>
   >>
 >>
-\header {
-	piece = \markup { \small {Music: Harmony by J. Dowland }}
-}
 \midi { 
    \context {
        \Score 
        tempoWholesPerMinute = #(ly:make-moment 84 4)
             }
        } 
-  \layout { }
+    \include "hymn_layout.ly"
+}
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}

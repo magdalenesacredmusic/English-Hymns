@@ -6,18 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Come, Ye Faithful, Raise The Strain"  }
-  meter = \markup { \small { Music: ST. KEVIN, 7.6.7.6., Arthur Sullivan, 1872 } }
-  piece = \markup { \small { Text: \italic "ασωμεν παντες λαοι," St. John Damascene, 780; tr. J.M Neale, 1862 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ST. KEVIN  76 76 D}
+    }
+    \right-column{
+      \line {Arthur Sullivan, 1872}
+    }
+  }
 }
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "ασωμεν παντες λαοι"}
+      \line {St. John Damascene, 780; tr. J.M Neale, 1862}
+    }
+  } 
+}
+
 
 global = {
   \key g \major
@@ -154,33 +167,63 @@ verseFour = \lyricmode {
   Pass -- eth hu -- man know -- ing.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 45 2)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 45 2)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}
 

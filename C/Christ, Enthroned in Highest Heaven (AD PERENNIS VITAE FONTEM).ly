@@ -6,17 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Christ, Enthroned in Highest Heaven"  }
-  meter = \markup { \small { Music: AD PERENNIS VITAE FONTEM, 87.87.87.; Tours Breviary, \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: \italic "De profundis exclamantes," 13th cent.; tr. R.F. Littledale }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {AD PERENNIS VITAE FONTEM   87 87 87}
+    }
+    \column{
+      \line {Tours Breviary}
+      \line {\italic "The English Hymnal," 1906}
+    }
+  }
 }
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "De profundis exclamantes," 13th cent.}
+      \line {tr. R.F. Littledale }
+    }
+  } 
+}
+
+
 
 global = {
   \key d \minor
@@ -179,35 +195,111 @@ verseSeven = \lyricmode {
   A -- men.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-      \context Lyrics = five \lyricsto sopranos \verseFive
-      \context Lyrics = six \lyricsto sopranos \verseSix
-      \context Lyrics = seven \lyricsto sopranos \verseSeven
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 96 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+     % \new Lyrics \lyricsto soprano \verseSix
+    %  \new Lyrics \lyricsto soprano \verseSeven
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+  \markup {
+	\large {
+  \fill-line {
+    \hspace #0.1 % moves the column off the left margin;
+        % can be removed if space on the page is tight
+     \column {
+      \line { \bold "6. "
+		\column {
+  "When, O kind and ra -- diant Je -- su,"
+  "Kneels the Queen Thy throne be -- fore,"
+  "Let the court of Saints at -- tend -- ing,"
+  "Mer -- cy for the dead im -- plore;"
+  "Heark -- en, lov -- ing Friend of sin -- ners,"
+  "Whom the Cross ex -- alt -- ed bore."
+        }
+     	}
+
+    }
+    \hspace #0.1  % adds horizontal spacing between columns;
+        % if they are still too close, add more " " pairs
+        % until the result looks good
+     \column {
+      \line { \bold "7. "
+		\column {
+  "Hear and an -- swer prayers de -- vout -- est,"
+ " Break, O Lord, each bind -- ing chain,"
+  "Dash the gates of death a -- sund -- er,"
+  "Quell the de -- vil and his train;"
+  "Bring the souls which Thou hast ran -- somed"
+  "Ev -- er -- more in joy to reign."
+ "A -- men."
+
+        }
+      	}
+    }
+  \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+  }
+}
+}
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+     % \new Lyrics \lyricsto "tune" {\verseSix }
+    %\new Lyrics \lyricsto "tune" {\verseSeven}
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 

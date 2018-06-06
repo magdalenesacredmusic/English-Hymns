@@ -6,27 +6,30 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\paper {
-  fonts = #
-  (make-pango-font-tree
-   "Helvetica"
-   "Cloister Black"
-   "Andale Mono"
-   (/ (* staff-height pt) 2.5))
+top = \markup {
+  \fill-line {
+    \column {
+      \line {GENEVA 42   87 87 77 88}
+    }
+    \right-column{
+      \line {Louis Bourgeois, 1551}
+      \line {harm. Claude Goudimel, 1564}
+    }
+  }
 }
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Comfort, Comfort Ye, My People"  }
-  meter = \markup { \small { Music: GENEVA 42, 87.87.77.88.; L. Bourgeois, 1551; harm. C. Goudimel, 1564 } }
-  piece = \markup { \small {Text: \large% \override #'(font-name . "CloisterBlack") 
-                            \sans "Tröstet, tröstet, meine Lieben," J. Olearius, 1671; tr. C. Winkworth, 1863 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Tröstet, tröstet, meine Lieben"}
+      \line {J. Olearius, 1671; tr. Catherine Winkworth, 1863}
+    }
+  } 
 }
 
 
@@ -180,32 +183,63 @@ verseFour = \lyricmode {
 }
 
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 112 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 112 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 

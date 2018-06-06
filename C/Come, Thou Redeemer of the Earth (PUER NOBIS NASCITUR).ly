@@ -6,9 +6,34 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {PUER NOBIS NASCITUR  LM}
+    }
+    \right-column{
+      \line {Michael Praetorius; harm. G.R. Woodward, 1902}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Veni, Redemptor gentium"}
+      \line {St. Ambrose; tr. J.M. Neale, as per \italic "The English Hymnal," 1906}
+    }
+  } 
+}
+
+\header {
+  tagline = ""
+}
 
 \header {
   poet = \markup{ \fontsize #4 \smallCaps "Come, Thou Redeemer of the Earth"  }
@@ -154,37 +179,41 @@ verseFour = \lyricmode {
   Re -- joic -- ing now His course to run.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 112 4)
-    }
+
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-
-  \layout { }
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 112 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  
+  \markup {
+            \vspace #3
   \large {
     \fill-line {
       \hspace #0.1 % moves the column off the left margin;
@@ -240,3 +269,93 @@ verseFour = \lyricmode {
     }
   }
 }
+}
+
+
+
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+  
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "From God the Father He proceeds,"
+            "To God the Father back He speeds;"
+            "His course He runs to death and hell,"
+            "Returning on God’s throne to dwell."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "O equal to the Father, Thou!"
+            "Gird on Thy fleshly mantle now;"
+            "The weakness of our mortal state"
+            "With deathless might invigorate."
+          }
+        }
+      }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "7. "
+          \column {
+            "Thy cradle here shall glitter bright,"
+            "And darkness breathe a newer light,"
+            "Where endless faith shall shine serene,"
+            "And twilight never intervene."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "8. "
+          \column {
+            "All laud to God the Father be,"
+            "All praise, eternal Son, to Thee;"
+            "All glory, as is ever meet,"
+            "To God the Holy Paraclete."
+
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+
+}
+

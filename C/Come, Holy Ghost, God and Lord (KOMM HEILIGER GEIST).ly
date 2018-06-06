@@ -6,19 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Come, Holy Ghost, God and Lord"  }
-  meter = \markup { \small { Music: KOMM, HEILIGER GEIST, HERRE GOTT, L.M.D. with alleluias; melody, 15th cent.; \italic "Erfurt Gesangbuch," 1524 } }
-  piece = \markup { \small {Text: Komm, Heiliger Geist, Herre Gott, M. Luther 1524; tr. C. Winkworth and others}}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \right-column {
+      \line {KOMM, HEILIGER GEIST, HERRE GOTT  }
+      \line {L M D with alleluias}
+    }
+    \right-column{
+      \line {melody, 15th cent.}
+      \line {\italic "Erfurt Gesangbuch," 1524}
+    }
+  }
 }
 
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Komm, Heiliger Geist, Herre Gott"}
+      \line {Martin Luther 1524; tr. Catherine Winkworth and others}
+    }
+  } 
+}
 
 global = {
   \key f \major
@@ -167,30 +180,60 @@ verseThree = \lyricmode {
   Hal -- le -- lu -- jah! Hal -- le -- lu -- jah!
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 88 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 88 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }

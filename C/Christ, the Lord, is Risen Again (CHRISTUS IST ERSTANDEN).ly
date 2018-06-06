@@ -6,18 +6,35 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {CHRIST IST ERSTANDEN   77 77}
+    }
+    \column{
+      \line {German, 13th ent.; harm. anon.}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Christus ist erstanden"}
+      \line {Michael Weisse, 1531; tr. Catherine Winkworth, 1858}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Christ, the Lord, is Risen Again"  }
-  meter = \markup { \small { Music: CHIRST IST ERSTANDEN, 77.77.; German, 13th cent.; harm. anon.} }
-  piece = \markup { \small {Text: \large \override #'(font-name . "CloisterBlack")  "Christus ist erstanden," M. Weisse, 1531; tr. C. Winkworth, 1858 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
+
 
 global = {
   \key a \minor
@@ -53,7 +70,7 @@ melody = \relative c'' {
   a4 g a f |
   e f d e~ |
   e cs d2 |
-  d1 \bar "||" \break
+  d1 \bar "||"
 
   d2 d \bar "|."
 }
@@ -217,39 +234,66 @@ verseSix = \lyricmode {
 }
 
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-      \context Lyrics = five \lyricsto sopranos \verseFive
-      \context Lyrics = six \lyricsto sopranos \verseSix
-
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Lyrics \lyricsto soprano \verseSix
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 84 4)
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
     }
+    \include "hymn_layout.ly"
   }
-
-  \layout {
-    ragged-last = ##t
-  }
+  \bottom
 }
 
-
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+      \new Lyrics \lyricsto "tune" {\verseSix}
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}

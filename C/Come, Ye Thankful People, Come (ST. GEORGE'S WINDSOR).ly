@@ -6,19 +6,30 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Come, Ye Thankful People, Come"  }
-  meter = \markup { \small { Music: ST GEORGE'S WINDSOR, 7.7.7.7. D; George J. Elvey } }
-  piece = \markup { \small {Text: Henry Alford, 1865 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ST. GEORGE'S WINDSOR  77 77 D}
+    }
+    \right-column{
+      \line {George J. Elvey}
+    }
+  }
 }
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Henry Alford, 1865}
+    }
+  } 
+}
+
 
 global = {
   \key g \major
@@ -142,7 +153,7 @@ verseOne = \lyricmode {
   All is safe -- ly gath -- ered in,
   Ere the win -- ter storms be -- gin:
   God our Ma -- ker doth pro -- vide
-  For our watns to be sup -- plied:-
+  For our wants to be sup -- plied:-
   Come to God's own tem -- ple, come,
   Raise the song of Har -- vest -- home!
 }
@@ -183,33 +194,63 @@ verseFour = \lyricmode {
   Raise the glo -- rious Har -- vest -- home!
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 84 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
 
-  \layout {}
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 

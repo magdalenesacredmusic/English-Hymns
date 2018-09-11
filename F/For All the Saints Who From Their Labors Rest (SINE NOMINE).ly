@@ -297,11 +297,10 @@ bassHarmony = \relative c {
 
 verseOne = \lyricmode {
   \set stanza = "1."
-  For all the Saints, who from their la -- bours rest,
-  \set ignoreMelismata = ##t
-  Who Thee
-  \unset ignoreMelismata
-  by faith be -- fore the world con --
+  For all the Saints, who from their la -- bours \set ignoreMelismata = ##t  rest,
+   \unset ignoreMelismata Who Thee
+ 
+  by  faith be -- fore the world con --
   \set ignoreMelismata = ##t
   fest,
   Thy
@@ -364,7 +363,7 @@ verseFive = \lyricmode {
 verseSix = \lyricmode {
   \set stanza = "6."
   The gol -- den even -- ing brigh -- tens in the west;
-  Soon, soon to faith -- ful war -- riors comes their rest;
+  Soon, soon to faith -- ful war -- riors com -- eth rest;
   \set associatedVoice = alt
   Sweet is
   \set associatedVoice = sopranosHarm

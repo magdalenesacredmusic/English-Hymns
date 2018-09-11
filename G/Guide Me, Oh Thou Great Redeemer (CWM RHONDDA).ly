@@ -6,16 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {CWM RHONDDA 87 87 44 77}
+    }
+    \right-column{
+      \line {John Hughes, 1907}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {William Williams, 1745; }
+      \line {\italic "tr. from the Welsh by" Peter Williams, alt. to \italic "Redeemer"}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Guide Me, O Thou Great Redeemer"  }
-  meter = \markup { \small { Music: CWM RHONDDA, 87 87 44 77, John Hughes, 1907 } }
-  piece = \markup { \small {Text: William Williams, 1745; \italic "tr. from the Welsh by" Peter Williams}}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -154,32 +170,62 @@ verseThree = \lyricmode {
   I will ev -- er give to thee.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-       \Score
-      tempoWholesPerMinute = #(ly:make-moment 84 4)
-          }
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
     }
-  \layout {}
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 
 %{ The original first line is "Guide Me, O Thou Great Jehovah." Jehovah being a common rendering of the tetragrammaton, 

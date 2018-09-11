@@ -6,17 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {WEIMAR (VULPIUS) 7676}
+    }
+    \right-column{
+      \line {melody, Melchior Vulpius 1609 }
+      \line {harm. \italic "The Hymnal," 1940}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Joseph Simpson Cook, (1859-1933) 1919}
+    }
+  } 
+}
 
 \header {
-   poet = \markup{ \fontsize #4 \smallCaps "Gentle Mary Laid Her Child"  }
-    meter = \markup { \small { Music: WEIMAR (VULPIUS), 76.76. D.; melody, M. Vulpius 1609; harm. \italic "The Hymnal," 1940 } }
-    piece = \markup { \small {Text: J.S. Cook, 1919 }}
-    %breakbefore
-    %copyright = ""
-    tagline = ""
+  tagline = ""
 }
 
 
@@ -32,17 +48,17 @@ melody = \relative c'' {
 	a2 g4 f2 g4 \bar "|"
 	a4 bf c2 \bar "|"
 	d2 c4 bf2 a4 \bar "|"
-	g2 f \bar "||"
+	g2 f \bar "||" \break
 
 	a2 c4 bf2 a4 \bar "|"
 	g f e2 \bar "|"
 	f2 g4 a2 a4 \bar "|"
-	bf2 a \bar "||"
+	bf2 a \bar "||" \break
 
 	a2 bf4 c2 bf4 \bar "|"
 	a g a2 \bar "|"
 	g2 g4 a c \bar "|"	
-	b2 c \bar "||"
+	b2 c \bar "||" \break
 
 	c2 a4 d2 c4 \bar "|"
 	\orAcc bf a g2 \bar "|" 
@@ -157,32 +173,62 @@ verseThree = \lyricmode {
 }
 
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-         sopranos { \voiceOne << \melody >> }
-      \context Voice =
-         altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-	  \context Lyrics = two \lyricsto sopranos \verseTwo
-	  \context Lyrics = three \lyricsto sopranos \verseThree
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-        tenors { \voiceOne << \tenor >> }
-      \context Voice =
-        basses { \voiceTwo << \bass >> }
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 63 2)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
     >>
-  >>
-\midi { 
-   \context {
-       \Score 
-       tempoWholesPerMinute = #(ly:make-moment 63 2)
-            }
-       }
-	\layout {}
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 
 

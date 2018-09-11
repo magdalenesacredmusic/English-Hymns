@@ -6,16 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ST. THEODULPH 76 76 D}
+    }
+    \right-column{
+      \line {Melchior Teschner; harm. J.S.Bach; \italic "The English Hymnal"}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {H. Nelson, 1864, \italic "The Sarum Hymnal"}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "From all Thy Saints in warfare"  }
-  meter = \markup { \small { Music: ST. THEODULPH, 7.6.7.6. D; M. Teschner; harm. J.S.Bach; \italic "The English Hymnal"} }
-  piece = \markup { \small {Text: H. Nelson, 1864, \italic "The Sarum Hymnal" }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -33,32 +48,25 @@ melody = \relative c' {
   \partial 4
     c4 |
     g' g a b |
-    c2 c4 \bar "||"
-
-    e |
+    c2 c4 e |
     d c c b |
-    c2.
+    c2. \bar "||" \break
     
         c,4 |
     g' g a b |
-    c2 c4 \bar "||"
-
-    e |
+    c2 c4 e |
     d c c b |
-    c2.
+    c2. \bar "||" \break
+    
   c4 |
   e4 e d c |
-  b4( a4) g \bar "||"
-
-  b4 |
+  b4( a4) g b4 |
   c b a a |
-  g2. \bar "||"
+  g2. \bar "||" \break
 
   g4 |
   e4 g4 a g |
-  g( f) e \bar "||"
-
-  g4 |
+  g( f) e g4 |
   f e d d |
   c2. \bar "||"
 }
@@ -174,7 +182,7 @@ bass = \relative c {
 verseOne = \lyricmode {
   \set stanza = "1."
   From all Thy Saints in war -- fare, for all Thy Saints at rest,
-  To Thee, O bless -- èd Je -- su, all prais -- es be ad -- dressed.
+  To Thee, O bless -- èd Je -- sus, all prais -- es be ad -- dressed.
   Thou, Lord, didst win the bat -- tle that they might con -- querors be.
   Their crowns of liv -- ing glo -- ry are lit with rays from Thee.
 }
@@ -200,35 +208,64 @@ verseFour = \lyricmode {
   And hon -- or, pow'r, and glo -- ry a -- scribe to God a -- lone.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 84 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
 
-  \layout {}
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 
 \markup {

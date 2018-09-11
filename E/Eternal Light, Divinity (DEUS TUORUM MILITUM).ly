@@ -6,16 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {DEUS TUORUM MILITUM  LM}
+    }
+    \right-column{
+      \line {Grenoble Church Melody}
+      \line {harm. \italic "The English Hymnal"}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {"Aeterna Lux, Divinitas"}
+      \line {18th cent.; tr. R.F. Littledale}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Eternal Light, Divinity"  }
-  meter = \markup { \small { Music: DEUS TUORUM MILITUM, L.M.; Grenoble Church Melody, \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: \italic "Aeterna Lux, Divinitas," 18th cent.; tr. R.F. Littledale }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -38,7 +55,34 @@ melody = \relative c' {
   e2 c4 |
   a4( b) c |
   g2 fs4 |
-  g2 \bar "||" \break
+  g2 \bar "||"  \break
+
+  g4 |
+  a2 b4 |
+  c2 g4 |
+  f4( e) d |
+  e2 \bar "||"
+
+  g4 |
+  a4( b) c |
+  g( f) e |
+  d2 c4 |
+  c2 \bar "||"
+}
+
+melodya = \relative c' {
+  \global
+  \partial 4
+  \partial 4 c4^\markup { \italic "To be sung in unison." } |
+  e2 g4 | c2 g4 |
+  f4( e4) d4 |
+  c2 \bar "||"
+
+  c'4 |
+  e2 c4 |
+  a4( b) c |
+  g2 fs4 |
+  g2 \bar "||" 
 
   g4 |
   a2 b4 |
@@ -172,36 +216,39 @@ verseFour = \lyricmode {
   And e -- qual laud to Them is done.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 112 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 112 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  \markup {
+    \vspace #2.0
   \large {
     \fill-line {
       %\hspace #0.1 % moves the column off the left margin;
@@ -278,4 +325,98 @@ verseFour = \lyricmode {
   }
 }
 
+
+
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melodya
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+  
+  \markup {
+  \vspace #2.0
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+              "The Three are One Immensity,"
+            "The Three One highest Verity,"
+            "The Three One perfect Charity,"
+            "And They are man's Felicity."
+          }
+        }
+        \vspace #0.5
+        \line {
+          \bold "6. "
+          \column {
+            "O Verity! O Charity!"
+            "O Ending and Felicity!"
+            "In Thee we hope, in Thee believe,"
+            "Thyself we love, to Thee we cleave."
+          }
+        }
+        \vspace #0.5
+        \line {
+          \bold "7. "
+          \column {
+            "Thou First and Last, from whom there springs"
+            "The Fount of all created things,"
+            "Thou art the Life which moves the whole,"
+            "Sure Hope of each believing soul."
+          }
+        }
+        \vspace #0.5
+        \line {
+          \bold "8. "
+          \column {
+             "Thou who alone the world hast made,"
+            "Art still its one sufficing aid,"
+            "The oly LIght for gazing eyes,"
+            "And, unto them that hope, the Prize."
+          }
+        }
+        \vspace #0.5
+        \line {
+          \bold "9. "
+          \column {
+             "O Father, Source of God the Word,"
+            "O Word with Him co-equal Lord,"
+            "O Spirit of like majesty,"
+            "O Triune God, all praise to Thee."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+
+ 
+}
 

@@ -6,18 +6,34 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {AUS DER TIEFE 77 77}
+    }
+    \right-column{
+      \line {Martin Herbst, (1654-1581) harm. \italic "The English Hymnal"}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {G. H. Smyttan, (1825-1870), alt. F. Potts }
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Forty Days And Forty Nights"  }
-  meter = \markup { \small { Music: AUS DER TIEFE, 77.77.; Martin Herbst, (1654-1581) \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: G. H. Smyttan, (1825-1870), alt. F. Potts }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
+
 
 global = {
   \key d \minor
@@ -106,36 +122,37 @@ verseFour = \lyricmode {
   Grant we may not faint or fail.
 }
 
-\score {
-  \context ChoirStaff  <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 84 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 92 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -165,6 +182,66 @@ verseFour = \lyricmode {
     }
   }
 }
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "So shall we have peace divine;"
+            "  Holier gladness ours shall be;"
+            "Round us too shall Angels shine,"
+            "  Such as ministered to thee."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Keep, O keep us, Saviour dear,"
+            "  Ever constant by thy side;"
+            "That with thee we may appear"
+            "  At the_eternal Eastertide."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+}
+
+
 
 
 

@@ -6,16 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {SCHÖENSTER HERR JESU (ST. ELISABETH)  Irreg.}
+    }
+    \right-column{
+      \line {Silesian folk melody}
+      \line {\italic "Schleisches Volkslieder," 1842}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Schönster Herr Jesu," 17th cent.} 
+      \line {st. 1-3, tr. anon. ; st. 4, Joseph A. Seiss (1823-1904)}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Fairest Lord Jesus"  }
-  meter = \markup { \small { Music: CRUSADERS' HYMN, 5.6.8.5.5.8; \italic "Munster Gesangbuch," 1677 } }
-  piece = \markup { \small {Text: \large \override #'(font-name . "CloisterBlack") "Schönster Herr Jesu," German; st. 1-3, tr. Anon. ; st. 4, Joseph A. Seiss, 1823-1904 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -138,31 +155,62 @@ verseFour = \lyricmode {
   Now and for -- ev -- er more be Thine.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 84 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
     >>
-  >>
-  \midi {
-   \context {
-       \Score
-       tempoWholesPerMinute = #(ly:make-moment 88 4)
-            }
-       }
-  \layout {}
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }

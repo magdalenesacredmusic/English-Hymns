@@ -6,16 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {GOD REST YE MERRY  86 86 86 w/refrain}
+    }
+    \right-column{
+      \line {English traditional; harm. John Stainer}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {English Carol}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "God Rest Ye Merry, Gentlemen"  }
-  meter = \markup { \small { Music: GOD REST YE MERRY, 86.86.86. w/refrain; English, harm. J. Stainer } }
-  piece = \markup { \small {Text:  }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -34,23 +49,25 @@ melody = \relative c' {
   e b' b a |
   g fs e d |
   e fs g a |
-  b2. 
+  b2. \bar "||" \break
   
     e,4 |
   e b' b a |
   g( fs) e d |
   e fs g a |
-  b2. b4 |
+  b2.  \bar "||" \break
 
+  b4 |
   c a b c |
   d e b a |
   g e fs g |
-  a2 \bar "||"
+  a2 \bar "||" \break
   
   g4( a) |
   b2 c4 b |
   b( a) g fs |
-  e2 g8 fs e4 |
+  e2 g8 fs e4 | \break
+  
   a2 g4( a)
   b( c) d e
   b( a) g fs |
@@ -160,6 +177,7 @@ Was born on Christ -- mas Day;
 To save us all from Sa -- tan’s power,
 When we were gone a -- stray.
 
+	\override LyricText #'font-shape = #'italic 
 O ti -- dings of com -- fort and joy,
 com -- fort and joy,
 O ti -- dings of com -- fort and joy.
@@ -167,100 +185,90 @@ O ti -- dings of com -- fort and joy.
 
 verseTwo = \lyricmode {
   \set stanza = "2."
- In Bethlehem, in Jury,
-This blessed Babe was born,
-And laid within a manger,
-Upon this blessed morn;
-The which His mother Mary
-Did nothing take in scorn.
-}
-
-verseThree = \lyricmode {
-  \set stanza = "3."
-From God our heavenly Father,
-A blessed angel came.
-And unto certain shepherds,
-Brought tidings of the same,
-How that in Bethlehem was born,
+From God our heav'n -- ly Fath -- _ er,
+A bless -- ed an -- gel came.
+And unto cer -- tain shep -- herds,
+Brought ti -- dings of the same,
+How that in Beth -- le -- hem was born,
 The Son of God by name:
 }
 
+verseThree = \lyricmode {
+	\set stanza = "3."
+And when to Beth -- le -- hem they came,
+Where our dear Sav -- ior lay
+They found him in a man -- ger,
+Where ox -- en feed on hay;
+His moth -- er Ma -- ry kneel -- _ ing,
+Un -- to the Lord did pray:
+}
 
 verseFour = \lyricmode {
-	\set stanza = "4."
-Fear not, then said the Angel,
-Let nothing you affright,
-This day is born a Savior,
-Of virtue, power, and might;
-So frequently to vanquish all,
-The friends of Satan quite;
+  \set stanza = "4."
+  Now to the Lord sing prais -- _ es,
+All you with -- in this place,
+And with true love and bro -- ther -- hood,
+Each oth -- er now em -- brace;
+This ho -- ly tide of Christ -- _ mas,
+Doth bring re -- deem -- ing grace.
 }
 
-verseFive = \lyricmode {
-	\set stanza = "5."
-The shepherds at those tidings,
-Rejoiced much in mind,
-And left their flocks a feeding,
-In tempest, storm, and wind,
-And went to Bethlehem straightway,
-This blessed babe to find:
-}
-
-verseSix = \lyricmode {
-	\set stanza = "6."
-But when to Bethlehem they came,
-Whereas this infant lay
-They found him in a manger,
-Where oxen feed on hay;
-His mother Mary kneeling,
-Unto the Lord did pray:
-}
-
-
-
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-	  \context Lyrics = five \lyricsto sopranos \verseFive
-	  \context Lyrics = six \lyricsto sopranos \verseSix
-
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 96 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 120 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
 }
 
-
-7. With sudden joy and gladness
-The shepherds were beguiled,
-To see the Babe if Israel,
-Before His mother mild,
-O then with joy and cheerfulness
-Rejoice, each mother's child.
-
-8. Now to the Lord sing praises,
-All you within this place,
-And with true love and brotherhood,
-Each other now embrace;
-This holy tide of Christmas,
-Doth bring redeeming grace.
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}

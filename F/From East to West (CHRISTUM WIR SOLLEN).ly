@@ -6,16 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {CHRISTUM WIR SOLLEN LOBEN SCHON  LM}
+    }
+    \right-column{
+      \line {Geistliche Lieder, Wittenberg, 1535}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "A solis ortus cardine"}
+      \line {c. 450; tr. John Ellerton, 1871}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "From East to West"  }
-  meter = \markup { \small { Music: CHRISTUM WIR SOLLEN LOBEN SCHON, L.M.; Geistliche Lieder, Wittenberg, 1535 } }
-  piece = \markup { \small {Text: \italic "A solis ortus cardine," c. 450; tr. John Ellerton, 1871 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -113,41 +129,39 @@ verseThree = \lyricmode {
   The cho -- sen ves -- sel of His grace.
 }
 
-
-
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      %{\context Lyrics = four \lyricsto sopranos \verseFour
-	  \context Lyrics = five \lyricsto sopranos \verseFive
-	  \context Lyrics = six \lyricsto sopranos \verseSix %}
-
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 84 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  
+  \markup {
+    \vspace #1
   \large {
     \fill-line {
       \hspace #0.1 % moves the column off the left margin;
@@ -203,4 +217,91 @@ verseThree = \lyricmode {
   }
 }
 
+
+
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "4. "
+          \column {
+            "She bowed her to the angel’s word"
+            "  Declaring what the Father willed,"
+            "And suddenly the promised Lord"
+            "  That pure and hallowed temple filled."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "5. "
+          \column {
+            "He shrank not from the oxen’s stall,"
+            "  He lay within the manger bed,"
+            "And He whose bounty feedeth all"
+            "  At Mary’s breast Himself was fed."
+          }
+        }
+      }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "6. "
+          \column {
+            "And while the angels in the sky"
+            "  Sang praise above the silent field,"
+            "To shepherds poor the Lord Most High,"
+            "  The one great Shepherd, was revealed."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "All glory for this blessèd morn"
+            "  To God the Father ever be;"
+            "All praise to Thee, O Virgin-born,"
+            "  All praise, O Holy Ghost, to Thee."
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+
+
+ 
+}
 

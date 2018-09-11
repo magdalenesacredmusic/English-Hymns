@@ -6,20 +6,34 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\paper {
-  page-count = 1
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {DEUS TUORUM MILITUM  LM}
+    }
+    \right-column{
+      \line {Grenoble Church Melody}
+      \line {harm. \italic "The English Hymnal"}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {"Aeterne Rex altissime"}
+      \line {c. 5th cent.; tr. J.M. Neale}
+    }
+  } 
 }
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Eternal Monarch, King Most High"  }
-  meter = \markup { \small { Music: DEUS TUORUM MILITUM, L.M.; Grenoble Church Melody, \italic "The English Hymnal" }}
-  piece = \markup { \small {Text: \italic "Aeterne Rex altissime," c. 5th cent.; tr. J.M. Neale }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -39,10 +53,37 @@ melody = \relative c' {
   c2 \bar "||"
 
   c'4 |
+  e2 c4 | \break
+  a4( b) c |
+  g2 fs4 |
+  g2 \bar "||" 
+
+  g4 |
+  a2 b4 | 
+  c2 g4 | \break
+  f4( e) d |
+  e2 \bar "||"
+
+  g4 |
+  a4( b) c |
+  g( f) e |
+  d2 c4 |
+  c2 \bar "||"
+}
+
+melodya = \relative c' {
+  \global
+  \partial 4
+  \partial 4 c4^\markup { \italic "To be sung in unison." } |
+  e2 g4 | c2 g4 |
+  f4( e4) d4 |
+  c2 \bar "||"
+
+  c'4 |
   e2 c4 |
   a4( b) c |
   g2 fs4 |
-  g2 \bar "||" \break
+  g2 \bar "||" 
 
   g4 |
   a2 b4 |
@@ -219,39 +260,39 @@ verseSix = \lyricmode {
 }
 %}
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-      %\context Lyrics = five \lyricsto sopranos \verseFive
-      % \context Lyrics = six \lyricsto sopranos \verseSix
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 112 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 112 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  \markup {
+    \vspace #2.0
   \large {
     \fill-line {
       \hspace #0.1 % moves the column off the left margin;
@@ -309,3 +350,93 @@ verseSix = \lyricmode {
 }
 
 %}
+
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melodya
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+  \markup {
+    \vspace #1.5
+  \large {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Be Thou our joy and strong defence,"
+            "Who art our future recompense:"
+            "So shall the light that springs from Thee"
+            "Be ours through all  ternity."
+          }
+        }
+      }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "6. "
+          \column {
+            "O risen Christ, ascended Lord,"
+            "All praise to Thee let earth accord,"
+            "Who art, while endless ages run,"
+            " With Father and with Spirit One."
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+
+%{
+\markup \fill-line {
+  \center-column 	{
+    \large {
+      \vspace #1.5
+      \column {
+        \line {
+          \bold "6. "
+          \column {
+            "O risen Christ, ascended Lord,"
+            "All praise to Thee let earth accord,"
+            "Who art, while endless ages run,"
+            " With Father and with Spirit One."
+          }
+        }
+        \hspace #1.0
+      }
+    }
+  }
+}
+
+%}
+
+}
+

@@ -6,16 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ADORO TE (NO. 2) 65 65}
+    }
+    \right-column{
+      \line {melody, Van Damme; \italic "The English Hymnal," 1906}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {W.H.H. Jervois and W.B. Trevelyan, 1906}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Father, See Thy Children"  }
-  meter = \markup { \small { Music: ADORO TE (NO.2), 65.65. D.; Melody, Van Damme; \italic "The English Hymnal," 1906 } }
-  piece = \markup { \small {Text: W.H.H. Jervois and W.B. Trevelyan, 1906 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -32,17 +47,17 @@ melody = \relative c'' {
   bf4 af g g |
   af2 g |
   f4 bf bf a |
-  bf1 \bar "||"
+  bf1 \bar "||" \break
 
   bf4 af g g |
   bf2 g |
   f4 ef f4. ef8 |
-  ef1 \bar "||"
+  ef1 \bar "||" \break
 
   bf'4 bf g bf |
   c2 bf |
   af4 g f af |
-  g1 \bar "||"
+  g1 \bar "||" \break
 
   bf4 g af bf |
   c2 bf |
@@ -136,30 +151,59 @@ verseTwo = \lyricmode {
 }
 
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 72 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 92 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 

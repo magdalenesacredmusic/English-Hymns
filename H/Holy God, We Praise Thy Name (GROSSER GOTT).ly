@@ -1,13 +1,38 @@
-\version "2.18.0-1"
+%{
+The music and poetry produced by this source code are believed to be in the public domain in the United States.
+The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
+http://creativecommons.org/licenses/by-nc/4.0/
+
+Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
+%}
+
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {GROSSER GOTT  78 78 77}
+    }
+    \right-column{
+      \line {\italic "Katholisches Gesangbuch" 1774}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Te deum laudamus" }
+      \line {paraphrased as \italic "Grosser Gott, wir loben dich," Ignaz Franz}
+      \line {tr. C.A. Walworth}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Holy God, We Praise Thy Name"  }
-  meter = \markup { \small { Music: GROSSER GOTT, 78.78.77; \italic "Katholisches Gesangbuch," 1774 }}
-  piece = \markup { \small {Text: \italic "Te Deum laudamus;" paraphrased: \large \override #'(font-name . "CloisterBlack") "Grosser Gott, wir loben dich," I. Franz; tr. C.A. Walworth }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -40,7 +65,6 @@ melody = \relative c' {
   c'( bf) a4 |
   a g2 |
 
-  \repeat volta 2 {
     g2 a4 |
     bf( a) g |
     a2 bf4 |
@@ -50,10 +74,151 @@ melody = \relative c' {
     c( bf) a |
     bf( a) g |
     f2.
-  }
+
+    g2 a4 |
+    bf( a) g |
+    a2 bf4 |
+    c2.
+
+    d2 d4 |
+    c( bf) a |
+    bf( a) g |
+    f2. \bar "|."
 }
 
 alto = \relative c' {
+  \global 
+  c2 c4 |
+  c2 c4 |
+  d( c) c |
+  a2. |
+  
+  f'2 f4 |
+  f( e) f | 
+  g2 f4 |
+  f4 e2 |
+  
+  c2 c4 |
+  c2 c4 |
+  d( c) c |
+  a2. |
+  
+  f'2 f4 |
+  f( e) f | 
+  g2 f4 |
+  f4 e2 |
+  
+  e2 f4 |
+  g( f) e |
+  f2 f4 |
+  e2. |
+  
+  f2 f4 |
+  e2 f4 |
+  f2 e4 |
+  d2.
+  
+  e2 f4 |
+  g( f) e |
+  f2 f4 |
+  e2. |
+  
+  f2 f4 |
+  e2 f4 |
+  f2 e4 |
+  f2.
+}
+
+tenor = \relative c' {
+  \global
+  a2 a4 |
+  a( g) f |
+  f2 e4 |
+  f2. |
+  
+  c'2 c4 |
+  c2 c4 |
+  c2 c4 |
+  c4 c2 |
+  
+  a2 a4 |
+  a( g) f |
+  f2 e4 |
+  f2. |
+  
+  c'2 c4 |
+  c2 c4 |
+  c2 c4 |
+  c4 c2 |
+  
+  c2 c4 |
+  d( c) c |
+  c2 bf4 |
+  g2. |
+  
+  bf2 bf4 |
+  g2 f4 |
+  d'4( c) c |
+  a2. |
+  
+  c2 c4 |
+  d( c) c |
+  c2 bf4 |
+  g2. |
+  
+  bf2 bf4 |
+  g2 f4 |
+  d'4( c) c |
+  a2.
+}
+
+bass = \relative c {
+  \global
+  f2 f4 |
+  f( c) a |
+  bf( c) c |
+  f,2. |
+  
+  f'2 f4 |
+  f( c) f |
+  e2 f4 |
+  c'4 c,2 |
+  
+  f2 f4 |
+  f( c) a |
+  bf( c) c |
+  f,2. |
+  
+  f'2 f4 |
+  f( c) f |
+  e2 f4 |
+  c'4 c,2 |
+
+  c4( bf) a |
+  g2 c4 |
+  f( e) d |
+  c2. |
+  
+  bf2 bf4 |
+  c2 d4 |
+  bf( c) c |
+  d2. |
+  
+    c4( bf) a |
+  g2 c4 |
+  f( e) d |
+  c2. |
+  
+  bf2 bf4 |
+  c2 d4 |
+  bf( c) c |
+  f2. |
+}
+%%%%
+%%%%
+%%%%
+
+altoA = \relative c' {
   \global
   c2 c4 |
   c2 c4 |
@@ -80,10 +245,19 @@ alto = \relative c' {
   f2 g4 |
   g2 f4 |
   d( f) e |
+  d2.
+  
+    e2 fs4 |
+  g( f!) e |
+  f2 f4 |
+  g2. |
+  f2 f4 |
+  e2 f4 |
+  d( f) e |
   c2.
 }
 
-tenor = \relative c' {
+tenorA = \relative c' {
   \global
   a2 a4 |
   g2 c4 |
@@ -111,9 +285,18 @@ tenor = \relative c' {
   c2 c4 |
   bf( c) c4 |
   a2.
+  
+  c2 c4 |
+  d( c) c |
+  c2 d4 |
+  e2.
+  af,2 af4 |
+  g2 c4 |
+  bf( c) c4 |
+  a2.
 }
 
-bass = \relative c {
+bassA = \relative c {
   \global
   f2 f4 |
   c2 a4 |
@@ -140,9 +323,21 @@ bass = \relative c {
   bf2 g'4 |
   e2 f4 |
   g, a8[ bf] c4 |
+  d2.
+  
+  c4( bf) a |
+  g( a) c |
+  f( c) d |
+  c2.
+  b2 b4 |
+  c2 f4 |
+  g, a8[ bf] c4 |
   f2.
 }
 
+%%%%
+%%%%
+%%%%
 
 verseOne = \lyricmode {
   \set stanza = "1."
@@ -150,6 +345,9 @@ verseOne = \lyricmode {
   Lord of all, we bow be -- fore thee;
   All on earth thy scep -- ter claim,
   All in heav'n a -- bove a -- dore thee;
+  In -- fi -- nite thy vast do -- main,
+  Ev -- er -- last -- ing is thy reign.
+  
   In -- fi -- nite thy vast do -- main,
   Ev -- er -- last -- ing is thy reign.
 }
@@ -162,6 +360,9 @@ verseTwo = \lyricmode {
   In un -- ceas -- ing cho -- rus prais -- ing,
   Fill the heav'ns with sweet ac -- cord:
   Ho -- ly, ho -- ly, ho -- ly Lord!
+  
+  Fill the heav'ns with sweet ac -- cord:
+  Ho -- ly, ho -- ly, ho -- ly Lord!
 }
 
 verseThree = \lyricmode {
@@ -172,22 +373,56 @@ verseThree = \lyricmode {
   Un -- di -- vid -- ded God we claim thee,
   And a -- dor -- ing bend the knee,
   While we own the mys -- ter -- y.
+  
+  And a -- dor -- ing bend the knee,
+  While we own the mys -- ter -- y.
 }
 
-
-\score {
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  
+    \markup { \smallCaps "Alternate Harmonization; Anon." }
+  \score {
   \new ChoirStaff <<
     \new Staff  <<
       \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
+      \new Voice = "alto" { \voiceTwo \altoA }
     >>
     \new Lyrics  \lyricsto soprano \verseOne
     \new Lyrics  \lyricsto soprano \verseTwo
     \new Lyrics  \lyricsto soprano \verseThree
     \new Staff  <<
       \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
+      \new Voice = "tenor" { \voiceOne \tenorA }
+      \new Voice = "bass" { \voiceTwo \bassA }
     >>
   >>
   \midi {
@@ -196,6 +431,32 @@ verseThree = \lyricmode {
       tempoWholesPerMinute = #(ly:make-moment 96 4)
     }
   }
-  \layout { }
+  \include "hymn_layout.ly"
+}
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}

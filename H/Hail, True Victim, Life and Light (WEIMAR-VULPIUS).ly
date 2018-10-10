@@ -6,16 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {WEIMAR (VULPIUS)  76 76 D}
+    }
+    \right-column{
+      \line {melody, M. Vulpius 1609; harm. \italic "The Hymnal," 1940}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Ave vivens Hostia," J. Peckham, d. 1294}
+      \line {tr. Ronald A. Knox, d. 1957}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Hail, True Victim, Life and Light"  }
-  meter = \markup { \small { Music: WEIMAR (VULPIUS), 76.76. D.; melody, M. Vulpius 1609; harm. \italic "The Hymnal," 1940 } }
-  piece = \markup { \small {Text: \italic "Ave vivens Hostia," J. Peckham, d. 1294; tr. R.A. Knox, d. 1957 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -122,19 +138,43 @@ bass = \relative c {
 
 verseOne = \lyricmode {
   \set stanza = "1."
-  \tagIt Hail, true Vic -- tim, life and light
+Hail, true Vic -- tim, life and light
   Un -- to sin -- ners lend -- ing,
-  \tagIt Ev -- 'ry old -- er form and rite
+Ev -- 'ry old -- er form and rite
   Hath in Thee its end -- ing.
 
-  \tagIt Spot -- less in the Fa -- ther's sight
+Spot -- less in the Fa -- ther's sight
   Ev -- er -- more as -- cend -- ing,
-  \tagIt Ho -- ly Church in bit -- ter fight
+Ho -- ly Church in bit -- ter fight
   Ev -- er -- more be -- friend -- ing.
 }
 
 verseTwo = \lyricmode {
   \set stanza = "2."
+Hail, true Man -- na from the sky–
+Is -- rael nev -- er knew thee;
+Pil -- grims, for the day's sup -- ply,
+Dai -- ly hom -- age do thee;
+When our souls in sick -- ness lie,
+Yields that sick -- ness to thee;
+Chris -- tians, when they come to die,
+Live im -- mor -- tal through thee.
+}
+
+verseThree = \lyricmode {
+  \set stanza = "3."
+  Hail, Christ's Bod -- y– gift he made,
+  His own death fore -- show -- ing,
+  (God -- head un -- der earth -- ly shade
+  Like a jew -- el glow -- ing),
+  Sac -- red mem -- 'ries, ne'er to fade,
+  On his Church be -- stow -- ing,
+  When to earth fare -- well he bade,
+  To his Pas -- sion go -- ing.
+}
+
+verseFour = \lyricmode {
+  \set stanza = "4."
   Je -- sus, tru -- ly in this place
   God and man re -- sid -- eth;
   Him no shad -- ow doth re -- place,
@@ -146,8 +186,20 @@ verseTwo = \lyricmode {
   All of Christ a -- bid -- eth.
 }
 
-verseThree = \lyricmode {
-  \set stanza = "3."
+verseFive = \lyricmode {
+  \set stanza = "5."
+  Seen in heav'n by bless -- èd eyes
+  This his bod -- y reign -- eth;
+  Form of bread, in oth -- er wise,
+  Here its scope con -- tain -- eth;–
+  Mys -- t'ry he a -- lone des -- cries
+  Who the same or -- dain -- eth;
+  Well may he such thing de -- vise
+  Whom no pow'r re -- strain -- eth.
+}
+
+verseSix = \lyricmode {
+  \set stanza = "6."
   Plead, true Vic -- tim, in our stead
   To the Fa -- ther cry -- ing,
   Thou, Thy chil -- dren's dai -- ly bread,
@@ -161,31 +213,67 @@ verseThree = \lyricmode {
 
 
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 63 2)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Lyrics \lyricsto soprano \verseSix
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+      \new Lyrics \lyricsto "tune" { \verseSix }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 

@@ -6,17 +6,28 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Hail The Day That Sees Him Rise"  }
-  meter = \markup { \small { Music: LLANFAIR, 7.4.7.4. D; Welsh, melody by R. Williams; harm. \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: Charles Wesley, and T. Cotterill, alt. }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {LLAINFAIR  74 74 D}
+    }
+    \right-column{
+      \line {Welsh, melody by R. Williams; harm. \italic "The English Hymnal"}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Charles Wesley and T. Cotterill, alt.}
+    }
+  } 
 }
 
 global = {
@@ -31,21 +42,21 @@ melody = \relative c'' {
   g4 g b b |
   d c8[ b] a2 |
   d4.( c8 b4) c8[ b] |
-  a2 g \bar "||"
+  a2 g \bar "||" \break
 
   g4 g b b |
   d c8[ b] a2 |
   d4.( c8 b4) c8[ b] |
-  a2 g \bar "||"
+  a2 g \bar "||" \break
 
   b4 b d d |
   e8[ d] c[ b] a2 |
   b4.( a8 b4) cs |
-  d2 d \bar "||"
+  d2 d \bar "||" \break
 
   g,4 g b b |
   d c8[ b] a2 |
-  d4.(^\markup {\italic "Voices in unison."}  c8 b4) c8[ b] |
+  d4.(  c8 b4) c8[ b] |
   a2 g \bar "|."
 }
 
@@ -68,8 +79,8 @@ alto = \relative c' {
 
   g4 d d g |
   g a8[ g] fs2 |
-  << { \voiceTwo d4 e8[ fs] <d g>4 c8[ d] } \\ { \voiceFour   \once \override NoteColumn #'force-hshift = #1.0 d2 s4  \once \override NoteColumn #'force-hshift = #1.8 g } >> |
-  <e g>4 <d fs> d2 \bar "|."
+  d4 e8[ fs] g4 g |
+  g4( fs) d2 \bar "|."
 }
 
 tenor = \relative c' {
@@ -77,12 +88,12 @@ tenor = \relative c' {
   b4 b g g |
   d' e a,2 |
   b4.( c8 d4) c8[ d] |
-  e4 d b2 \bar "||"
+  e4( d) b2 \bar "||"
 
   b4 b g g |
   d' e a,2 |
   b4.( c8 d4) c8[ d] |
-  e4 d b2 \bar "||"
+  e4( d) b2 \bar "||"
 
   g4 g a b |
   c c d2 |
@@ -91,8 +102,8 @@ tenor = \relative c' {
 
   d4 d8[ c] b4 g |
   d' e a,2 |
-  g4. a8 b4 g |
-  a2 b \bar "|."
+  g4. a8 b4 c8[ d] |
+  e4( d) b2 \bar "|."
 }
 
 bass = \relative c' {
@@ -115,7 +126,7 @@ bass = \relative c' {
   b b8[ a] g4 e |
   b c << { \voiceTwo d2 } \\ { \voiceFour \teeny d4_\markup {\italic Org.}  c } >> |
   b4. a8 g4 a8[ b] |
-  <c g'>4 <d fs> <g g,>2 \bar "|."
+  c4( d) g,2 \bar "|."
 }
 
 verseOne = \lyricmode {
@@ -137,28 +148,84 @@ verseTwo = \lyricmode {
 
 verseThree = \lyricmode {
   \set stanza = "3."
-  Cir -- cled round with an -- gel pow'rs, Al -- le -- lu -- ia!
-  Their tri -- um -- phant Lord, and ours, Al -- le -- lu -- ia!
-  Con -- qu'ror o -- ver death and sin, Al -- le -- lu -- ia!
-  “Take the King of glo -- ry in!” Al -- le -- lu -- ia!
-
-}
-
-verseFour = \lyricmode {
-  \set stanza = "4."
   See! the heaven its Lord re -- ceives, Al -- le -- lu -- ia!
   Still He loves the earth He leaves, Al -- le -- lu -- ia!
   Though re -- turn -- ing to His throne, Al -- le -- lu -- ia!
   Still He calls man -- kind His own, Al -- le -- lu -- ia!
 }
 
-verseFive = \lyricmode {
-  \set stanza = "5."
+verseFour = \lyricmode {
+  \set stanza = "4."
   Still for us He in -- ter -- cedes,  Al -- le -- lu -- ia!
   His pre -- vail -- ing death he pleads,  Al -- le -- lu -- ia!
   Near Him -- self pre -- pares our place,  Al -- le -- lu -- ia!
   Har -- bing -- er of hu -- man race,  Al -- le -- lu -- ia!
 }
+
+
+
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}
+
+
+%{
 
 verseSix = \lyricmode {
   \set stanza = "6."
@@ -167,40 +234,14 @@ verseSix = \lyricmode {
   There Thy face un -- cloud -- ed see,  Al -- le -- lu -- ia!
   Find our heav'n of heav'ns in Thee!  Al -- le -- lu -- ia!
 }
+verseThree = \lyricmode {
+  \set stanza = "3."
+  Cir -- cled round with an -- gel pow'rs, Al -- le -- lu -- ia!
+  Their tri -- um -- phant Lord, and ours, Al -- le -- lu -- ia!
+  Con -- qu'ror o -- ver death and sin, Al -- le -- lu -- ia!
+  “Take the King of glo -- ry in!” Al -- le -- lu -- ia!
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-      \context Lyrics = five  \lyricsto sopranos \verseFive
-      \context Lyrics = six \lyricsto sopranos \verseSix
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 80 4)
-    }
-  }
-  \layout {}
 }
-
-
-%{
 \markup {
 	\normalsize {
   \fill-line {

@@ -6,16 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {AVE MARIS STELLA   66 66}
+    }
+    \right-column{
+      \line {18th cent.; \italic "The English Hymnal," 1906}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Ave, maris stella"}
+      \line {tr. Athelstan Riley}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Hail, O Star That Pointest"  }
-  meter = \markup { \small { Music: AVE MARIS STELLA, 66.66.; 18th cent.; \italic "The English Hymnal," 1906 } }
-  piece = \markup { \small {Text: \italic "Ave, maris stella;" tr. A. Riley }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -119,37 +135,39 @@ verseFour = \lyricmode {
 }
 
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-   \context {
-       \Score
-       tempoWholesPerMinute = #(ly:make-moment 84 4)
-            }
-       }
- 
-  \layout {}
-}
-
-\markup {
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  
+ \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -189,3 +207,74 @@ verseFour = \lyricmode {
     }
   }
 }
+
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "That, O matchless Maiden,"
+            "  Passing meek and lowly,"
+            "Thy dear Son may make us"
+            "  Blameless, chaste and holy."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "So, as now we journey,"
+            "  Aid our weak endeavour,"
+            "Till we gaze on Jesus,"
+            "  And rejoice for ever."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "Father, Son and Spirit,"
+            "  Three in One confessing,"
+            "Give we equal glory,"
+            "  Equal praise and blessing."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+
+}
+

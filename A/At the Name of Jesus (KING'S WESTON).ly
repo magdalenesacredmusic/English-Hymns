@@ -249,9 +249,6 @@ verseSeven = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
-      \new Lyrics \lyricsto soprano \verseFive
-      \new Lyrics \lyricsto soprano \verseSix
-      \new Lyrics \lyricsto soprano \verseSeven
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -261,12 +258,79 @@ verseSeven = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 80 2)
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
       }
     }
     \include "hymn_layout.ly"
   }
   \bottom
+  
+    \markup {
+  \large {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+     "Name Him, brothers, name_Him,"
+  "With love as strong as death"
+  "But with awe and won der,"
+  "And with bat ed breath!"
+  "He is God the Savior,"
+  "He is Christ the Lord,"
+  "Ever to be worshipped,"
+  "Trusted and adored."
+          }
+        }
+      }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "6. "
+          \column {
+            "In your hearts enthrone Him;"
+ "There let Him subdue"
+  "All that is not holy,"
+  "All that is not true;"
+  "Crown Him as your Captain"
+  "In temptation’s hour;"
+  "Let His will enfold you"
+  "In its light and power."
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+
+\markup {
+  \large {
+    \fill-line {
+        \line {
+          \bold "7. "
+          \column {
+    "Brothers, this Lord Jesus"
+  "Shall return again,"
+  "With His Father’s glory,"
+  "With His angel train;"
+  "For all wreaths of empire"
+  "Meet upon His brow,"
+  "And our hearts confess Him"
+  "King of glory now."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }  
+
 }
 
 %%%%%%

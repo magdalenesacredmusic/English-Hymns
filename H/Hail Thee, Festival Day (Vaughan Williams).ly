@@ -1,24 +1,40 @@
-\version "2.16.2-1"
+%{
+The music and poetry produced by this source code are believed to be in the public domain in the United States.
+The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
+http://creativecommons.org/licenses/by-nc/4.0/
+
+Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
+%}
+
+\version "2.18.2"
 \include "english.ly"
-\layout { indent = 0.0\cm }
+\include "hymn_definitions.ly"
 
-%#(set-default-paper-size "letter")
-#(set-global-staff-size 16)
-#(ly:set-option (quote no-point-and-click))
-#(set! paper-alist (cons '("ustrade" . (cons (* 6 in) (* 9 in))) paper-alist))
+top = \markup {
+  \fill-line {
+    \column {
+      \line {SALVE FESTA DIES  Irreg.}
+    }
+    \right-column{
+      \line {Ralph Vaughan Williams, 1906}
+    }
+  }
+}
 
-\paper {
-	#(set-paper-size "ustrade") 
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Salve, festa dies"}
+      \line {Venantius Fortunatus; tr. M.F. Bell, 1906}
+    }
+  } 
 }
 
 \header {
-   poet = \markup{ \fontsize #4 \smallCaps "Hail Thee, Festival Day"  }
-    meter = \markup { \small { Music: SALVE FESTA DIES. (Irreg.), R. Vaughan Williams, 1906 } }
-    piece = \markup { \small {Text: \italic "Salve, festa dies," Venantius Fortunatus; tr. M.F. Bell, 1906 }}
-    %breakbefore
-    %copyright = ""
-    tagline = ""
+  tagline = ""
 }
+
 
 global = {
 	\key g \major
@@ -325,7 +341,65 @@ verseOne = \lyricmode {
 	Day where -- in Christ a -- rose, break -- ing the king -- dom of death.
 }
 
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {<<
+     \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+          >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}
+
+%{
 \score { <<
 	 \new Voice = "melody" {\melody }
 	\new Lyrics = "firstVerse" \lyricsto "melody" \verseOne 
@@ -374,3 +448,4 @@ verseOne = \lyricmode {
   }
 }
 
+%}

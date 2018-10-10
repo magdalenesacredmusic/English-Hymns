@@ -85,7 +85,7 @@ alto = \relative c'' {
   g b d |
   g,4. g8 g4 |
   a g fs |
-  g2.
+  g2. |
 }
 
 tenor = \relative c' {
@@ -109,7 +109,7 @@ tenor = \relative c' {
   g b d |
   b4. c8 b4 |
   e d c |
-  b2.
+  b2. |
 }
 
 bass = \relative c' {
@@ -118,7 +118,8 @@ bass = \relative c' {
   c4( d) d |
   g,2. |
   
-  g'4 fs g a( fs) g |
+  g'4 fs g | 
+  a( fs) g |
   d2. |
   
   d'4 b g |
@@ -132,7 +133,7 @@ bass = \relative c' {
   g b d |
   g,4. g8 g4 |
   c, d d |
-  g,2.
+  g,2. |
 }
 
 verseOne = \lyricmode {

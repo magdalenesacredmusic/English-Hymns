@@ -6,16 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {JESU DULCIS MEMORIA  LM}
+    }
+    \right-column{
+      \line {Cöln Gesangbuch, 1619}
+      \line {harm. \italic "The English Hymnal," 1906}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Jesu, dulcis memoria"}
+      \line {St. Bernard; tr. John Mason Neale}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Jesus! the Very Thought is Sweet"  }
-  meter = \markup { \small { Music: JESU DULCIS MEMORIA, L.M.; melody, Cöln Gesangbuch, 1619; harm. \italic "The English Hymnal," 1906  } }
-  piece = \markup { \small {Text: \italic "Jesu, dulcis memoria," St. Bernard; tr. J.M. Neale }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -120,33 +137,38 @@ verseFive = \lyricmode {
 }
 
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Lyrics \lyricsto soprano \verseFive
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 70 2)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 70 2)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -185,4 +207,75 @@ verseFive = \lyricmode {
     }
   }
 }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "O Jesu! King of wondrous might!"
+            "O Victor, glorious from the fight!"
+            "Sweetness that may not be exprest,"
+            "And altogether loveliest!"
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Remain with us, O Lord, to-day!"
+            "In every heart Thy grace display:"
+            "That now the shades of night are fled,"
+            "On Thee our spirits may be fed."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "All honour, laud, and glory be,"
+            "O Jesu, Virgin-born, to Thee!"
+            "All glory, as is ever meet,"
+            "To Father and to Paraclete."
+          }
+        }
+      }
+      \hspace #1.0
+    }
+  }
+}
+  \bottom
+}
+
+
 

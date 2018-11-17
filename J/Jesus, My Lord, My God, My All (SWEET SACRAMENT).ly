@@ -6,16 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {SWEET SACRAMENT  LM with refrain}
+    }
+    \right-column{
+      \line {\italic "Romischkatholishes Gesangbuchlein," 1862}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {St. 1-2, F.W. Faber; St. 3, \italic "Mediator Dei Hymnal," ©1955 GIA}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Jesus, My Lord, My God, My All"  }
-  meter = \markup { \small { Music: SWEET SACRAMENT, L.M., with refrain; \italic "Romischkatholishes Gesangbuchlein," 1862} }
-  piece = \markup { \small {Text: St. 1-2, F.W. Faber; St. 3, \italic "Mediator Dei Hymnal," ©1955 GIA }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -163,7 +178,7 @@ bass = \relative c {
 
 verseOne = \lyricmode {
   \set stanza = "1."
-  \tagIt Je -- sus, my Lord, my God, my All,
+  Je -- sus, my Lord, my God, my All,
   How can I love Thee as I ought?
   And how re -- vere this won -- drous gift,
   So far sur -- pass -- ing hope or thought?
@@ -189,29 +204,72 @@ verseThree = \lyricmode {
   And join the choirs of heav'n a -- bove.
 }
 
+verseFour = \lyricmode {
+  \set stanza = "4."
+  Sound, then, his prais -- es high -- er still,
+  And come, ye an -- gels, to our aid;
+  For this is God, the ve -- ry God
+  Who hath both men and an -- gels made!
+}
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 100 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 
 

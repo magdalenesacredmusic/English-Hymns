@@ -6,17 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {IN DIR IST FREUDE, Irreg.}
+    }
+    \right-column{
+      \line {Giovanni G. Gastoldi, 1593}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "In dir ist Freude"}
+      \line {Johann LIndemann( 1549-c.1631), 1598; tr. Catherine Winkworth (1827-78) 1858}
+    }
+  } 
+}
 
 \header {
-   poet = \markup{ \fontsize #4 \smallCaps "In Thee is Gladness"  }
-    meter = \markup { \small { Music: IN DIR IST FREUDE, IRREG.; G.G. Gastoldi, 1593 } }
-    piece = \markup { \small {Text: In dir ist Freude, J. Kindemann, 1598; tr. C. Winkworth, 1858 }}
-    %breakbefore
-    %copyright = ""
-    tagline = ""
+  tagline = ""
 }
 
 
@@ -36,7 +52,7 @@ melody = \relative c'' {
 	c'2 bf4 |
 	a4.( g8) f4 |
 	g2 g4 |
-	f2. \bar "||"
+	f2. \bar "||" \break
 	
 	c'4 c bf |
 	a2 f4 |
@@ -45,7 +61,7 @@ melody = \relative c'' {
 	c'2 bf4 |
 	a4.( g8) f4 |
 	g2 g4 |
-	f2. \bar "||"
+	f2. \bar "||" \break
 	
 	a4 bf c |
 	d2 bf4 |
@@ -58,7 +74,7 @@ melody = \relative c'' {
 	bf bf a |
 	g4.( f8) e4 |
 	f f e |
-	f2. \bar "||"
+	f2. \bar "||" \break
 	
 	a4 bf c |
 	d2 bf4 |
@@ -250,25 +266,58 @@ verseTwo = \lyricmode {
 }
 
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-    \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 108 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 108 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }

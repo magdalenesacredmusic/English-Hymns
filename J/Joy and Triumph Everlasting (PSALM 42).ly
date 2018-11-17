@@ -6,17 +6,36 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {PSALM 42  87 87 77 88}
+    }
+    \right-column{
+      \line {Louis Bourgeois, 1551}
+      \line {harm. \italic "The English Hymnal," 1906}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Supernae matris gaudia"}
+      \line {Adam of St. Victor, c. 1150; tr. Robert Bridges, 1899}
+    }
+  } 
+}
+
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Joy and Triumph Everlasting"  }
-  meter = \markup { \small { Music: PSALM 42, 87.87.77.88; L. Bourgeois, 1551; harm. \italic "The English Hymnal," 1906 } }
-  piece = \markup { \small {Text: \italic "Supernae matris gaudia," Adam of St. Victor, c. 1150; tr. R. Bridges, 1899 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
+
 
 \paper {
   page-count = 1
@@ -182,29 +201,65 @@ verseFive = \lyricmode {
   Christ of His good mer -- cy lead us.
 }
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Lyrics \lyricsto soprano \verseFive
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 120 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 120 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 

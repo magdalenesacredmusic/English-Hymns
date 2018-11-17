@@ -6,18 +6,35 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {song 22  10 10 10 10}
+    }
+    \right-column{
+      \line {Orlando Gibbons}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Amor Patris et Filii"}
+      \line {12th cent.; tr. Robert Bridges, 1899}
+    }
+  } 
+}
 
 \header {
-   poet = \markup{ \fontsize #4 \smallCaps "Love of the Father, Love of God the Son"  }
-    meter = \markup { \small { Music: SONG 22, 10 10.10 10.; O. Gibbons } }
-    piece = \markup { \small {Text: \italic "Amor Patris et Filii," 12th cent.; tr. Robert Bridges, 1899 }}
-    %breakbefore
-    %copyright = ""
-    tagline = ""
+  tagline = ""
 }
+
 
 global = {
 	\key f \major
@@ -146,31 +163,36 @@ verseThree = \lyricmode {
 }
 
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 88 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup { 
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 88 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup { 
 	\large {
 	\fill-line {
 	\hspace #1.0
@@ -197,4 +219,61 @@ verseThree = \lyricmode {
 	}
   }
 }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup { 
+	\large {
+	\fill-line {
+	\hspace #1.0
+	\column {
+		\line { \bold "4. "
+		\column {
+		"Purest and highest, wisest and most just,"
+		"There is no truth save only in Thy trust;"
+		"Thou dost the mind from earthly dreams recall,"
+		"And bring, through Christ, to him for whom are all."
+		}
+		}
+		\vspace #1
+		\line { \bold "5. "
+		\column {
+		"Eternal Glory, all men Thee adore,"
+		"Who art and shalt be worshiped evermore:"
+		"Us whom Thou madest, comfort with Thy might,"
+		"And lead us to enjoy Thy heavenly light."
+  		}	
+		}
+		}
+	\hspace #1.0
+	}
+  }
+}
+  \bottom
+}
+
+
 

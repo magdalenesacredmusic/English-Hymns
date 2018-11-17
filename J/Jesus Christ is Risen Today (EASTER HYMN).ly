@@ -6,16 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {EASTER HYMN 7 7 7 7 with Alleluias}
+    }
+    \right-column{
+      \line {alt. from \italic "Lyra Davidica," 1708}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Based on \italic "Surrexit Christus hodie," 14th cent.}
+      \line {traditional text, various authors }
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Jesus Christ is Risen Today"  }
-  meter = \markup { \small { Music: EASTER HYMN, 7.7.7.7., with Alleluias; alt. from \italic "Lyra Davidica," 1708} }
-  piece = \markup { \small {Text: Based on \italic "Surrexit Christus hodie," 14th cent.; traditional text, various authors }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -31,17 +47,17 @@ melody = \relative c' {
   c4 e g c, |
   f a a( g) \bar "||"
   e8[( f g c,] f4) e8[ f] |
-  e4( d) c2 \bar "||"
+  e4( d) c2 \bar "||" \break
 
   f4 g a g |
   f e e( d) \bar "||"
   e8[( f g c,] f4) e8[ f] |
-  e4( d) c2 \bar "||"
+  e4( d) c2 \bar "||" \break
 
   b'4 c d g, |
   c d e2 \bar "||"
   b8[( c d g,] c4) b8[ c] |
-  b4( a) g2 \bar "||"
+  b4( a) g2 \bar "||" \break
 
   g8[ a] b[ g] c4 e, |
   f a a( g) \bar "||"
@@ -151,28 +167,62 @@ verseFour = \lyricmode {
 }
 
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 80 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 92 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}

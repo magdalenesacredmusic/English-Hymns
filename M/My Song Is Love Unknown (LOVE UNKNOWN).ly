@@ -6,17 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {LOVE UNKNOWN  12 12 88}
+    }
+    \right-column{
+      \line {John Ireland, 1918}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Samuel Crossman, 1664}
+    }
+  } 
+}
 
 \header {
-   poet = \markup{ \fontsize #4 \smallCaps "My Song Is Love Unknown"  }
-    meter = \markup { \small { Music: LOVE UNKNOWN, 12.12.88; John Ireland, 1918 } }
-    piece = \markup { \small {Text: Samuel Crossman, 1664 }}
-    %breakbefore
-    %copyright = ""
-    tagline = ""
+  tagline = ""
 }
 
 global = {
@@ -142,76 +157,37 @@ verseFour = \lyricmode {
 	Them -- selves dis -- please, and ’gainst Him rise.
 }
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 96 4)
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
     }
+    \include "hymn_layout.ly"
   }
-  \layout { }
-}
-
-%{\markup { 
-	\normalsize {
-	\fill-line {
-	\hspace #1.0
-	\column {
-		\line { \bold "*5. "
-		\column {
-		"They rise and needs will have"
-		"  My dear Lord made away;"
-		"A murderer they saved,"
-		"  The Prince of life they slay,"
-		"Yet cheerful He to suffering goes,"
-		"That He His foes from thence might free."
-		}
-		}
-		\vspace #0.5
-		\line { \bold "*6. "
-		\column {
-		"In life, no house, no home"
-		"  My Lord on earth might have;"
-		"In death no friendly tomb"
-		"  But what a stranger gave."
-		"What may I say? Heav’n was His home;"
-		"But mine the tomb wherein He lay."
-  		}	
-		}
-		\vspace #0.5
-		\line { \bold "7. "
-		\column {
-		"Here might I stay and sing,"
-		"  No story so divine;"
-		"Never was love, dear King!"
-		"  Never was grief like Thine."
-		"This is my Friend,in Whose sweet praise"
-		"I all my days could gladly spend."
-  		}	
-		}
-		}
-	\hspace #1.0
-
-	}
-  }
-} %}
-
-\markup {
+  \markup {
 	\large {
   \fill-line {
     \hspace #0.1 % moves the column off the left margin;
@@ -270,3 +246,121 @@ verseFour = \lyricmode {
 	}
   }
 } 
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+\markup { 
+	\normalsize {
+	\fill-line {
+	\hspace #1.0
+	\column {
+		\line { \bold "*5. "
+		\column {
+		"They rise and needs will have"
+		"  My dear Lord made away;"
+		"A murderer they saved,"
+		"  The Prince of life they slay,"
+		"Yet cheerful He to suffering goes,"
+		"That He His foes from thence might free."
+		}
+		}
+		\vspace #0.5
+		\line { \bold "*6. "
+		\column {
+		"In life, no house, no home"
+		"  My Lord on earth might have;"
+		"In death no friendly tomb"
+		"  But what a stranger gave."
+		"What may I say? Heav’n was His home;"
+		"But mine the tomb wherein He lay."
+  		}	
+		}
+		\vspace #0.5
+		\line { \bold "7. "
+		\column {
+		"Here might I stay and sing,"
+		"  No story so divine;"
+		"Never was love, dear King!"
+		"  Never was grief like Thine."
+		"This is my Friend,in Whose sweet praise"
+		"I all my days could gladly spend."
+  		}	
+		}
+		}
+	\hspace #1.0
+
+	}
+  }
+}
+  \bottom
+}
+
+%{\markup { 
+	\normalsize {
+	\fill-line {
+	\hspace #1.0
+	\column {
+		\line { \bold "*5. "
+		\column {
+		"They rise and needs will have"
+		"  My dear Lord made away;"
+		"A murderer they saved,"
+		"  The Prince of life they slay,"
+		"Yet cheerful He to suffering goes,"
+		"That He His foes from thence might free."
+		}
+		}
+		\vspace #0.5
+		\line { \bold "*6. "
+		\column {
+		"In life, no house, no home"
+		"  My Lord on earth might have;"
+		"In death no friendly tomb"
+		"  But what a stranger gave."
+		"What may I say? Heav’n was His home;"
+		"But mine the tomb wherein He lay."
+  		}	
+		}
+		\vspace #0.5
+		\line { \bold "7. "
+		\column {
+		"Here might I stay and sing,"
+		"  No story so divine;"
+		"Never was love, dear King!"
+		"  Never was grief like Thine."
+		"This is my Friend,in Whose sweet praise"
+		"I all my days could gladly spend."
+  		}	
+		}
+		}
+	\hspace #1.0
+
+	}
+  }
+} %}
+
+

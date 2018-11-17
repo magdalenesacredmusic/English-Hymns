@@ -6,18 +6,35 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {VOM HIMMEL HOCH LM}
+    }
+    \right-column{
+      \line {adapt. from Schumann's \italic "Gesangbuch," 1539; adapt. J.S. Bach }
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Christe Redemptor omnium," 6th cent.}
+      \line {tr. John Mason Neale}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Jesu, the Father's Only Son"  }
-  meter = \markup { \small { Music: VOM HIMMEL HOCH, L.M.; adapt. from Schumann's \italic "Gesangbuch," 1539; adapt. J.S. Bach } }
-  piece = \markup { \small {Text: \italic "Christe Redemptor omnium," 6th cent.; tr. J.M. Neale }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
+
 
 
 global = {
@@ -163,36 +180,37 @@ verseSeven = \lyricmode {
 }
 %}
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    %\new Lyrics \lyricsto soprano \verseFive
-    % \new Lyrics \lyricsto soprano \verseSix
-    %\new Lyrics \lyricsto soprano \verseSeven
-
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 72 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -231,4 +249,74 @@ verseSeven = \lyricmode {
 
     }
   }
+}
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Whence sky, and stars, and sea's abyss,"
+            "And earth, and all that therein is,"
+            "Shall still, with laud and carol meet,"
+            "The Author of Thine advent greet."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "And we who, by Thy precious blood"
+            "From sin redeemed, are marked for God,"
+            "On this the day that saw Thy birth,"
+            "Sing the new song of ransomed earth:"
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "For that Thine advent glory be,"
+            "O Jesu, virgin-born, to Thee;"
+            "With F ther, and with Holy Ghost,"
+            "From men and from the heav'nly host."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+  \bottom
+  
 }

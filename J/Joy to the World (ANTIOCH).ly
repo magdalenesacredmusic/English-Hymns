@@ -6,22 +6,35 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ANTIOCH  CM with repeat}
+    }
+    \right-column{
+      \line {att. George Friedrich Handel, 1742}
+      \line {arr. Lowell Mason, 1863}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {}
+      \line {}
+    }
+  } 
+}
+
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Joy to the World"  }
-  meter = \markup { \small { Music: ANTIOCH, CM with repeat; attr. G.F. Handel, 1742; arr. Lowell Mason, 1863  } }
-  piece = \markup { \small {Text: I. Watts, 1719 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
-
-\paper {
-  page-count = 1
-}
-
 
 global = {
   \key d \major
@@ -38,19 +51,21 @@ melody = \relative c'' {
   d4. a'8 |
   b4. b8 |
   cs4. cs8 |
-  d4.
+  d4. \bar "" \break
 
   d8 |
   d8[ cs] b[ a] |
   a8.[ g16 fs8] d'8 |
   d8[ cs] b[ a] |
-  a8.[ g16 fs8]
+  a8.[ g16 fs8] \bar "" \break
 
   fs8 |
   fs fs fs fs16[ g] |
   a4. g16[ fs] |
   e8 e e e16[ fs] |
-  g4. fs16[ e] |
+  g4. \bar "" \break
+  
+  fs16[ e] |
   d8( d'4) b8 |
   a8.[ g16 fs8] g8 |
   fs4 e |
@@ -198,27 +213,62 @@ bassWords = \lyricmode {
   And heav'n and na -- ture sing,
 }
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 80 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }

@@ -6,16 +6,28 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Lord, Enthroned in Heavenly Splendour"  }
-  meter = \markup { \small { Music: BRYN CALFARIA, 87.87.47.; W. Owen; harm. \italic "The English Hymnal," 1906} }
-  piece = \markup { \small {Text: G.H. Bourne, 1874 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {BRYN CALFARIA   87 87 47}
+    }
+    \right-column{
+      \line {William Owen (1813-93); harm. \italic "The English Hymnal," 1906}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {G.H. Bourne, 1874}
+    }
+  } 
 }
 
 global = {
@@ -120,8 +132,8 @@ verseOne = \lyricmode {
   Thou a -- lone, our strong De -- fend -- er,
   Lift -- est up thy peo -- ple's head.
   Al -- le -- lu -- ia, Al -- le -- lu -- ia, Al -- le -- lu -- ia,
-  Je -- su, true and liv -- ing Bread,
-  Je -- su, true and liv -- ing Bread!
+  Je -- sus, true and liv -- ing Bread,
+  Je -- sus, true and liv -- ing Bread!
 }
 
 verseTwo = \lyricmode {
@@ -157,28 +169,63 @@ verseFour = \lyricmode {
   Ris'n, as -- cend -- ed, glo -- ri -- fied!
 }
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 72 2)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 76 2)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 

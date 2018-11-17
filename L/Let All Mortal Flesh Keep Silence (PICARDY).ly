@@ -6,16 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {PICARDY   87 87 87}
+    }
+    \right-column{
+      \line {French Tune}
+      \line {harm. Ralph Vaughan Williams}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Σιγησάτο παρα σὰρξ βροτεία}
+      \line {Liturgy of St. James; tr. Gerard Moultrie, 1864}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Let All Mortal Flesh Keep Silence"  }
-  meter = \markup { \small { Music: PICARDY, 87.87.87, French Carol; harm. R. Vaughan Williams, \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: Σιγησάτο παρα σὰρξ βροτεία, Liturgy of St. James; tr. Gerard Moultrie, 1864  }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -29,7 +46,7 @@ global = {
 melody = \relative c' {
   \global
   d4 e f g |
-  a2 a4( g) |
+  a2 <f a>4( <e g>) |
   a2 a \bar "||"
 
   a4 a bf c |
@@ -61,7 +78,7 @@ alto = \relative c' {
   <c f>1 |
 
   f2 ef |
-  <d f>2. e4~ |
+  <d f>2. e!4~ |
   <cs e>1 |
 
   d1 |
@@ -69,7 +86,7 @@ alto = \relative c' {
   <d f>1 |
 
   f2 ef |
-  <d f>2. e4 |
+  <d f>2. e!4 |
   <c f>1 |
 
   <d~ a'>1 |
@@ -106,7 +123,7 @@ tenor = \relative c {
   c1 |
 
   d,1~ |
-  d2 c4 s |
+  d2 s2 |
   <d f>1 \bar "|."
 }
 
@@ -157,7 +174,7 @@ verseThree = \lyricmode {
   \set stanza = "3."
   Rank on rank the host of heav -- en spreads its van -- guard on the way,
   As the Light of light de -- scend -- eth from the realms of end -- less day,
-  That the pow'rs of hell may van -- ish as the dark -- ness clears away.
+  That the pow'rs of hell may van -- ish as the dark -- ness clears a -- way.
 }
 
 verseFour = \lyricmode {
@@ -167,28 +184,62 @@ verseFour = \lyricmode {
   Al -- le -- lu -- ia, Al -- le -- lu -- ia, Al -- le -- lu -- ia, Lord most High!
 }
 
-
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 92 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 92 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }

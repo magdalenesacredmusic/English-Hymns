@@ -6,18 +6,35 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {CRUCIFER  10 10 10 10}
+    }
+    \right-column{
+      \line {Sydney H. Nicholson, 1916}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {George William Kitchin, 1887; adapt. Michael Robert Newbolt, 1916}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Lift High the Cross"  }
-  meter = \markup { \small { Music: CRUCIFER, 10.10.10.10.; Sydney H. Nicholson, 1916 } }
-  piece = \markup { \small {Text: George William Kitchin, 1887; adapt. Michael Robert Newbolt, 1916 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
+
+
 
 global = {
   \key c \major
@@ -144,47 +161,44 @@ verseFour = \lyricmode {
   and an -- gels veil their fa -- ces to re -- ver.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice = refrain {
-        \voiceOne
-        \refrain {
-          \context Voice = verses {
-            \voiceOne
-            \verses
-          }
-        }
-      }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto refrain \refrainText
-      \context Lyrics = one \lyricsto verses \verseOne
-      \context Lyrics = two \lyricsto verses \verseTwo
-      \context Lyrics = three \lyricsto verses \verseThree
-      \context Lyrics = four \lyricsto verses \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment  96 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-
-  \layout {}
-}
-
-%\pageBreak
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "refrain" { \voiceOne 
+                                 \refrain { 
+          \new Voice = verses { 
+            \voiceOne \verses 
+        }
+        } 
+        }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics \lyricsto refrain \refrainText
+      \new Lyrics  \lyricsto verses \verseOne
+      \new Lyrics  \lyricsto verses \verseTwo
+      \new Lyrics  \lyricsto verses \verseThree
+      \new Lyrics \lyricsto verses \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -250,4 +264,109 @@ verseFour = \lyricmode {
     }
   }
 }
+
+
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "chorus" { 
+        \refrain {
+          \new Voice = "tune" {
+        \melody
+          }
+        }
+      }
+      \new Lyrics \lyricsto "chorus" { \refrainText}
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Saved by this Cross whereon their Lord was slain,"
+            "the sons of Adam their lost home regain."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "From north and south, from east and west they raise"
+            "in growing unison their songs of praise."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "O Lord, once lifted on the glorious tree,"
+            "as thou hast promised, draw the world to thee."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "8. "
+          \column {
+            "Let every race and every language tell"
+            "of him who saves our souls from death and hell."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "9. "
+          \column {
+            "From farthest regions let their homage bring,"
+            "and on his Cross adore their Savior King. "
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "10. "
+          \column {
+            "Set up thy throne, that earth's despair may cease"
+            "beneath the shadow of its healing peace. "
+          }
+        }
+        \vspace #01
+        \line {
+          \bold "11. "
+          \column {
+            "For thy blest Cross which doth for all atone"
+            "creation's praises rise before thy throne."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+
+
+  \bottom
+}
+
 

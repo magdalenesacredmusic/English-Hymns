@@ -6,17 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {IN DULCI JUBILO  Irreg.}
+    }
+    \right-column{
+      \line {German, harm. Bartholemew Gesius, 1601}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Latin/German macaronic carol}
+      \line {Heinrich Suso, 14th cent. tr. Robert Louis de Pearsall, 1837}
+    }
+  } 
+}
 
 \header {
-   poet = \markup{ \fontsize #4 \smallCaps "In dulci jubilo"  }
-    meter = \markup { \small { Music: IN DULCI JUBILO, 67.77.78.55.; German, harm. B. Gesius, 1601; \italic "The English Carol Book," 1913 } }
-    %piece = \markup { \small { v.4 harm. J.S. Bach, BWV 368 }}
-    %breakbefore
-    %copyright = ""
-    tagline = ""
+  tagline = ""
 }
 
 global = {
@@ -40,11 +56,12 @@ melodyOne = \relative c'' {
 	\set melismaBusyProperties = #'()
 	\slurDashed g2( g4) \unset melismaBusyProperties |
 	a2 a4 b2 a4 |
-	\slurSolid g2( a4 b2) b4 |
+	\slurSolid g2( a4 b2) \bar "" \break
+	  b4 |
 	d2 e4 d2 c4 |
 	b2. g2 g4 |
 	a2 a4 b2 a4 |
-	g2( a4 b2.) \bar "||"
+	g2( a4 b2.) \bar "||" \break 
 
 	e,2 e4 fs2 fs4 |
 	g2.( d'2.) |
@@ -324,37 +341,42 @@ verseBass = \lyricmode {
 	There are An -- gels sing -- ing
 }
 
-%%% First harmonization
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melodyOne }
-      \new Voice = "alto" { \voiceTwo \altoOne }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenorOne }
-      \new Voice = "bass" { \voiceTwo \bassOne }
-    >>
-  >>
-\header {
-	piece = \markup { \small {Text: Latin/German macaronic carol, H. Suso, 14th cent.; trans. R.L. de Pearsall, 1837 }}
-}
-\midi { 
-   \context {
-       \Score 
-       tempoWholesPerMinute = #(ly:make-moment 69 2)
-            }
-       }
 
-  \layout { }
-}
 
-%%%% J.S. Bach harmonization
-\score {
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodyOne }
+        \new Voice = "alto" { \voiceTwo \altoOne }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenorOne }
+        \new Voice = "bass" { \voiceTwo \bassOne }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+
+  
+  \score {
   \context ChoirStaff <<
 	\new Lyrics = sopranos
     \context Staff = upper <<
@@ -385,7 +407,33 @@ verseBass = \lyricmode {
             }
        }
 
-  \layout { }
+    \include "hymn_layout.ly"
+}
 }
 
-
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melodyOne
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}

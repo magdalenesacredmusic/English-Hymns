@@ -48,26 +48,31 @@ melody = \relative c' {
   fs4 |
   fs4. d8 d4 e |
   fs4. fs8 fs4 g |
-  a2. fs4 | \noBreak
-  e fs g4. g8 | \break
+  a2. \bar "" \break
+  
+    fs4 |
+  e fs g4. g8 | 
   g4 fs a fs |
-  e2. \bar "||"
+  e2. \bar "" \break
 
   fs4 |
   fs4. d8 d4 e |
   fs4. fs8 fs4 g |
   a2. \bar "" \break
-  fs4 |
+    
+    fs4 |
   b a gs4. gs8 |
   a4 b cs b |
-  a2. \bar "||"
+  a2. \bar "|" \break
 
   a4 |
-  d a g fs | \break
-  b b d b | \noBreak
-  a2. a4 | \noBreak
-  g fs e d | \noBreak
-  b'4. g8 fs4 e | \noBreak
+  d a g fs |
+  b b d b | 
+  a2. \bar ""  \break 
+  
+    a4 | 
+  g fs e d |
+  b'4. g8 fs4 e | 
   d2. \bar "|."
 }
 

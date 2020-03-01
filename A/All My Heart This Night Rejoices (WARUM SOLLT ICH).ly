@@ -48,21 +48,21 @@ melody = \relative c'' {
 	g2 a |
 	b2. a4 |
 	b d e2 |
-	d1 \bar "||"
+	d1 \bar "|" \break
 	
-	d4 e c2 \bar "||"
-	c4 d b2 \bar "||"
+	d4 e c2 \bar "|"
+	c4 d b2 \bar "|"
 
 	b4 d c b |
-	a2 g \bar "||"
+	a2 g \bar "|" \break
 	
 	d' c | 
 	b2. a4 |
 	g fs e2 |
-	d1 \bar "||" \break
+	d1 \bar "|" \break
 
-	d'4 e c2 \bar "||"
-	c4 d b2 \bar "||"
+	d'4 e c2 \bar "|"
+	c4 d b2 \bar "|"
 
 	b4 a c b |
 	a2 g2 \bar "|."
@@ -209,7 +209,7 @@ verseFive = \lyricmode {
     tagline = ""
   }
   \top
-  \score {
+  \score { \transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }

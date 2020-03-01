@@ -47,31 +47,31 @@ melody = \relative c' {
   \partial 4
   d4 |
   b'4 d d c |
-  b a g \bar "||"
+  b a g \bar ""
 
   g4 |
   a b c e, |
-  fs2 g4 \bar "||" \break
+  fs2 g4 \bar "" \break
 
   d4 |
   b' d d c |
-  b a g \bar "||"
+  b a g \bar ""
 
   b4 |
   b a b cs |
-  e2 d4 \bar "||" \break
+  e2 d4 \bar "" \break
 
   a4 |
   a4. a8 d4 b |
-  a gs b \bar "||"
+  a gs b \bar ""
 
   e,4 |
   c' c d c8[ d] |
-  e2 e4 \bar "||" \break
+  e2 e4 \bar "" \break
 
   c8[ d] |
   e4 e d g, |
-  c c b \bar "||"
+  c c b \bar ""
 
   g4 |
   a b c e, |

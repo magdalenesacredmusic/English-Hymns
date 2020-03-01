@@ -44,14 +44,14 @@ melody = \relative c' {
 	f f a a |
 	g f g a |
 	g f a g |
-	f2. \bar "||" \break
+	f2. \bar "|" \break
 	
 	g4 |
 	a g f a |
 	c8[ bf] a[ g] a4 c |
 	c2 c |
 	d c4( b) |
-	c2. \bar "||" \break
+	c2. \bar "|" \break
 	
 	a4 |
 	c a f a |

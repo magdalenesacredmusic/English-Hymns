@@ -49,15 +49,15 @@ melody = \relative c' {
   \partial 4
   c4 |
   f f a g8[ f] |
-  g2. \bar "||"
+  g2. 
 
-  a8[ bf]  |
-  c4 bf8[ a] bf4 a |
-  g2. \bar "||" \break
+  a8[ bf]  | \break 
+  c4 bf8[ a] bf4 a | 
+  g2.
 
   c4 |
-  a f g c, |
-  f a8.[ bf16] c4 \bar "||"
+  a f g c, | \break
+  f a8.[ bf16] c4 
 
   c4 |
   d c8[ bf] a4 g |

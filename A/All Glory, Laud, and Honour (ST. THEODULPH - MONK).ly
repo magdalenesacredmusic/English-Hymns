@@ -6,7 +6,7 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.19.82"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
@@ -49,7 +49,7 @@ refrain = \relative c' {
   \repeat volta 2 {
     c4 |
     g' g a b |
-    c2 c4 \bar "||"
+    c2 c4 \bar "|"
 
     e |
     d c c b |
@@ -61,15 +61,15 @@ verses = \relative c'' {
 
   c4 |
   e4 e d c |
-  b4( a4) g \bar "||"
+  b4( a4) g \bar "|"
 
   b4 |
   c b a a |
-  g2. \bar "||"
+  g2. \bar "|"
 
   g4 |
   e4 g4 a g |
-  g( f) e \bar "||"
+  g( f) e \bar "|"
 
   g4 |
   f e d d |

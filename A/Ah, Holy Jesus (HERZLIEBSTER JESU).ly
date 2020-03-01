@@ -47,17 +47,17 @@ melody = \relative c'' {
   g2 g4 g4 |
   f2 d2 |
   g4 a bf bf |
-  c2 a \bar "||"
+  c2 a \bar "|"
   
   a bf4 c |
   d2 bf |
   ef4 ef d d |
-  c2 bf2 \bar "||"
+  c2 bf2 \bar "|"
   
   bf a4 g |
   f2 d |
   f4 f g f |
-  ef2 d \bar "||"
+  ef2 d \bar "|"
   
   d' c4 bf |
   a2 g \bar "|."

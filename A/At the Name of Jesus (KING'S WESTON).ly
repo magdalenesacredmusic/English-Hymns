@@ -44,27 +44,22 @@ global = {
 melody = \relative c' {
   \global
   e4^\markup { \italic "To be sung in unison." } fs g2 fs |
-  e1 d2 \bar "||"
-
+  e1 d2 |
   e4 fs g2 a |
-  e1. \bar "||"
+  e1. | \break
 
   g4 a b2 b |
-  b2.( a4) g2 \bar "||"
-
+  b2.( a4) g2 |
   e4 g a2 g |
-  a1. \bar "||"
+  a1. | \break
 
   fs4 g a2 fs |
-  b2.( a4) g2 \bar "||"
-
+  b2.( a4) g2 |
   a4 b d2 cs |
-  d1. \bar "||"
+  d1. |
 
   e2 d b4 a |
-  d2 b \bar "||"
-
-  a4 b |
+  d2 b a4 b |
   g1 fs2 |
   e1. \bar "|."
 }

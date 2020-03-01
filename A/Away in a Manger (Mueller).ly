@@ -49,20 +49,20 @@ melody = \relative c'' {
   c4. bf8 a4 |
   a g f |
   f e d |
-  c2 \bar "||" \break
+  c2 \bar "" \break
 
   c4 |
   c4. d8 c4 |
   c g' e |
   d c f |
-  a2 \bar "||" \break
+  a2 \bar "" \break
 
   c4 |
   c4. bf8 a4 |
   \set melismaBusyProperties = #'()
   \slurDashed a( g) f \unset melismaBusyProperties |
   f e d |
-  c2 \bar "||" \break
+  c2 \bar "" \break
 
   c4 |
   bf'4. a8 g4 |

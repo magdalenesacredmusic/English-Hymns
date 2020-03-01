@@ -50,7 +50,7 @@ melody = \relative c'' {
   c4 c d c \bar "|"
   c2 a bf \bar "|"
   a4 g2 f e4 \bar "|"
-  f2. \bar "||" \break
+  f2. \bar "|" \break
 
   c'2 \bar "|"
   c4 c d c \bar "|"
@@ -60,7 +60,7 @@ melody = \relative c'' {
 
   a4 \bar "|"
   g e f d \bar "|"
-  c2. \bar "||"
+  c2. \bar "|"
 
   c'4 \bar "|"
   c c d c \bar "|" \break

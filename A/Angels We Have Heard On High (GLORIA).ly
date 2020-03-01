@@ -47,7 +47,7 @@ melody = \relative c'' {
   a4 a a c | \noBreak
   c4. bf8 a2 | \noBreak
   a4 g a c | \noBreak
-  a4. g8 f2 \bar "||" \break
+  a4. g8 f2 \bar "|" \break
 
   a4 a a c | \noBreak
   c4. bf8 a2 | \noBreak
@@ -59,7 +59,7 @@ melody = \relative c'' {
   a2 bf8[ a g f] |
   g4.) c,8 c2 |
   f4 g a bf |
-  a2 g2 \bar "||" \break
+  a2 g2 \bar "|" \break
 
   c2( d8[ c bf a] |
   bf2 c8[ bf a g] |
@@ -196,7 +196,7 @@ verseFour = \lyricmode {
     tagline = ""
   }
   \top
-  \score {
+  \score { %\transpose c d
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }

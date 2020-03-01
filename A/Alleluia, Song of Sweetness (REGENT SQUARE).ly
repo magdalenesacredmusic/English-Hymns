@@ -47,12 +47,12 @@ melody = \relative c' {
   f4 d bf' f |
   d'4. c8 bf4 f |
   g g f bf |
-  f ef d2 \bar "||"
+  f ef d2 \bar "|"
 
   f4 d bf' f |
   d'4. c8 bf4 a |
   bf a g a8[ bf] |
-  a4 g f2 \bar "||"
+  a4 g f2 \bar "|"
 
   c'4. c8 a4 f |
   d'4. c8 bf4 g |

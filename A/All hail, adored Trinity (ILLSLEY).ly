@@ -44,12 +44,12 @@ melody = \relative c' {
 	\partial 4
 	f4 |
 	f c f8[ g] a4 |
-	bf8[ a] g4 f f |
+	bf8[ a] g4 f f | \break
 	f c f8[ g] a[ b] |
-	c4 b c \bar "||" \break
+	c4 b c 
 	
 	c4 |
-	bf a d4. c8 |
+	bf a d4. c8 | \break
 	bf4 a g g |
 	a8[ g] f4 c' g |
 	a g f \bar "|."

@@ -48,7 +48,7 @@ melody = \relative c' {
 	  g2 b4 |
 	  d2 b4 |
 	  g2 b4 |
-	  a2 \bar "||"
+	  a2 \bar ""
 	  
 	    d4 |
 	    b2 a4 |

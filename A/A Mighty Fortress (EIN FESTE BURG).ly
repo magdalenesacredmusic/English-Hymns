@@ -6,7 +6,7 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
@@ -49,25 +49,25 @@ melody = \relative c'' {
   c4 c g8[ a] b4 |
   c8[ b] a4 g c |
   b a g a |
-  f8[( e] d4) c4 \bar "||"
+  f8[( e] d4) c4 \bar "|"
 
   c'4 |
   c4 c g8[ a] b4 |
   c8[ b] a4 g c |
   b a g a |
-  f8([ e] d4) c \bar "||"
+  f8([ e] d4) c \bar "|"
 
   c4 |
   g' a g fs |
   g2. c,4 |
   g' g a b |
-  c2.  \bar "||"
+  c2.  \bar "|"
 
   b4 |
   c b a a |
   g2. a4 |
   a g a f |
-  e2. \bar "||"
+  e2. \bar "|"
 
   c'4 |
   b a g a |

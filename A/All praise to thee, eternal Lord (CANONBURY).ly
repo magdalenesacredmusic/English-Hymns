@@ -44,10 +44,12 @@ melody = \relative c' {
 	\partial 4
 	d4 |
 	b' b b c8[ b] |
-	a4 b8[ a] b4 d, |
-	e fs g a |
+	a4 g8[ a] b4 d, |
+	e fs \bar "" \break
+	g a |
 	fs e d d |
-	b' b b c8[ b] |
+	b' b b c8[ b] | \break
+	
 	a4 b8[ a] b4 d, |
 	e fs g b8[ a] |
 	g4 fs g \bar "|."
@@ -98,7 +100,7 @@ bass = \relative c {
 
 verseOne = \lyricmode {
 	\set stanza = "1."
-        All priase to thee, e -- ter -- nal Lord,
+        All praise to thee, e -- ter -- nal Lord,
         Clothed in a garb of flesh and blood;
         Choos -- ing a man -- ger for thy throne,
         while worlds on worlds are thine a -- lone.

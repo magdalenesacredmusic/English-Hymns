@@ -46,12 +46,12 @@ melody = \relative c'' {
   g4 fs8[ g] a4 g |
   c c b2 |
   e,4 fs g e |
-  d d d2 \bar "||"
+  d d d2 \bar ""
 
   g4 fs8[ g] a4 g |
   c c b2 |
   e,4 fs g e |
-  d d d2 \bar "||"
+  d d d2 \bar ""
 
   b'4 a g b |
   d4. c8 b2 |
@@ -64,17 +64,17 @@ alto = \relative c' {
   d4 d d d |
   g d d2 |
   c4 d d c |
-  b a b2 \bar "||"
+  b a b2 
 
   d4 d d d |
   g d d2 |
   c4 d d c |
-  b a b2 \bar "||"
+  b a b2 
 
   d4 d d d |
   d d d2 |
   c4 d d c |
-  d4. c8 b2 \bar "|."
+  d4. c8 b2
 }
 
 tenor = \relative c' {
@@ -82,17 +82,17 @@ tenor = \relative c' {
   b4 c8[ b] a4 b |
   c a g2 |
   g4 a g g |
-  g fs g2 \bar "||"
+  g fs g2 
 
   b4 c8[ b] a4 b |
   c a g2 |
   g4 a g g |
-  g fs g2 \bar "||"
+  g fs g2 
 
   g4 d'8[ c] b4 g |
   a fs g2 |
   g4 a g g |
-  g fs g2 \bar "|."
+  g fs g2 
 }
 
 bass = \relative c' {
@@ -100,17 +100,17 @@ bass = \relative c' {
   g4 a8[ g] fs4 g |
   e fs g2 |
   c,4 c b c |
-  d d g,2 \bar "||"
+  d d g,2
 
   g'4 a8[ g] fs4 g |
   e fs g2 |
   c,4 c b c |
-  d d g,2 \bar "||"
+  d d g,2 
 
   g'4 fs g g |
   fs d g2 |
   c,4 c b e |
-  d d g,2 \bar "|."
+  d d g,2 
 }
 
 verseOne = \lyricmode {

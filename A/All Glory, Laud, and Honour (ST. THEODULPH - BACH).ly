@@ -49,7 +49,7 @@ refrain = \relative c' {
   \repeat volta 2 {
     c4 |
     g' g a b |
-    c2 c4 \bar "||"
+    c2 c4 \bar "|"
 
     e |
     d c c b |
@@ -61,15 +61,15 @@ verses = \relative c'' {
 
   c4 |
   e4 e d c |
-  b4( a4) g \bar "||"
+  b4( a4) g \bar "|"
 
   b4 |
   c b a a |
-  g2. \bar "||"
+  g2. \bar "|"
 
   g4 |
   e4 g4 a g |
-  g( f) e \bar "||"
+  g( f) e \bar "|"
 
   g4 |
   f e d d |
@@ -82,7 +82,7 @@ alto = \relative c' {
   \repeat volta 2 {
     g4 |
     c e f e |
-    e2 e4 \bar "||"
+    e2 e4 \bar "|"
 
     a |
     a f e d |
@@ -91,15 +91,15 @@ alto = \relative c' {
 
   e8[ f] |
   g4 a a fs |
-  g4( fs) d \bar "||"
+  g4( fs) d \bar "|"
 
   g |
   g g g fs |
-  d2. \bar "||"
+  d2. \bar "|"
 
   d4 |
   c8[ d] e4 f e |
-  e( d) c \bar "||"
+  e( d) c \bar "|"
 
   c4 |
   c c c b |
@@ -112,7 +112,7 @@ tenor = \relative c {
   \repeat volta 2 {
     e4 |
     g c c b |
-    a2 a4 \bar "||"
+    a2 a4 \bar "|"
 
     c4 |
     a a g g |
@@ -121,15 +121,15 @@ tenor = \relative c {
 
   g4 |
   c c d d |
-  d4( c) b \bar "||"
+  d4( c) b \bar "|"
 
   d4 |
   c d e d8[ c] |
-  b2. \bar "||"
+  b2. \bar "|"
 
   g4 |
   g c c bf |
-  a2 a4 \bar "||"
+  a2 a4 \bar "|"
 
   e |
   f g a g8[ f] |
@@ -142,7 +142,7 @@ bass = \relative c {
   \repeat volta 2 {
     c4 |
     e c f gs, |
-    a2 a4 \bar "||"
+    a2 a4 \bar "|"
 
     a'4 |
     f d g g, |
@@ -151,15 +151,15 @@ bass = \relative c {
 
   c4 |
   c'8[ b] a[ g] fs4 d4 |
-  g2 g,4 \bar "||"
+  g2 g,4 \bar "|"
 
   f'!4 |
   e d c d |
-  g,2. \bar "||"
+  g,2. \bar "|"
 
   b4 |
   c bf a8[ b] cs4 |
-  d2 a4 \bar "||"
+  d2 a4 \bar "|"
 
   bf4 |
   a g fs g |

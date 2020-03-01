@@ -50,37 +50,37 @@ melody = \relative c'' {
   b2 c4 |
   d2 c4 |
   b2 a4 |
-  b2 \bar "||"
+  b2 \bar "|"
 
   b4 |
   b2 a4 |
   c4( b) a |
   g2( fs4) |
-  g2 \bar "||"
+  g2 \bar "|"
 
   g4 |
   b2 c4 |
   d2 c4 |
   b2 a4 |
-  b2 \bar "||"
+  b2 \bar "|"
 
   b4 |
   b2 a4 |
   c4( b) a |
   g2( fs4) |
-  g2 \bar "||"
+  g2 \bar "|"
 
   g4 |
   g2 a4 |
   c2 b4 |
   a2 gs4 |
-  a2 \bar "||"
+  a2 \bar "|"
 
   a4 |
   b2 c4 |
   d2 c4 |
   b2 a4 |
-  b2 \bar "||"
+  b2 \bar "|"
 
   g4 |
   a2 c4 |

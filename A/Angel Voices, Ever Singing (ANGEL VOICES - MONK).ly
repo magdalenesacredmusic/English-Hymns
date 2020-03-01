@@ -26,19 +26,19 @@ global = {
 melody = \relative c' {
   \global
   fs4 a b a |
-  d b a fs \bar "||"
+  d b a fs \bar "|"
   
   d e fs g |
-  e1 \bar "||"
+  e1 \bar "|" \break
   
   fs4 a d b |
-  e4. d8 cs4 a \bar "||"
+  e4. d8 cs4 a \bar "|"
   
   b fs a gs |
-  a1 \bar "||"
+  a1 \bar "|"
   
   a4 a a b |
-  g g g a \bar "||"
+  g g g a \bar "|"
   
   fs a b d |
   e2. cs4 |

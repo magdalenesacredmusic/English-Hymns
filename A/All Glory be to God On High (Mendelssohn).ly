@@ -45,13 +45,13 @@ melody = \relative c' {
 	a4 bf c bf |
 	a g a a |
 	a g8[ a] bf4 g |
-	f( g) f4 \bar "||"
+	f( g) f4 \bar "|"
 	
 	  f8[ g] |
 	a4 bf c bf |
 	a g a a |
 	g g8[ a] bf4 g |
-	f( g) f \bar "||"
+	f( g) f \bar "|"
 	
 	  f4 |
 	g a bf a |

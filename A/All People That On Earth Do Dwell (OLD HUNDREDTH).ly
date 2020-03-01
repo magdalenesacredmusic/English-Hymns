@@ -47,17 +47,17 @@ melody = \relative c'' {
 	g2 |
 	g4 fs e d |
 	g2 a |
-	b2 \bar "||" 
+	b2
 
-	b2 |
+	b2 | \break
 	b4 b a g |
 	c2 b |
-	a2 \bar "||" \break
+	a2 
 
 	g2 |
-	a4 b a g |
+	a4 b a g | \break
 	e2 fs |
-	g2 \bar "||" 
+	g2 
 
 	d'2 |
 	b4 g a c |
@@ -188,17 +188,17 @@ melodya = \relative c'' {
 	g2^\markup { \small \caps "People's Part" } |
 	g4 fs e d |
 	g2 a |
-	b2 \bar "||"
+	b2 
 
-	b2 |
+	b2 | \break
 	b4 b a g |
 	c2 b |
-	a2 \bar "||" \break
+	a2 
 
 	g2 |
-	a4 b a g |
+	a4 b a g | \break
 	e2 fs |
-	g2 \bar "||"
+	g2 
 
 	d'2 |
 	b4 g a c |
@@ -254,17 +254,17 @@ tenora = \relative c' {
 	g2 |
 	g4 fs e d |
 	g2 a |
-	b2 \bar "||"
+	b2 
 
 	b2 |
 	b4 b a g |
 	c2 b |
-	a2 \bar "||"
+	a2 
 
 	g2 |
 	a4 b a g |
 	e2 fs |
-	g2 \bar "||"
+	g2 
 
 	d'2 |
 	b4 g a c |
@@ -302,17 +302,17 @@ melodyb = \relative c'' {
 	g2^\markup { \small \caps "People's Part" } |
 	g4 fs e d |
 	g2 a |
-	b2 \bar "||"
+	b2
 
-	b2 |
+	b2 | \break
 	b4 b a g |
 	c2 b |
-	a2 \bar "||" \break
+	a2 
 
 	g2 |
-	a4 b a g |
+	a4 b a g | \break
 	e2 fs |
-	g2 \bar "||"
+	g2 
 
 	d'2 |
 	b4 g a c |
@@ -368,17 +368,17 @@ tenorb = \relative c' {
 	g2 |
 	g4 fs e d |
 	g2 a |
-	b2 \bar "||"
+	b2 
 
 	b2 |
 	b4 b a g |
 	c2 b |
-	a2 \bar "||"
+	a2 
 
 	g2 |
 	a4 b a g |
 	e2 fs |
-	g2 \bar "||"
+	g2 
 
 	d'2 |
 	b4 g a c |
@@ -440,7 +440,7 @@ bassb = \relative c {
     \include "hymn_layout.ly"
   }
   \bottom
-  
+  \pageBreak
   %%%%%%%%%%%%%%%%
 %% score 2 %%%%%
 %%%%%%%%%%%%%%%%
@@ -482,7 +482,7 @@ bassb = \relative c {
        } 
     \include "hymn_layout.ly"
 } 
-
+\pageBreak
 %%%%%%%%%%%%%%%%
 %% score 3 %%%%%
 %%%%%%%%%%%%%%%%

@@ -48,11 +48,13 @@ melody = \relative c'' {
   a4 d a b |
   a4. g8 fs2 |
   a4 a g fs |
-  e e d2 \bar "||"
+  e e d2 |
+  
   a'4 d a b |
   a4. g8 fs2 |
   a4 a g fs |
-  e e d2 \bar "||"
+  e e d2 |
+  
   e4 e fs8[ gs] a4 |
   a4 gs a2 |
   b4. cs8 d4 d |
@@ -88,15 +90,18 @@ tenor = \relative c {
   fs4 fs8[ g] a4 g8[ fs] |
   e[ d] e4 d2 |
   fs4 fs g a |
-  b a fs2 \bar "||"
+  b a fs2 |
+  
   fs4 fs8[ g] a4 g8[ fs] |
   e[ d] e4 d2 |
   fs4 fs g a |
-  b a fs2 \bar "||"
+  b a fs2 |
+  
   a4 a a a |
   b b a2 |
   g4. a8 b4 b |
-  b as b2 \bar "||"
+  b as b2 |
+  
   a4 a g8[ fs] e4 |
   d8[ fs] e[ d] e2 |
   g4 fs g a |

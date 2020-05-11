@@ -47,7 +47,7 @@ melody = \relative c'' {
   g2 f4 ef |
   af2 g |
   f4 g ef f |
-  d1 \bar "||"
+  d1 
 
   ef2 af4 g |
   f c' bf ef, |
@@ -60,7 +60,7 @@ alto = \relative c' {
   ef2 d4 ef |
   d2 ef |
   f4 ef ef c |
-  bf1 \bar "||"
+  bf1
 
   bf2 af4 bf |
   c d ef ef |
@@ -73,7 +73,7 @@ tenor = \relative c' {
   bf2 bf4 bf |
   bf2 bf |
   bf4 bf bf a |
-  f1 \bar "||"
+  f1
 
   ef2 ef4 ef |
   ef f g af |
@@ -86,7 +86,7 @@ bass = \relative c {
   ef2 af4 g |
   f2 ef |
   d4 ef c f |
-  bf,1 \bar "||"
+  bf,1 
 
   g2 c4 bf |
   af af g c |
@@ -289,7 +289,7 @@ verseFour = \lyricmode {
         \line {
           \bold "10. "
           \column {
-            "Alpha and Omega, to Whom shall bow"
+            "Alpha and Omega, unto Whom shall bow"
             "All nations at the doom, is with us now."
           }
         }

@@ -6,10 +6,34 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+top = \markup {
+  \fill-line {
+    \column {
+      \line {VICTORY   88 84}
+    }
+    \right-column{
+      \line {G.P. Palestrina, 1591; arr. W.H. Monk, 1861}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Finita jam sunt praelia"}
+      \line {18th cent; Tr. F. Pott, 1861}
+    }
+  } 
+}
+
+\header {
+  tagline = ""
+}
 
 
 global = {
@@ -21,15 +45,20 @@ global = {
 
 melody = \relative c'' {
   \global
-  b4\rest^\markup { \italic "Antiphon" } fs4 fs |
+
+}
+
+melody = \relative c'' {
+  \global
+    b4\rest^\markup { \italic "Antiphon" } fs4 fs |
   g2. |
   fs4 a a |
   b2. |
   a4 a d |
   cs2. |
   d2.  \bar "|."
-
-  \bar ".|:" a4 a a |
+  
+   a4 a a |
   b2 a4 |
   a( g) fs4 |
   a2. |
@@ -43,7 +72,7 @@ melody = \relative c'' {
   a2. |
   b4\rest a4 d |
   cs2. |
-  d2. \bar ":|."
+  d2. \bar "||"
 
 }
 
@@ -110,7 +139,7 @@ bass = \relative c {
   d'4 fs d |
   a2. |
   d |
-%%%%%%%
+
   d4 d d |
   g2 d4 |
   fs( e) b' |
@@ -128,9 +157,9 @@ bass = \relative c {
   d
 }
 
-
 verseOne = \lyricmode {
-    Al -- le -- lu -- ia, al -- le -- lu -- ia, al -- le -- lu -- ia.
+  Al -- le -- lu -- ia, al -- le -- lu -- ia, al -- le -- lu -- ia.
+  
   \set stanza = "1."
   The strife is o'er, the bat -- tle done;
   Now is the Vic -- tor's tri -- umph won;
@@ -139,7 +168,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  _ _ _ _ _ _ _ _ _ _ _ _
+  _ _ _ _   _ _ _ _    _ _ _ _
   \set stanza = "2."
   Death's migh -- tiest pow'rs have done their worst,
   And Je -- sus hath his foes dis -- persed;
@@ -147,9 +176,8 @@ verseTwo = \lyricmode {
   Al -- le -- lu -- ia!
 }
 
-
 verseThree = \lyricmode {
-    _ _ _ _ _ _ _ _ _ _ _ _
+    _ _ _ _   _ _ _ _    _ _ _ _
   \set stanza = "3."
   On the third morn he rose a -- gain
   Glo -- rious in ma -- jes -- ty to reign;
@@ -158,7 +186,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-    _ _ _ _ _ _ _ _ _ _ _ _
+    _ _ _ _   _ _ _ _    _ _ _ _
   \set stanza = "4."
   He brake the age -- bound chains of hell;
   The bars from heav'n's high por -- tals fell;
@@ -167,7 +195,7 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-    _ _ _ _ _ _ _ _ _ _ _ _
+    _ _ _ _   _ _ _ _    _ _ _ _
   \set stanza = "5."
   Lord, by the stripes which wound -- ed Thee
   From death's dread sting Thy ser -- vants free,
@@ -175,23 +203,12 @@ verseFive = \lyricmode {
   Al -- le -- lu -- ia!
 }
 
-
-%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%
-
 \book {
   \include "hymn_paper.ly"
-
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "The Strife is O'er"  }
-  meter = \markup { \small { Music: VICTORY, 88.84.; G.P. Palestrina, 1591; arr. W.H. Monk, 1861 } }
-  piece = \markup { \small {Text: \italic "Finita jam sunt praelia," 18th cent; tr. F. Pott, 1861 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
-
-}
+  \header {
+    tagline = ""
+  }
+  \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -217,6 +234,7 @@ verseFive = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
+  \bottom
 }
 
 %%%%%%
@@ -226,6 +244,7 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
+  \top
   \score {
     %\transpose c bf,
     <<
@@ -240,13 +259,8 @@ verseFive = \lyricmode {
     >>
     \include "hymn_layout.ly"
   }
-  \markup \override #'(baseline-skip . 1.7) {
-    \vspace #0.7
-    \teeny
-    \column {
-      \line { Music: VICTORY, 88.84.; G.P. Palestrina, 1591; arr. W.H. Monk, 1861 }
-      \line { Text: \italic "Finita jam sunt praelia," 18th cent; tr. F. Pott, 1861 }
-    }
+  \markup { 
+    \vspace #0.5 
   }
-
+  \bottom
 }

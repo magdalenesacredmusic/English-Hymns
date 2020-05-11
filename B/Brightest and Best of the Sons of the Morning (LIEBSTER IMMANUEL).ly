@@ -52,17 +52,17 @@ melody = \relative c'' {
   d4 d d |
   cs4. b8 a4 |
   b g fs |
-  e2 d4 \bar "||" \break
+  e2 d4 \bar "|" \break
 
   a'4 a fs |
   b4. cs8 d4 |
   d, e4. fs8 |
-  fs2. \bar "||" \break
+  fs2. \bar "|" \break
 
   fs4 fs g |
   a fs4. fs8 |
   b4 as b |
-  cs fs,2 \bar "||"
+  cs fs,2 \bar "|"
 
   d'4 cs b |
   as4. fs8 b4 |
@@ -151,7 +151,7 @@ verseTwo = \lyricmode {
   Cold on His cra -- dle the dew -- drops are shin -- ing,
   Low lies His head with the beasts of the stall;
   An -- gels a -- dore Him in slum -- ber re -- clin -- ing,
-  Mak -- er and Mon -- arch and Sa -- viour of all.
+  Mak -- er and Mon -- arch and Sa -- vior of all.
 }
 
 verseThree = \lyricmode {

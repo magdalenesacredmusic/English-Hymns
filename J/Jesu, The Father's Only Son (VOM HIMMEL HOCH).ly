@@ -125,7 +125,7 @@ bass = \relative c {
 
 verseOne = \lyricmode {
   \set stanza = "1."
-  Je -- su, the Fa -- ther's on -- ly Son,
+  Je -- sus, the Fa -- ther's on -- ly Son,
   Whose death for all re -- demp -- tion won;
   Be -- fore the worlds, of God most high
   Be -- got -- ten all in -- eff -- ab -- ly.
@@ -133,10 +133,10 @@ verseOne = \lyricmode {
 
 verseTwo = \lyricmode {
   \set stanza = "2."
-  The Fa -- ther's light and splen -- dour Thou,
-  Their end -- less hope to Thee that bow;
+  The Fa -- ther's light and splen -- dour thou,
+  Their end -- less hope to thee that bow;
   Ac -- cept the prayers and praise to -- day
-  That through the world Thy ser -- vants pay.
+  That through the world thy ser -- vants pay.
 }
 
 verseThree = \lyricmode {
@@ -181,7 +181,7 @@ verseSeven = \lyricmode {
 %}
 
 \book {
-  \include "hymn_paper.ly"
+  \include "hymn_paper_multipage.ly.ly"
   \header {
     tagline = ""
   }
@@ -221,16 +221,16 @@ verseSeven = \lyricmode {
             "Whence sky, and stars, and sea's abyss,"
             "And earth, and all that therein is,"
             "Shall still, with laud and carol meet,"
-            "The Author of Thine advent greet."
+            "The Author of thine advent greet."
           }
         }
         \vspace #1
         \line {
           \bold "6. "
           \column {
-            "And we who, by Thy precious blood"
+            "And we who, by thy precious blood"
             "From sin redeemed, are marked for God,"
-            "On this the day that saw Thy birth,"
+            "On this the day that saw thy birth,"
             "Sing the new song of ransomed earth:"
           }
         }
@@ -238,9 +238,9 @@ verseSeven = \lyricmode {
         \line {
           \bold "7. "
           \column {
-            "For that Thine advent glory be,"
-            "O Jesu, virgin-born, to Thee;"
-            "With F ther, and with Holy Ghost,"
+            "For that thine advent glory be,"
+            "O Jesu, virgin-born, to thee;"
+            "With Father, and with Holy Ghost,"
             "From men and from the heav'nly host."
           }
         }
@@ -288,16 +288,16 @@ verseSeven = \lyricmode {
             "Whence sky, and stars, and sea's abyss,"
             "And earth, and all that therein is,"
             "Shall still, with laud and carol meet,"
-            "The Author of Thine advent greet."
+            "The Author of thine advent greet."
           }
         }
         \vspace #1
         \line {
           \bold "6. "
           \column {
-            "And we who, by Thy precious blood"
+            "And we who, by thy precious blood"
             "From sin redeemed, are marked for God,"
-            "On this the day that saw Thy birth,"
+            "On this the day that saw thy birth,"
             "Sing the new song of ransomed earth:"
           }
         }
@@ -305,9 +305,9 @@ verseSeven = \lyricmode {
         \line {
           \bold "7. "
           \column {
-            "For that Thine advent glory be,"
-            "O Jesu, virgin-born, to Thee;"
-            "With F ther, and with Holy Ghost,"
+            "For that thine advent glory be,"
+            "O Jesu, virgin-born, to thee;"
+            "With Father, and with Holy Ghost,"
             "From men and from the heav'nly host."
           }
         }

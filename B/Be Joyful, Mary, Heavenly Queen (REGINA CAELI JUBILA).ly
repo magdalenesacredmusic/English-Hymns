@@ -57,7 +57,7 @@ melody = \relative c' {
 	f c' a f |
 	g g a c |
 	bf a g2 |
-	f2. \bar "||" \break
+	f2. \bar "" \break
 		bf4 |
 	bf bf a g |
 	a b c\fermata \bar "||" \break
@@ -128,8 +128,7 @@ verseTwo = \lyricmode {
 	Whom thou didst bear by heav -- en's grace,
 	\ital Gau -- de, Ma -- rí -- a!  \italOff
 	Did all our guilt and sin ef -- face.
-	\ital Al -- le -- lú -- ia!
-	Lae -- tá -- re, O Ma -- rí -- a!
+
 }
 
 verseThree = \lyricmode {
@@ -137,8 +136,7 @@ verseThree = \lyricmode {
 	The Lord has ris -- en from the dead,
 	\ital Gau -- de, Ma -- rí -- a!  \italOff
 	He rose with might, as He had said.
-	\ital Al -- le -- lú -- ia!
-	Lae -- tá -- re, O Ma -- rí -- a!
+
 }
 
 verseFour = \lyricmode {
@@ -146,8 +144,7 @@ verseFour = \lyricmode {
 	O pray to God, thou Vir -- gin fair,
 	\ital Gau -- de, Ma -- rí -- a!  \italOff	
 	That He our souls to heav -- en bear.
-	\ital Al -- le -- lú -- ia!
-	Lae -- tá -- re, O Ma -- rí -- a!
+
 }
 
 

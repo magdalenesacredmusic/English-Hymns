@@ -48,17 +48,17 @@ melody = \relative c'' {
   g4 g b b |
   d c8[ b] a2 |
   d4.( c8 b4) c8[ b] |
-  a2 g \bar "||" \break
+  a2 g \bar "|" \break
 
   g4 g b b |
   d c8[ b] a2 |
   d4.( c8 b4) c8[ b] |
-  a2 g \bar "||" \break
+  a2 g \bar "|" \break
 
   b4 b d d |
-  c8[ d] c[ b] a2 |
+  e8[ d] c[ b] a2 |
   b4.( a8 b4) cs |
-  d2 d \bar "||" \break
+  d2 d \bar "|" \break
 
   g,4 g b b |
   d c8[ b] a2 |
@@ -71,17 +71,17 @@ alto = \relative c' {
   d4 d g g |
   g a8[ g] fs2 |
   d4( e8[ fs] g4) g |
-  g( fs) g2 \bar "||"
+  g( fs) g2 |
 
   d4 d g g |
   g a8[ g] fs2 |
   d4( e8[ fs] g4) g |
-  g( fs) g2 \bar "||"
+  g( fs) g2 |
 
   g4 g f f |
   e e fs2 |
   g4.( a8 g4) g |
-  fs2 fs \bar "||"
+  fs2 fs |
 
   g4 d d g |
   g a8[ g] fs2 |
@@ -94,17 +94,17 @@ tenor = \relative c' {
   b4 b g g |
   d' e a,2 |
   b4.( c8 d4) c8[ d] |
-  e4 d b2 \bar "||"
+  e4 d b2 |
 
   b4 b g g |
   d' e a,2 |
   b4.( c8 d4) c8[ d] |
-  e4 d b2 \bar "||"
+  e4 d b2 |
 
   g4 g a b |
   c c d2 |
   d2. g,4 |
-  a2 d \bar "||"
+  a2 d |
 
   d4 d8[ c] b4 g |
   d' e a,2 |
@@ -117,17 +117,17 @@ bass = \relative c' {
   g4 g e e |
   b c d2 |
   b'4.( a8 g4) e8[ d] |
-  c4( d) g2 \bar "||"
+  c4( d) g2 |
 
   g4 g e e |
   b c d2 |
   b'4.( a8 g4) e8[ d] |
-  c4( d) g2 \bar "||"
+  c4( d) g2 |
 
   e4 e d d |
   c a d2 |
   g4.( fs8 g4) e |
-  d2 d'4( c!) \bar "||"
+  d2 d'4( c!) |
 
   b b8[ a] g4 e |
   b c << { \voiceTwo d2 } \\ { \voiceFour \teeny d4_\markup {\italic Org.}  c } >> |
@@ -146,7 +146,7 @@ verseOne = \lyricmode {
 
 verseTwo = \lyricmode {
   \set stanza = "2."
-  Love's re -- deem -- ing work is done,, Al -- le -- lu -- ia!
+  Love's re -- deem -- ing work is done, Al -- le -- lu -- ia!
   Fought the fight, the bat -- tle won; Al -- le -- lu -- ia!
   Lo! our Sun's ec -- lipse is o'er, Al -- le -- lu -- ia!
   Lo! He sets in blood no more. Al -- le -- lu -- ia!
@@ -175,7 +175,7 @@ verseFour = \lyricmode {
     tagline = ""
   }
   \top
-  \score {
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }

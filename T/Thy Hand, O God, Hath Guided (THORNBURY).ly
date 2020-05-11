@@ -6,18 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {THORNBURY  76 76 D}
+    }
+    \right-column{
+      \line {Basil Harwood, 1898}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {R. H. Plumptre}
+      \line {}
+    }
+  } 
+}
 
 \header {
-   poet = \markup{ \fontsize #4 \smallCaps "Thy Hand, O God Hath Guided"  }
-    meter = \markup { \small { Music: THORNBURY, 76.76 D, Basil Harwood, 1898 } }
-    piece = \markup { \small {Text: R. H. Plumptre }}
-    %breakbefore
-    %copyright = ""
   tagline = ""
-
 }
 
 global = {
@@ -32,31 +47,31 @@ melody = \relative c'' {
 	\partial 4
 	a4 |
 	fs cs d b' |
-	d,2 cs4 \bar "||"
+	d,2 cs4
 
 	e |
 	a b g8[ fs] e4 |
-	fs2. \bar "||" \break
+	fs2.
 
 	a4 |
 	fs4 cs d b' |
-	d,2 cs4 \bar "||"
+	d,2 cs4 
 
 	e |
 	a b g8[ fs] e4 |
-	d2. \bar "||" \break
+	d2.
 
 	fs4 |
 	fs8[ gs] a4 gs fs |
-	fs( es) fs \bar "||"
+	fs( es) fs
 
 	gs |
 	a8[ b] cs4 fs, es |
-	fs2. \bar "||" \break
+	fs2.
 
 	a4 |
 	a b8[ cs] d4 fs, |
-	g( a) b \bar "||"
+	g( a) b
 
 	a |
 	d2. a4 |
@@ -68,27 +83,27 @@ melody = \relative c'' {
 soprano = \relative c' {
 	\global
 	\partial 4
-	<d a'>4 |
+	<d a'>4^\markup {\italic "To be sung in unison"} |
 	<d fs> cs d <b d b'> |
 	d2 <a cs>4 <a cs e> |
 	<a a'> <b b'> g'8[ fs] <g, cs e>4 |
-	<a a'>2. 
+	<a a'>2. \bar "" \break
 
 	<a d a'>4 |
 	<d fs> cs d <b d b'> |
 	d2 <a cs>4 <a cs e> |
 	<a a'> <b b'> g'8[ fs] <g, cs e>4 |
-	<a d>2. 
+	<a d>2.  \bar "" \break
 
 	<d fs>4 |
 	fs8[ gs] <fs a>4 <d gs> fs |
-	fs es fs <cs gs'> |
+	fs( es) fs <cs gs'> |
 	a'8[ b] <fs cs'>4 <d fs> gs |
-	fs2. 
+	fs2.  \bar "" \break
 
 	<cs e a>4 |
 	<d a'> b'8[ cs] <fs, d'>4 <d fs> |
-	g a b <cs, e a> |
+	g( a) b <cs, e a> |
 
 	<d d'>2. <a cs a'>4 |
 	d2 b'2 |
@@ -175,7 +190,7 @@ verseOne = \lyricmode {
 	Thy flock, from age to age;
 	The wond -- rous tale is writ -- ten,
 	Full clear, on ev' -- ry page;
-	Our fa -- thers owned Thy good -- ness,
+	Our fa -- thers owned thy good -- ness,
 	And we their deeds re -- cord;
 	And both of this bear wit -- ness,
 	One Church, one Faith, one Lord.
@@ -205,74 +220,88 @@ verseThree = \lyricmode {
 	One Church, one Faith, one Lord.
 }
 
-
-\score { <<
-	 \new Voice = "melody" {\melody }
-	\new Lyrics \lyricsto "melody" \verseOne
-	  \new Lyrics \lyricsto "melody" \verseTwo
-	  \new Lyrics \lyricsto "melody" \verseThree 
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-         sopranos { \voiceOne << \soprano >> }
-      \context Voice =
-         altos { \voiceTwo << \alto >> }
-      
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-        tenors { \voiceOne << \tenor >> }
-      \context Voice =
-        basses { \voiceTwo << \bass >> }
-    >>
-  >>
->>
-\midi { 
-   \context {
-       \Score 
-       tempoWholesPerMinute = #(ly:make-moment 112 4)
-            }
-       }
-  \layout {}
+verseFour = \lyricmode {
+  \set stanza = "*4."
+  And we, shall we be faith -- less?
+		  Shall hearts fail, hands hang down?
+		Shall we e -- vade the con -- flict,
+		  And cast a -- way our crown?
+		Not so: in God's deep coun -- sels
+		  Some bet -- ter thing is stored;
+	      We will main -- tain, un -- flinch -- ing,
+		  One Church, one Faith, one Lord.
 }
 
-\markup { 
-	\large {
-	\fill-line {
-	\hspace #1.0
-	\column {
-		\line { \bold "*4. "
-		\column {
-		"And we, shall we be faithless?"
-		"  Shall hearts fail, hands hang down?"	
-		"Shall we evade the conflict,"
-		"  And cast away our crown?"
-		"Not so: in God's deep counsels"
-		"  Some better thing is stored;"
-		"We will maintain, unflinching,"
-		"  One Church, one Faith, one Lord."
-		}
-		}
-		\vspace #0.5
-		\line { \bold "5. "
-		\column {
-		"Thy mercy will not fail us,"
-		"  Nor leave Thy work undone;"
-		"With Thy right hand to help us,"
-		"  The victory shall be won;"
-		"And then, by men and angels,"
-		"  Thy name shall be adored,"
-		"And this shall be their anthem,"
-		"  One Church, one Faith, one Lord."
-  		}	
-		}
-		}
-	\hspace #1.0
+verseFive = \lyricmode {
+  \set stanza = "5."
+  Thy mer -- cy will not fail us,
+		  Nor leave thy work un -- done;
+		With thy right hand to help us,
+		  The vic -- t'ry shall be won;
+		And then, by men and an -- gels,
+		  Thy name shall be a -- dored,
+		And this shall be their an -- them,
+		  One Church, one Faith, one Lord.
+}
 
-	}
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \soprano }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+     \new Lyrics \lyricsto soprano \verseFour
+     \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
 }
 
-
-
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}

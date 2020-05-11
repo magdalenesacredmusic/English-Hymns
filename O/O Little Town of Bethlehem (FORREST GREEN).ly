@@ -6,16 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {FOREST GREEN  86 86 D}
+    }
+    \right-column{
+      \line {English, harm. Ralph Vaughan Williams, 1906}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Phillips Brooks, 1868}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "O Little Town of Bethlehem"  }
-  meter = \markup { \small { Music: FOREST GREEN, 8.6.8.6 D; English, harm. R.V. Williams, 1906 } }
-  piece = \markup { \small {Text: Phillips Brooks, 1868 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -207,74 +222,88 @@ verseThree = \lyricmode {
   The dear Christ en -- ters in.
 }
 
-%%% if more verses are needed in between the musical staves, uncomment this section
-%{
 verseFour = \lyricmode {
 	\set stanza = "4."
-
+            Where chil -- dren pure and hap -- _ _ _  py
+            Pray to the bless -- èd Child,
+            Where mis -- er -- y cries out _ to _ Thee,
+            Son of the mo -- ther mild;
+            Where char -- i -- ty stands watch -- ing
+            And faith holds wide the door,
+            The dark night wakes, the glo -- ry breaks,
+            And Christ -- mas comes once more.
 }
-%}
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 80 4)
-    }
+verseFive = \lyricmode {
+  \set stanza = "5."
+              O ho -- ly Child of Beth -- _ le -- _ hem,
+            Des -- cend to us, we pray;
+            Cast out our sin, and en -- _ ter _ in,
+           Be born in us to -- day.
+            We hear the Christ -- mas An -- gels
+            The great glad tid -- ings tell;
+            O come to us, a -- bide with us,
+            Our Lord Em -- man -- u -- el!
+}
+
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
-  \large {
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "4. "
-          \column {
-            "Where children pure and happy"
-            "  Pray to the blessèd Child,"
-            "Where misery cries out to Thee,"
-            "  Son of the mother mild;"
-            "Where charity stands watching"
-            "  And faith holds wide the door,"
-            "The dark night wakes, the glory breaks,"
-            "  And Christmas comes once more."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "5. "
-          \column {
-            "O holy Child of Bethlehem,"
-            "  Descend to us, we pray;"
-            "Cast out our sin, and enter in,"
-            "  Be born in us today."
-            "We hear the Christmas Angels"
-            "  The great glad tidings tell;"
-            "O come to us, abide with us,"
-            "  Our Lord Emmanuel!"
-          }
-        }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
       }
-      \hspace #1.0
-
     }
+    \include "hymn_layout.ly"
   }
+  \bottom
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}

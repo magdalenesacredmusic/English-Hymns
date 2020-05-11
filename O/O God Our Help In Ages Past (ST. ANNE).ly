@@ -6,18 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "O God, Our Help in Ages Past"  }
-  meter = \markup { \small { Music: ST. ANNE, C.M., William Croft, 1708; \italic "Hymns Ancient and Modern,"  1904} }
-  piece = \markup { \small {Text: Isaac Watts, 1719; alt. Traditional, \italic "The English Hymnal," 1906 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ST. ANNE   CM}
+    }
+    \right-column{
+      \line {William Croft, 1708; harm. \italic "Hymns Ancient and Modern," 1904}
+    }
+  }
 }
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Isaac Watts, 1719}
+      \line {alt. traditional, \italic "The English Hymnal," 1906}
+    }
+  } 
+}
+
 
 global = {
   \key c \major
@@ -138,33 +151,38 @@ verseFour = \lyricmode {
   Be -- fore the ris -- ing sun.
 }
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 76 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -194,4 +212,67 @@ verseFour = \lyricmode {
     }
   }
 }
+
+
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "4. "
+          \column {
+            "Time, like an ever-rolling stream,"
+            "  Bears all its sons away;"
+            "They fly forgotten, as a dream"
+            "  Dies at the opening day."
+          }
+        }
+        \vspace #1.0
+        \line {
+          \bold "5. "
+          \column {
+            "O God, our help in ages past,"
+            "  Our hope for years to come,"
+            "Be Thou our guard while troubles shall last,"
+            "  And our eternal home."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+
+
+}
+
 

@@ -30,15 +30,6 @@ bottom = \markup  {
   }
 }
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "There's a Wideness in God's Mercy"  }
-  meter = \markup { \small { Music: ZUM FRIEDEN, 87.87. D.; J. S. Bach } }
-  piece = \markup { \small {Text: F.W. Faber, 1862  }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
-}
-
 global = {
   \key f \major
   \time 4/4

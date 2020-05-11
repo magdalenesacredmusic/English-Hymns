@@ -46,12 +46,12 @@ global = {
 melody = \relative c'' {
   \global
   a4 a g a |
-  c d a2 \bar "||"
+  c d a2 \bar "|"
   a4 g a f |
-  e f d2 \bar "||" \break
+  e f d2 \bar "|" \break
 
   g4 g d c |
-  f g a2 \bar "||"
+  f g a2 \bar "|"
 
   a4 g a f |
   e f d e~ |
@@ -63,16 +63,14 @@ melody = \relative c'' {
   c2 a4( c) |
   a( g) f2 |
   a2 f4( d) |
-  e( f) d2 \bar "||"
+  e( f) d2 \bar "|"
 
   g4 g d c |
-  f g a2 \bar "||"
+  f g a2 \bar "|"
   a4 g a f |
   e f d e~ |
   e cs d2 |
-  d1 \bar "||"
-
-  d2 d \bar "|."
+  d1 \bar "|."
 }
 
 alto = \relative c' {
@@ -103,8 +101,6 @@ alto = \relative c' {
   d cs d cs~ |
   cs a a2 |
   a1
-
-  bf2 a
 }
 
 tenor = \relative c' {
@@ -135,8 +131,6 @@ tenor = \relative c' {
   a a f a~ |
   a e f2 |
   f1 |
-
-  g2 fs
 }
 
 bass = \relative c' {
@@ -166,9 +160,6 @@ bass = \relative c' {
   a a d a~ |
   a a d2 |
   d1 |
-
-  g,2 d'
-
 }
 
 verseOne = \lyricmode {
@@ -184,7 +175,6 @@ verseOne = \lyricmode {
   Hark, an -- gel -- ic voi -- ces cry,
   Sing -- ing ev -- er -- more on high,
   Al -- le -- lu -- ia!
-  A -- men.
 }
 
 verseTwo = \lyricmode {

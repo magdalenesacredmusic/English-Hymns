@@ -6,9 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {BEATA NOBIS GAUDIA  LM}
+    }
+    \right-column{
+      \line {\italic "Psalterium Chorale"}
+      \line {harm. \italic "The English Hymnal," 1906}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Beata nobis gaudia"}
+      \line {tr. R.E. Roberts, 1906}
+    } 
+  }
+}
 
 %%generates the breathmarks
 breathmark = {
@@ -18,19 +40,7 @@ breathmark = {
   \mark \markup {\fontsize #4 ","}
 }
 
-\paper {
-  #(set-paper-size "ustrade")
-  page-count = 1
-}
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Rejoice! the Year Upon Its Way"  }
-  meter = \markup { \small { Music: BEATA NOBIS GAUDIA, L.M.; \italic "Psalterium Chorale"; harm. \italic "The English Hymnal," 1906} }
-  piece = \markup { \small {Text: \italic "Beata nobis gaudia;" tr. R.E. Roberts, 1906 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
-}
 
 global = {
   \key ef \major
@@ -147,32 +157,37 @@ verseFour = \lyricmode {
   The cap -- tive at the ju -- bi -- lee.
 }
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 96 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #0.1 % moves the column off the left margin;
@@ -227,4 +242,92 @@ verseFour = \lyricmode {
   }
 }
 %}
+
+
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5."
+          \column {
+            "And now, O holy God, this day"
+            "Regard us as we humbly pray,"
+            "And send us, from thy heavenly seat,"
+            "The blessings of the Paraclete."
+          }
+        }
+      }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "6."
+          \column {
+            "To God the Father, God the Son,"
+            "And God the Spirit, praise be done;"
+            "May Christ the Lord upon us pour"
+            "The Spirit's gift for evermore."
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+
+%{\markup {
+	\normalsize {
+	\fill-line {
+	\hspace #1.0
+	\column {
+		\line { \bold "6. "
+		\column {
+		"To God the Father, God the Son,"
+		"And God the Spirit, praise be done;"
+		"May Christ the Lord upon us pour"
+		"The Spirit's gift for evermore."
+		}
+		}
+		}
+	\hspace #1.0
+	}
+  }
+}
+%}
+
+
+  \bottom
+}
 

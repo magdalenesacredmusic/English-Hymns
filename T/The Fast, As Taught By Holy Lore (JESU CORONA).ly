@@ -6,17 +6,29 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "The Fast, As Taught By Holy Lore"  }
-  meter = \markup { \small { Music: JESU CORONA, L.M.; Rouen Church Melody, harm. R. Vaughan Williams } }
-  piece = \markup { \small {Text: \italic "Ex more docti mystico," St. Gregory the Great; tr. J.M. Neale, 1854  }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {JESU CORONA   LM}
+    }
+    \column{
+      \line {Rouen Church Melody, harm. R. Vaughan Williams}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Ex more docti mystico"}
+      \line {Gregory the Great; tr. J.M. Neale}
+    } 
+  }
 }
 
 global = {
@@ -172,37 +184,114 @@ verseFour = \lyricmode {
 }
 
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 112 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Thy grace have we offended sore,"
+            "By sins, O God, which we deplore;"
+            "But pour upon us from on high,"
+            "O pardoning One, Thy clemency."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Remember Thou, though frail we be,"
+            "That yet Thine handiwork are we;"
+            "Nor let the honor of Thy name"
+            "Be by another put to shame."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "Forgive the sin that we have wrought;"
+            "Increase the good that we have sought;"
+            "That we at length, our wanderings o'er,"
+            "May please Thee here and evermore."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "8. "
+          \column {
+            "We pray Thee, Holy Trinity,"
+            "One God, unchanging Unity,"
+            "That we from this our abstinence"
+            "May reap the fruits of penitence."
+          }
+        }
+      }
+      \hspace #1.0
 
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 112 4)
     }
   }
-  \layout {}
+}  
+  \bottom
 }
 
-\markup {
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -252,6 +341,5 @@ verseFour = \lyricmode {
     }
   }
 }
-
-
-
+  \bottom
+}

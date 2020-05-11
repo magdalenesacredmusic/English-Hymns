@@ -6,16 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ANNUE CHRISTE 12 12 12 12}
+    }
+    \right-column{
+      \line {from La Feillée, \italic "Méthode du plain-chant"}
+      \line {harm. \italic "The English Hymnal"}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Aurea luce"}
+      \line {ascribed to Elbis, c. 500; tr. T.A. Lacy}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "With Golden Splendour"  }
-  meter = \markup { \small { Music: ANNUE CHRISTE, 1212.1212.; from La Feillée, \italic "Méthode du plain-chant;" harm. \italic "The English Hymnal"} }
-  piece = \markup { \small {Text: \italic "Aurea luce," ascribed to Elbis, c. 500; tr. T.A. Lacy }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -30,7 +47,7 @@ global = {
 
 melody = \relative c'' {
   \global
-  g2^\markup { \italic "To be sung in unison."} g4 a |
+  g2 g4 a |
   b2 b |
   b4 a b c |
   <g b>2 a4.( g8) |
@@ -57,7 +74,7 @@ melody = \relative c'' {
 
 alto = \relative c' {
   \global
-  <b d>2 << \ignore {\stemDown b4 c}\\{\stemDown \once \override NoteColumn #'force-hshift = #0.5 g'2}>> |
+  <b d>2^\markup { \italic "To be sung in unison."} << \ignore {\stemDown b4 c}\\{\stemDown \once \override NoteColumn #'force-hshift = #0.5 g'2}>> |
   <d g>2 <d g>~ |
   <c g'> <d g>4 <e g> |
   d4 e fs2 |
@@ -185,35 +202,68 @@ verseSix = \lyricmode {
 }
 
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-      \context Lyrics = five \lyricsto sopranos \verseFive
-      \context Lyrics = six \lyricsto sopranos \verseSix
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 96 4)
-    }
+\book {
+  \include "hymn_paper_multipage.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Lyrics \lyricsto soprano \verseSix
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+      \new Lyrics \lyricsto "tune" { \verseSix }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 
 

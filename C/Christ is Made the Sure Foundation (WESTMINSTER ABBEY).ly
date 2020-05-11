@@ -52,7 +52,7 @@ melody = \relative c'' {
   g2 a4 |
   b4.( a8) g4 | \break
   fs e2 |
-  d2. \bar "||"
+  d2. |
 
   fs2 a4 |
   fs2 d4 |
@@ -61,7 +61,7 @@ melody = \relative c'' {
   c2 b4 |
   a4.( b8) g4 |
   g8[ fs] fs2 |
-  e2. \bar "||"
+  e2. |
 
   gs2 gs4 |
   a2 a4 |  \break
@@ -70,7 +70,7 @@ melody = \relative c'' {
   e2 e4 |
   fs2 g4 |
   g2 fs4 |
-  g2. \bar "||"
+  g2. \bar "|."
 }
 
 alto = \relative c' {
@@ -141,7 +141,7 @@ bass = \relative c' {
   b2 a4 |
   g4.( d'8) e4 |
   d4 a2 |
-  d2. \bar "||"
+  d2. |
 
   d2 cs4 |
   d2 d8[ c] |
@@ -150,7 +150,7 @@ bass = \relative c' {
   e2 d4 |
   c2 b4 |
   a4 b2 |
-  e2. \bar "||"
+  e2. |
 
   e2 d4 |
   cs2 cs4 |

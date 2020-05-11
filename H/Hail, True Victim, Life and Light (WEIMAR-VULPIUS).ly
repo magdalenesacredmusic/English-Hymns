@@ -214,7 +214,7 @@ verseSix = \lyricmode {
 
 
 \book {
-  \include "hymn_paper.ly"
+  \include "hymn_paper_multipage.ly.ly"
   \header {
     tagline = ""
   }

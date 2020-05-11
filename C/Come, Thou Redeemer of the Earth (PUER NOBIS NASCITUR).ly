@@ -35,15 +35,6 @@ bottom = \markup  {
   tagline = ""
 }
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Come, Thou Redeemer of the Earth"  }
-  meter = \markup { \small { Music: PUER NOBIS NASCITUR, L.M.; Trad. or M. Praetorius; harm. G.R. Woodward, 1902 } }
-  piece = \markup { \small {Text: \italic "Veni, Redemptor gentium," St. Ambrose; tr. J.M. Neale, as per \italic "The English Hymnal," 1906 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
-}
-
 global = {
   \key d \major
   \time 3/4
@@ -62,7 +53,7 @@ melody = \relative c' {
   a'2 a4 |
   a4( b) cs |
   d2 d4 |
-  d2 \bar "||"
+  d2 \bar "|"
 
   a4 |
   d2 d4 |

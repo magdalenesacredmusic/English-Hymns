@@ -45,17 +45,17 @@ melody = \relative c' {
   f2 g4 a2 g4 \bar "|"
   f e d2 c \bar "|"
   f2 g4 a2 bf4 \bar "|"
-  a2 g2 f1 \bar "||"
+  a2 g2 f1 \bar "|"
 
   f2 g4 a2 g4 \bar "|"
   f e d2 c \bar "|"
   f2 g4 a2 bf4 \bar "|"
-  a2 g2 f1 \bar "||"
+  a2 g2 f1 \bar "|"
 
   a2 a4 c2 bf4 \bar "|"
   a g a1 \bar "|"
   c2 c4 d2 c4 \bar "|"
-  bf4 a g1 \bar "||"
+  bf4 a g1 \bar "|"
 
   a2 c4 bf2 a4 \bar "|"
   f4 g a2 f \bar "|"

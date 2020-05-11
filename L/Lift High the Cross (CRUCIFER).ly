@@ -43,7 +43,7 @@ global = {
   \set Staff.midiInstrument = "church organ"
 }
 
-refrain = \relative c'' {
+melody = \relative c'' {
   \global
   g2 c4. g8 |
   f2. g4 |
@@ -54,10 +54,8 @@ refrain = \relative c'' {
   g4 a f8[ e] d4 |
   c1^\markup {\italic Fine}
   \bar "|." \break
-}
 
-verses = \relative c'' {
-  g2 fs4. e8 |
+  g'2 fs4. e8 |
   fs2 d |
   e4. fs8 g4 a |
   b2 g |
@@ -132,58 +130,55 @@ bass = \relative c {
   g,1 \bar "||"
 }
 
-refrainText = \lyricmode {
+verseOne = \lyricmode {
   Lift high the cross, the love of Christ pro -- claim
   till all the world a -- dore his sac -- red Name.
-}
 
-verseOne = \lyricmode {
   \set stanza = "1."
   Come, breth -- ren, fol -- low where our Cap -- tain trod,
   our King vic -- to -- rious, Christ the Son of God.
 }
 
 verseTwo = \lyricmode {
+  _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ _ _ _ _
   \set stanza = "2."
   Led on their way by this tri -- um -- phant sign,
   the hosts of God in con -- quering ranks com -- bine.
 }
 
 verseThree = \lyricmode {
+    _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ _ _ _ _
   \set stanza = "3."
   Each new -- born sol -- dier of the Cru -- ci -- fied
   bears on the brow the seal of him who died.
 }
 
 verseFour = \lyricmode {
+    _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ _ _ _ _
   \set stanza = "4."
   This is the sign which Sa -- tan's le -- gions fear
   and an -- gels veil their fa -- ces to re -- ver.
 }
 
 \book {
-  \include "hymn_paper.ly"
+  \include "hymn_paper_multipage.ly.ly"
   \header {
     tagline = ""
   }
   \top
   \score {
     \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "refrain" { \voiceOne 
-                                 \refrain { 
-          \new Voice = verses { 
-            \voiceOne \verses 
-        }
-        } 
-        }
+   \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
         \new Voice = "alto" { \voiceTwo \alto }
       >>
-      \new Lyrics \lyricsto refrain \refrainText
-      \new Lyrics  \lyricsto verses \verseOne
-      \new Lyrics  \lyricsto verses \verseTwo
-      \new Lyrics  \lyricsto verses \verseThree
-      \new Lyrics \lyricsto verses \verseFour
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -280,14 +275,9 @@ verseFour = \lyricmode {
   \score {
     %\transpose c bf,
     <<
-      \new Voice = "chorus" { 
-        \refrain {
-          \new Voice = "tune" {
+      \new Voice = "tune" {
         \melody
-          }
-        }
       }
-      \new Lyrics \lyricsto "chorus" { \refrainText}
       \new Lyrics \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }

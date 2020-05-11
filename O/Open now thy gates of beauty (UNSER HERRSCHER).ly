@@ -36,10 +36,6 @@ bottom = \markup  {
   tagline = ""
 }
 
-\paper {
-  page-count = 1
-}
-
 global = {
   \key c \major
   \time 4/4

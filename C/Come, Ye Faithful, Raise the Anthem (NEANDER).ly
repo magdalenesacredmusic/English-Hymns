@@ -47,13 +47,13 @@ melody = \relative c' {
   \global
   c4. d8 e4 c |
   e4 f g g |
-  c4 b8[ a] g4 e' | \break
-  d d c2 \bar "||"
+  c4 b8[ a] g4 e' | 
+  d d c2 \bar "|"
 
   c,4. d8 e4 c |
   e4 f g g | \break
   c4 b8[ a] g4 e' |
-  d d c2 \bar "||"
+  d d c2 \bar "|"
 
   e4. e8 d4 d |
   c4. c8 b4 b |

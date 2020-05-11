@@ -53,7 +53,7 @@ melody = \relative c' {
   
     e,4 |
   e b' b a |
-  g( fs) e d |
+  \set melismaBusyProperties = #f g( fs) e d |
   e fs g a |
   b2.  \bar "||" \break
 
@@ -187,7 +187,7 @@ verseTwo = \lyricmode {
   \set stanza = "2."
 From God our heav'n -- ly Fath -- _ er,
 A bless -- ed an -- gel came.
-And unto cer -- tain shep -- herds,
+And un -- to cer -- tain shep -- herds,
 Brought ti -- dings of the same,
 How that in Beth -- le -- hem was born,
 The Son of God by name:
@@ -207,7 +207,7 @@ verseFour = \lyricmode {
   \set stanza = "4."
   Now to the Lord sing prais -- _ es,
 All you with -- in this place,
-And with true love and bro -- ther -- hood,
+And with true love and brother -- hood,
 Each oth -- er now em -- brace;
 This ho -- ly tide of Christ -- _ mas,
 Doth bring re -- deem -- ing grace.

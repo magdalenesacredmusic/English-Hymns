@@ -1,21 +1,41 @@
 %{
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
+%{
+The music and poetry produced by this source code are believed to be in the public domain in the United States.
+The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
 
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {LASST UNS ERFREUEN}
+      \line {88 44 88 with Alleluias}
+    }
+    \right-column{
+      \line {\italic "Geistliche Kirchengesäng"}
+      \line {arr. R. Vaughan Williams.}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {J.A. Riley, 1906}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Ye Watchers and Ye Holy Ones"  }
-  meter = \markup { \small { Music: LASST UNS ERFREUEN, 88.44.88. \tiny "w. Alleluias"; \italic "Geistliche Kirchengesäng;" harm. R. Vaughan Williams } }
-  piece = \markup { \small {Text: J.A. Riley, 1906 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -49,6 +69,34 @@ melody = \relative c' {
   f2 ef af4 g |
   f2 ef ef'4 d |
   c2 bf ef4^\markup { \italic Unison. } d |
+  c2 bf af4 g |
+  f1. |
+  ef1 \bar "|."
+}
+
+melodya = \relative c' {
+  \global
+  \partial 2
+  ef2 |
+  ef4 f g ef g af |
+  <f bf>1 ef2 |
+  ef4 f g ef g af |
+  <f bf>1 \bar "||"
+
+  ef'4 d |
+  c2 bf ef4 d |
+  c2 bf\fermata \bar "||"
+
+  ef2 |
+  ef4 bf bf af g af |
+  <f bf>1 ef'2 |
+  ef4 bf bf af g af |
+  bf1 \bar "||"
+
+  af4 g |
+  f2 ef af4 g |
+  f2 ef ef'4 d |
+  c2 bf ef4 d |
   c2 bf af4 g |
   f1. |
   ef1 \bar "|."
@@ -175,34 +223,64 @@ verseFour = \lyricmode {
   And God the Spir -- it, Three in One,
 }
 
-
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 100 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melodya
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 
 

@@ -156,7 +156,7 @@ f2
 verseOne = \lyricmode {
   \set stanza = "1. "
 Dis -- pos -- er sup -- reme, and Judge of the earth
-  Who choos -- est for thine the weak adn the poor;
+  Who choos -- est for thine the weak and the poor;
   To frail earth -- en ves -- sels, and things of no worth,
   En -- trust -- ing thy rich -- es which ay shall en -- dure;
 }
@@ -164,7 +164,7 @@ Dis -- pos -- er sup -- reme, and Judge of the earth
 verseTwo = \lyricmode {
   \set stanza = "2. "
 Those ves -- sels soon fail, though full of thy light,
-And at thy de -- cree are bro -- ken adn gone;
+And at thy de -- cree are bro -- ken and gone;
 Then bright -- lly ap -- pear -- eth the arm of thy might,
 As through the clouds break -- ing the light -- nings have shone.
 }

@@ -6,17 +6,29 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "The King of Love My Shepherd Is"  }
-  meter = \markup { \small { Music: ST. COLUMBA, 87.87.; \italic "Ancient Irish Hymn Melody;" \italic "The English Hymnal," 1906} }
-  piece = \markup { \small {Text: \italic "Psalm 23," H.W. Baker, \italic "Hymns Ancient and Modern" }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ST. COLUMBA  87 87}
+    }
+    \column{
+      \line {Ancient Irish Hymn Melody}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Psalm 23"}
+      \line {paraphrased by H.W. Baker, \italic "Hymns Ancient and Modern"}
+    } 
+  }
 }
 
 global = {
@@ -33,13 +45,13 @@ melody = \relative c' {
   g2 af4 |
   bf2 af8[ bf] |
   g2 f4 |
-  ef2 \bar "||"
+  ef2 \bar "" 
 
-  ef8[ f] |
-  g2 af4 |
+  ef8[ f] | 
+  g2 af4 | \break
   bf2 \times 2/3 { af8[ bf8 c8] } |
   bf2. |
-  bf2 \bar "||"
+  bf2 
 
   bf4 |
   ef2 c4 |
@@ -162,42 +174,43 @@ verseFour = \lyricmode {
   Thy Cross be -- fore to guide me.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 84 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
+  \top
+  \score { \transpose c b,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 84 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large{
     \fill-line {
       \hspace #1.0
       \column {
         \line {
-          \bold "4. "
+          \bold "5. "
           \column {
             "Thou spread’st a table in my sight;"
             "  Thy Unction grace bestoweth;"
@@ -207,7 +220,7 @@ verseFour = \lyricmode {
         }
         \vspace #1
         \line {
-          \bold "5. "
+          \bold "6. "
           \column {
             "And so through all the length of days"
             "  Thy goodness faileth never;"
@@ -221,4 +234,66 @@ verseFour = \lyricmode {
     }
   }
 }
+
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large{
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Thou spread’st a table in my sight;"
+            "  Thy Unction grace bestoweth;"
+            "And O what transport of delight"
+            "  From Thy pure Chalice floweth!"
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "And so through all the length of days"
+            "  Thy goodness faileth never;"
+            "Good Shepherd, may I sing Thy praise"
+            "  Within Thy house forever."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+
+  \bottom
+}
+
 

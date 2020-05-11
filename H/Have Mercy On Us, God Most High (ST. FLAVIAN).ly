@@ -58,6 +58,23 @@ melody = \relative c' {
   f2. \bar "|."
 }
 
+melodya = \relative c' {
+  \global
+  \partial 4
+  f4 |
+  f e f a |
+  g g f \bar "||"
+  f4 |
+  bf a f g |
+  a2. \bar "||"
+  a4 |
+  a bf c a |
+  f g a \bar "||"
+  a |
+  g f f e |
+  f2. \bar "|."
+}
+
 alto = \relative c' {
   \global
   \partial 4
@@ -206,7 +223,7 @@ verseSix = \lyricmode {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
-        \melody
+        \melodya
       }
       \new Lyrics \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }

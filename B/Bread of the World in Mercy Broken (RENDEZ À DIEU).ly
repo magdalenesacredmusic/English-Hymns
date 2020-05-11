@@ -50,7 +50,7 @@ melody = \relative c'' {
 
   d2 b4 b \bar "|"
   g4 c b2 a \bar "|"
-  g2 \bar "||"
+  g1 \bar "|"
 
   g2 e4 d \bar "|"
   g4 g a c \bar "|"
@@ -58,15 +58,15 @@ melody = \relative c'' {
 
   d2 c4 b \bar "|"
   a g g fs \bar "|"
-  g2 \bar "||"
+  g1 \bar "|"
 
   d'2 d4 c \bar "|"
   b2 a g4 fs \bar "|"
-  e2 d \bar "||"
+  e2 d \bar "|"
 
   d2 g4 g fs e \bar "|"
   g2 a \bar "|"
-  b2 \bar "||"
+  b1 \bar "|"
 
   g2 g4 a \bar "|"
   b g c c \bar "|"
@@ -74,7 +74,7 @@ melody = \relative c'' {
 
   d2 c4 b \bar "|"
   a g g fs \bar "|"
-  g2 \bar "|."
+  g1 \bar "|."
 }
 
 alto = \relative c' {
@@ -85,7 +85,7 @@ alto = \relative c' {
 
   fs2 fs4 fs |
   g a g( e) fs2 |
-  g2 |
+  g1 |
 
   b,2 c4 a |
   d e fs g |
@@ -93,7 +93,7 @@ alto = \relative c' {
 
   g2 fs4 g |
   e e d d |
-  d2 |
+  d1 |
 
   g2 g4 fs |
   d( e) fs2 e4 d |
@@ -101,7 +101,7 @@ alto = \relative c' {
 
   a2 d4 e d b |
   e2. fs4 |
-  gs2 |
+  gs1 |
 
   e2 e4 d |
   d e e4.( fs8) |
@@ -109,7 +109,7 @@ alto = \relative c' {
 
   g2 g4 g |
   e e d d |
-  d2
+  d1
 }
 
 tenor = \relative c' {
@@ -120,14 +120,14 @@ tenor = \relative c' {
 
   b2 b4 b |
   b e d2. c4 |
-  b2 |
+  b1 |
 
   g2 g4 fs |
   g b d e |
   d2 d |
   b2 c4 d |
   c b a a |
-  b2 |
+  b1 |
 
   b2 b4 c |
   g2 d' b4 a |
@@ -135,7 +135,7 @@ tenor = \relative c' {
 
   fs2 g4 c a g |
   g2 c |
-  b |
+  b1 |
 
   b2 b4 a |
   g b e e |
@@ -143,7 +143,7 @@ tenor = \relative c' {
 
   d2 e4 d |
   c b a a |
-  b2
+  b1
 }
 
 bass = \relative c {
@@ -154,14 +154,14 @@ bass = \relative c {
 
   b2 d4 d |
   e a, b( c) d2 |
-  g,2 |
+  g,1 |
 
   e'4( d) c2 |
   b4 e d c |
   g( b) d2 |
   g,2 a4 b |
   c c d d |
-  g,2 |
+  g,1 |
 
   g2 g4 a |
   b( c) d2 e4 fs |
@@ -169,7 +169,7 @@ bass = \relative c {
 
   d2 b4 c d e |
   c( b) a2 |
-  e'2 |
+  e'1 |
 
   e2 e4 fs |
   g e c4. d8 |
@@ -177,7 +177,7 @@ bass = \relative c {
 
   b2 c4 g |
   a8[ b] c4 d d |
-  g,2
+  g,1 |
 }
 
 verseOne = \lyricmode {
@@ -186,6 +186,7 @@ verseOne = \lyricmode {
   Wine of the soul in mer -- cy shed,
   By whom the words of life were spo -- ken,
   And in whose death our sins are dead:
+  \set stanza = "2."
   Look on the heart by sor -- row bro -- ken,
   Look on the tears by sin -- ners shed,
   And be Thy feast to us the to -- ken

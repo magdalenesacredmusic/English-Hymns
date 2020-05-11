@@ -6,21 +6,34 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Christ Jesus Lay In Death's Strong Bands"  }
-  meter = \markup { \small { Music: CHRIST LAG IN TODESBANDEN, 87.87.78.74., J. Walther; arr. \italic "The Chorale Book for England" }}
-  piece = \markup { \small {Text: "Christ lag in Todesbanden," Martin Luther, 1524; tr. R. Massie, \italic "Martin Luther's Spiritual Songs" }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {CHRIST LAG IN TODESBANDEN  Irreg.}
+    }
+    \right-column{
+      \line {Johann Walther}
+      \line {harm. \italic "The Chorale Book for England" }
+    }
+  }
 }
 
-\paper {
-  page-count = 2
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {"Christ lag in Todesbanden," Martin Luther, 1524}
+      \line {Tr. R. Massie, \italic "Martin Luther's Spiritual Songs"}
+    }
+  } 
+}
+
+\header {
+  tagline = ""
 }
 
 global = {
@@ -34,21 +47,26 @@ melody = \relative c'' {
   \global
   \partial 4
   a4 g a c d |
-  c b a \bar "||" a |
+  c b a \bar "" 
+    a |
   f g a f |
-  e2 d4 \bar "||" a'4 |
-
+  e2 d4 \bar "" 
+  
+    a'4 |
   g a c d |
-  c b a \bar "||" a4 |
+  c b a \bar "" 
+    a4 |
   f g a f |
-  e2 d2 \bar "||"
+  e2 d2 \bar ""
 
   d4 f g d |
-  f g a \bar "||" a4 |
+  f g a \bar "" 
+    a4 |
   d c d e |
-  c b a \bar "||" a4 |
+  c b a \bar "" 
+    a4 |
   c a c g |
-  f( e) d2 \bar "||"
+  f( e) d2 \bar ""
 
   a'4 g8[ f] e2 |
   d2. \bar "|."
@@ -84,21 +102,26 @@ tenor = \relative c' {
   \partial 4
   c4 |
   b c a a |
-  a gs a \bar "||" a |
+  a gs a 
+  a |
   bf bf c a |
-  a2 f4 \bar "||" c'4 |
+  a2 f4 
+  c'4 |
 
   b c a a |
-  a gs a \bar "||" a |
+  a gs a 
+  a |
   bf bf c a |
-  a2 f2 \bar "||"
+  a2 f2 
 
   f4 f bf g |
-  f f8[ e] f4 \bar "||" f4 |
+  f f8[ e] f4  
+  f4 |
   a a a b |
-  a gs a \bar "||" a4 |
+  a gs a  
+  a4 |
   g a g g |
-  a4. g8 f2 \bar "||"
+  a4. g8 f2 
 
   f4 bf bf4( a8[ g]) |
   fs2. \bar "|."
@@ -329,63 +352,92 @@ bassa = \relative c {
 %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-      \context Lyrics = five \lyricsto sopranos \verseFive
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 80 4)
-    }
+\book {
+  \include "hymn_paper_multipage.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  %%%%%%%5
+  
+    \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \altoa }
+      >>
+      \new Lyrics \lyricsto soprano \verseSix
+      \new Lyrics \lyricsto soprano \verseSeven
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenora }
+        \new Voice = "bass" { \voiceTwo \bassa }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 86 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}
 %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \sopranoa >> }
-      \context Voice =
-      altos { \voiceTwo << \altoa >> }
-      \context Lyrics = six \lyricsto sopranos \verseSix
-      \context Lyrics = seven \lyricsto sopranos \verseSeven
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenora >> }
-      \context Voice =
-      basses { \voiceTwo << \bassa >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 72 4 )
-    }
-  }
-  \layout {}
-}

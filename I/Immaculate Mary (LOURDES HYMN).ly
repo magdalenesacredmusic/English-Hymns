@@ -143,7 +143,7 @@ bass = \relative c {
 
 verseOne = \lyricmode {
 	\set stanza = "1."
-	Im -- mac -- lu -- late Ma -- ry, thy prais -- es we sing, 
+	Im -- mac -- u -- late Ma -- ry, thy prais -- es we sing, 
 	Who reign -- est in splen -- dor with Je -- sus our King.
 	
 	\override Lyrics.LyricText.font-shape = #'italic

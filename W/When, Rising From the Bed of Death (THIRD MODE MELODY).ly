@@ -6,19 +6,34 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "When, Rising From the Bed of Death"  }
-  meter = \markup { \small { Music:  THIRD MODE MELODY, D.C.M.; T. Tallis, 1561; arr. R. Vaughan Williams, 1906 } }
-  piece = \markup { \small {Text: J. Addison, (1672-1719) }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {THIRD MODE MELODY  DCM}
+    }
+    \right-column{
+      \line {Thomas Tallis, 1561}
+      \line {arr. R. Vaughan Williams, 1906}
+    }
+  }
 }
 
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {William W. How, 1864}
+    }
+  } 
+}
+
+\header {
+  tagline = ""
+}
 
 global = {
   \key c \major
@@ -161,6 +176,90 @@ bass = \relative c {
 
 }
 
+melodyTwo = \relative c' {
+  \global
+  e4 e e 
+  e2. e4 a a 
+  gs2.  gs4 
+  gs2. fs4 gs a 
+  gs2.
+  
+  g4 g g 
+  g2. b4 a a 
+  gs2.   gs4 
+  gs2. gs4 a4 a 
+  gs2.
+  
+    g4
+  g4.( a8) b4 c2 b4
+  a4 a g2.  g4
+  f2. e4 e d 
+  e2.    e4 
+  a4.( g8) f4 e2 g4 
+  c4.( b8) a4 g2   e4 
+  a4 a a e8[ fs] 
+  gs2.
+}
+
+altoTwo = \relative c' {
+  \global
+  b4 b b 
+  b2. b4 c d 
+  e2. e4 
+  e2. ds4 e e 
+  e2.  e4 e e 
+  e2. e4 e d 
+  e2.   e4 
+  e2. e4 e e 
+  e2.  e4 
+  e2 fs4 g2 g4 
+  e e e2.
+  
+  e4
+  c2. c4 a a 
+  a2.   c4 
+  e2 c4 c2 c4
+  c2 c4 c2   c4 
+  a4 d c c 
+  b2.
+}
+
+tenorTwo = \relative c {
+    \global
+  e4 g g \bar "|"
+  g2. g4 a a \bar "|"
+  b2. b4 \bar "|"
+  b2. b4 b c \bar "|"
+  b2. \bar "||" \break
+
+  e,4 b' b \bar "|"
+  b2. g4 a a \bar "|"
+  b2. b4 \bar "|"
+  b2. b4 c a \bar "|"
+  b2. \bar "||" \break
+
+  b4 \bar "|"
+  b4.( c8) d4
+  e2 d4 \bar "|"
+  c4 c b2.
+  g4 \bar "|"
+  a2. e4 f f \bar "|"
+  e2. \bar "||" \break
+
+  a4 \bar "|"
+  c4.( b8) a4
+  g2 e4 \bar "|"
+  a4.( g8) f4
+  e2
+  g4 \bar "|"
+  f d e e \bar "|"
+  e2. \bar "|."
+}
+
+
+%bassTwo = same as "bass"
+
+
 verseOne = \lyricmode {
   \set stanza = "1."
   When, ris -- ing from the bed of death,
@@ -197,54 +296,88 @@ verseThree = \lyricmode {
   To make her par -- don sure.
 }
 
-%{
 
-verseFour = \lyricmode {
-	\set stanza = "4."
-
-}
-
-verseFive = \lyricmode {
-	\set stanza = "5."
-
-}
-
-verseSix = \lyricmode {
-	\set stanza = "6."
-
-}
-
-%}
-
-
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      %{\context Lyrics = four \lyricsto sopranos \verseFour
-	  \context Lyrics = five \lyricsto sopranos \verseFive
-	  \context Lyrics = six \lyricsto sopranos \verseSix %}
-
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 100 4)
-    }
+\book {
+  \include "hymn_paper_multipage.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  
+    \markup { 
+    \vspace #0.5 
+    \line {Alternative Version (melody in the tenor)}
+  }
+  
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodyTwo }
+        \new Voice = "alto" { \voiceTwo \altoTwo }
+      >>
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenorTwo }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }

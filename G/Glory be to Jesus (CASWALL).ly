@@ -156,7 +156,6 @@ verseFour = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
   
   \markup {
     \vspace #1
@@ -188,6 +187,7 @@ verseFour = \lyricmode {
     }
   }
 }
+\bottom
 }
 
 %%%%%%
@@ -214,7 +214,7 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+
   
   \markup {
   \large {
@@ -245,6 +245,7 @@ verseFour = \lyricmode {
     }
   }
 }
+  \bottom
 }
 
 

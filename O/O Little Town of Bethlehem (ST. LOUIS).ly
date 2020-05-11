@@ -6,18 +6,34 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ST. LOUIS  86 86 D}
+    }
+    \right-column{
+      \line {Lewis H. Redner, 1868}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Phillips Brooks, 1868}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "O Little Town of Bethlehem"  }
-  meter = \markup { \small { Music: ST. LOUIS, 8.6.8.6 D; Lewis H. Redner, 1868 } }
-  piece = \markup { \small {Text: Phillips Brooks, 1868 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
+
 
 global = {
   \key g \major
@@ -31,31 +47,31 @@ melody = \relative c'' {
   \partial 4
   b4 |
   b b as b |
-  \slurDashed \set melismaBusyProperties = #'() d( c) \unset melismaBusyProperties e, \bar "||"
+  \slurDashed \set melismaBusyProperties = #'() d( c) \unset melismaBusyProperties e, |
 
   a |
   g fs8[ g] a4 d, |
-  b'2. \bar "||" \break
+  b'2. \bar "|" \break
 
-  b4 |
-  b b e d |
-  d c e, \bar "||"
+  b4 |  \noBreak
+  b b e d |  \noBreak
+  d c e, |  \noBreak
 
-  a |
-  g fs8[ g] b4 a |
-  g2. \bar "||" \break
+  a |  \noBreak
+  g fs8[ g] b4 a | \noBreak
+  g2. \bar "|" \break
 
-  b4 |
-  b b a g |
-  fs2 fs4 \bar "||"
+  b4 | \noBreak
+  b b a g | \noBreak
+  fs2 fs4 |
 
-  fs |
-  e fs g a |
-  b2. \bar "||" \break
+  fs | \noBreak
+  e fs g a | \noBreak
+  b2. \bar "|" \break
 
   b4 |
   b b as b |
-  d c e, \bar "||"
+  d c e, |
 
   e' |
   d g, b4. a8 |
@@ -206,6 +222,18 @@ verseThree = \lyricmode {
   The dear Christ en -- ters in.
 }
 
+verseFour = \lyricmode {
+  \set stanza = "4." 
+  O ho -- ly Child of Beth -- le -- hem,
+             Des -- cend to us, we pray;
+            Cast out our sin, and en -- ter in,
+              Be born in us to -- day.
+            We hear the Christ -- mas An -- gels
+             The great glad tid -- ings tell;
+            O come to us, a -- bide with us,
+            Our Lord Em -- man -- u -- el!
+  
+}
 
 %%% if more verses are needed in between the musical staves, uncomment this section
 %{
@@ -215,29 +243,109 @@ verseFour = \lyricmode {
 }
 %}
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score { \transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 92 4)
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "4. "
+          \column {
+            "Where children pure and happy"
+            "  Pray to the blessèd Child,"
+            "Where misery cries out to Thee,"
+            "  Son of the mother mild;"
+            "Where charity stands watching"
+            "  And faith holds wide the door,"
+            "The dark night wakes, the glory breaks,"
+            "  And Christmas comes once more."
+          }
+        }
+      }
+      \hspace #1
+      \column {
+
+        \line {
+          \bold "5. "
+          \column {
+            "O holy Child of Bethlehem,"
+            "  Descend to us, we pray;"
+            "Cast out our sin, and enter in,"
+            "  Be born in us today."
+            "We hear the Christmas Angels"
+            "  The great glad tidings tell;"
+            "O come to us, abide with us,"
+            "  Our Lord Emmanuel!"
+          }
+        }
+      }
+      \hspace #1.0
+
     }
   }
-  \layout { }
 }
+
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+
+  \bottom
+}
+%{
 
 \markup {
   \large {
@@ -280,6 +388,6 @@ verseFour = \lyricmode {
     }
   }
 }
-
+%}
 
 

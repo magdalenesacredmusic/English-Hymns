@@ -44,22 +44,22 @@ melody = \relative c' {
 	f4 f c c |
 	f g a2 |
 	\time 6/4 d2 c bf4 a |
-	\time 4/4 g2 f \bar "||"
+	\time 4/4 g2 f \bar "|"
 
 	f4 f c c |
 	f g a2 |
 	\time 6/4 d2 c bf4 a |
-	\time 4/4 g2 f \bar "||"
+	\time 4/4 g2 f \bar "|"
 
 	\time 6/4 c'2 d c4 bf |
 	\time 4/4 a4 a g2 |
 	\time 6/4 a2 g4 f2 e4 |
-	\time 4/4 d2 c2 \bar "||"
+	\time 4/4 d2 c2 \bar "|"
 
 	f4 f c c |
 	f g a2 |
 	\time 6/4 d2 c bf4 a |
-	\time 4/4 g2 f \bar "||"
+	\time 4/4 g2 f \bar "|."
 }
 
 alto = \relative c' {

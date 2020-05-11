@@ -6,19 +6,35 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
+top = \markup {
+  \fill-line {
+    \column {
+      \line {PICARCY    87 87 87}
+    }
+    \right-column{
+      \line {French Carol}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Pange, lingua, gloriosi proelium certaminis"}
+      \line {Fortunatus; tr. P. Dearmer and J.M. Neale}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Faithful Cross Above All Others"  }
-  meter = \markup { \small { Music: PICARDY, 87.87.87, French Carol; harm. R. Vaughan Williams, \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: \italic "Pange, lingua, gloriosi proelium certaminis," Fortunatus; tr. P. Dearmer and J.M. Neale}}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
+
 
 global = {
   \key f \major
@@ -280,35 +296,194 @@ verseTen = \lyricmode {
 
 %}
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-      \context Lyrics = five \lyricsto sopranos \verseFive
-      \context Lyrics = six \lyricsto sopranos \verseSix
+\book {
+  \include "hymn_paper_multipage.ly.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Lyrics \lyricsto soprano \verseSix
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 92 4)
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
+  \large {
+    \fill-line {
+      %\hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "7. "
+          \column {
+            " He endured the nails, the spitting,"
+            "Vinegar, and spear, and reed;"
+            "From that holy Body broken"
+            "Blood and water forth proceed:"
+            "Earth, and stars, and sky, and ocean"
+            "By that flood from stain are freed."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "8. "
+          \column {
+            "Bend thy boughs, O Tree of Glory!"
+            "Thy relaxing sinews bend;"
+            "For awhile the ancient rigour"
+            "That thy birth bestowed, sus -- pend;"
+            "And the King of heav'nly beauty"
+            "On thy bosom gently tend!"
+          }
+        }
+      }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "9. "
+          \column {
+            "Thou alone was counted worthy"
+            "This world's ransom to uphold;"
+            "For a shipwreck'd race preparing"
+            "Harbour, like the Ark of old;"
+            "With the sacred Blood anointed"
+            " From the smitten Lamb that rolled."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "10. "
+          \column {
+            "To the Trinity be glory"
+            "Everlasting, as is meet;"
+            "Equal to the Father, equal"
+            "To the Son, and Paraclete:"
+            "Trinal Unity, whose praises"
+            "All created things repeat."
+          }
+        }
+      }
+      % \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
     }
   }
-  \layout {}
+}
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+      \new Lyrics \lyricsto "tune" { \verseSix }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      %\hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "7. "
+          \column {
+            " He endured the nails, the spitting,"
+            "Vinegar, and spear, and reed;"
+            "From that holy Body broken"
+            "Blood and water forth proceed:"
+            "Earth, and stars, and sky, and ocean"
+            "By that flood from stain are freed."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "8. "
+          \column {
+            "Bend thy boughs, O Tree of Glory!"
+            "Thy relaxing sinews bend;"
+            "For awhile the ancient rigour"
+            "That thy birth bestowed, sus -- pend;"
+            "And the King of heav'nly beauty"
+            "On thy bosom gently tend!"
+          }
+        }
+      }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "9. "
+          \column {
+            "Thou alone was counted worthy"
+            "This world's ransom to uphold;"
+            "For a shipwreck'd race preparing"
+            "Harbour, like the Ark of old;"
+            "With the sacred Blood anointed"
+            " From the smitten Lamb that rolled."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "10. "
+          \column {
+            "To the Trinity be glory"
+            "Everlasting, as is meet;"
+            "Equal to the Father, equal"
+            "To the Son, and Paraclete:"
+            "Trinal Unity, whose praises"
+            "All created things repeat."
+          }
+        }
+      }
+      % \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+  \bottom
 }
 
 

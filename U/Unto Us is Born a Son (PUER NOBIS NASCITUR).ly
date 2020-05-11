@@ -6,20 +6,35 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Unto Us is Born a Son"  }
-  meter = \markup { \small { Music: PUER NOBIS NASCITUR, 77.77.; \italic "Piae Cantiones," 1582; arr. G. Shaw, 1913  } }
-  piece = \markup { \small {Text: \italic "Puer nobis nascitur," Medieval Carol; tr. G.R. Woodward }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
-
+top = \markup {
+  \fill-line {
+    \column {
+      \line {PUER NOBIS NASCITUR  77 77}
+    }
+    \right-column{
+      \line {\italic "Piae Cantiones," 1582}
+      \line {arr. G. Shaw, 1913}
+    }
+  }
 }
 
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line { \italic "Puer nobis nascitur"}
+      \line {Medieval Carol; Tr. G.R. Woodward}
+    }
+  } 
+}
+
+\header {
+  tagline = ""
+}
 
 global = {
   \key d \major
@@ -33,11 +48,11 @@ melody = \relative c' {
   d4 e fs g |
   fs e d2 |
   a'4 a b cs |
-  d2 d |
+  d2 d | \break
 
   d4 e cs d |
   b a a fs |
-  a g fs e |
+  a g fs e | \break
   \set melismaBusyProperties = #'()
   d( e)
   \unset melismaBusyProperties
@@ -139,38 +154,69 @@ verseFive = \lyricmode {
   Voice and or -- gan, sing we so,
 	\override LyricText #'font-shape = #'italic
   Be -- ne -- di -- ca -- mus Do -- mi -- no,
-  Be -- ne -- di -- ca -- mus \set associatedVoice = "altos" Do -- mi -- no.
+  Be -- ne -- di -- ca -- mus Do-mi -- no.
 }
 
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-      \context Lyrics = five \lyricsto sopranos \verseFive
-
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 69 2)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
 

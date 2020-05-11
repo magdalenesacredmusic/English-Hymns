@@ -50,19 +50,19 @@ melody = \relative c'' {
   g2 d4 |
   g2 g4 |
   a2 a4 |
-  g2 \bar "||"
+  g2 \bar ""
 
   g4 |
   c2 c4 |
   b2 b4 |
   a2 g4 |
-  d'2 \bar "||"
+  d'2 \bar "" \break
 
   d4 |
   d2 a4 |
   c2 b4 |
   a2 g4 |
-  d2 \bar "||"
+  d2 \bar ""
 
   g4 |
   a2 b4 |

@@ -44,24 +44,47 @@ global = {
 melody = \relative c' {
   \global
   d4^\markup {\italic "To be sung in unison."} d f g a d, \bar "|"
-  g2 e \bar "||"
+  g2 e \bar "|"
 
   f4 f g a bf bf \bar "|"
-  a1 \bar "||"
+  a1 \bar "|"
 
   a4 bf c c d c \bar "|"
-  a2 a \bar "||"
+  a2 a \bar "|"
 
   a4 b c f, f g \bar "|"
-  a1 \bar "||"
+  a1 \bar "|"
 
   g4 a a d, g f \bar "|"
-  e2 e \bar "||"
+  e2 e \bar "|"
 
   d4 f g e a bf \bar "|"
   a1 \bar "||"
 
   d2(^\markup {\italic Harmony.} bf) a\fermata \bar "|."
+}
+
+melodya = \relative c' {
+  \global
+  d4^\markup {\italic "To be sung in unison."} d f g a d, \bar "|"
+  g2 e \bar "|"
+
+  f4 f g a bf bf \bar "|"
+  a1 \bar "|"
+
+  a4 bf c c d c \bar "|"
+  a2 a \bar "|"
+
+  a4 b c f, f g \bar "|"
+  a1 \bar "|"
+
+  g4 a a d, g f \bar "|"
+  e2 e \bar "|"
+
+  d4 f g e a bf \bar "|"
+  a1 \bar "||"
+
+  d2( bf) a\fermata \bar "|."
 }
 
 alto = \relative c' {
@@ -149,7 +172,7 @@ verseThree = \lyricmode {
   That which Thou Thy -- self hast of -- fered
   To Thy Fa -- ther, of -- fer we;
   Let it win for them a bless -- ing,
-  Bless them, Je -- su, set them free:
+  Bless them, Je -- sus, set them free:
   Thy are thine, they wait in pa -- tience,
   Mer -- ci -- ful and gra -- cious be.
 }
@@ -172,11 +195,13 @@ verseFive = \lyricmode {
   From all e -- vil be re -- stored;
   Heark -- en to the gen -- tle plead -- ing
   Of Thy Mo -- ther, gra -- cious Lord.
+  
+  \set stanza = "7." A -- men.
 }
 
 verseSix = \lyricmode {
   \set stanza = "6."
-  When, O kind and ra -- diant Je -- su,
+  When, O kind and ra -- diant Je -- sus,
   Kneels the Queen Thy throne be -- fore,
   Let the court of Saints at -- tend -- ing,
   Mer -- cy for the dead im -- plore;
@@ -228,10 +253,7 @@ verseSeven = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
-}
-
-  \markup {
+   \markup {
 	\large {
   \fill-line {
     \hspace #0.1 % moves the column off the left margin;
@@ -239,12 +261,12 @@ verseSeven = \lyricmode {
      \column {
       \line { \bold "6. "
 		\column {
-  "When, O kind and ra -- diant Je -- su,"
-  "Kneels the Queen Thy throne be -- fore,"
-  "Let the court of Saints at -- tend -- ing,"
-  "Mer -- cy for the dead im -- plore;"
-  "Heark -- en, lov -- ing Friend of sin -- ners,"
-  "Whom the Cross ex -- alt -- ed bore."
+  "When, O kind and radiant Jesus,"
+  "Kneels the Queen Thy throne before,"
+  "Let the court of Saints attending,"
+  "Mercy for the dead implore;"
+  "Hearken, loving Friend of sinners,"
+  "Whom the Cross exalted bore."
         }
      	}
 
@@ -255,13 +277,13 @@ verseSeven = \lyricmode {
      \column {
       \line { \bold "7. "
 		\column {
-  "Hear and an -- swer prayers de -- vout -- est,"
- " Break, O Lord, each bind -- ing chain,"
-  "Dash the gates of death a -- sund -- er,"
-  "Quell the de -- vil and his train;"
-  "Bring the souls which Thou hast ran -- somed"
-  "Ev -- er -- more in joy to reign."
- "A -- men."
+  "Hear and answer prayers devoutest,"
+ " Break, O Lord, each binding chain,"
+  "Dash the gates of death asunder,"
+  "Quell the devil and his train;"
+  "Bring the souls which Thou hast ransomed"
+  "Evermore in joy to reign."
+ "Amen."
 
         }
       	}
@@ -271,7 +293,11 @@ verseSeven = \lyricmode {
   }
 }
 }
+  \bottom
 }
+
+ 
+
 
 %%%%%%
 %%%%%%
@@ -285,7 +311,7 @@ verseSeven = \lyricmode {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
-        \melody
+        \melodya
       }
       \new Lyrics \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
@@ -300,6 +326,46 @@ verseSeven = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
+   \markup {
+	\large {
+  \fill-line {
+    \hspace #0.1 % moves the column off the left margin;
+        % can be removed if space on the page is tight
+     \column {
+      \line { \bold "6. "
+		\column {
+  "When, O kind and radiant Jesus,"
+  "Kneels the Queen Thy throne before,"
+  "Let the court of Saints attending,"
+  "Mercy for the dead implore;"
+  "Hearken, loving Friend of sinners,"
+  "Whom the Cross exalted bore."
+        }
+     	}
+
+    }
+    \hspace #0.1  % adds horizontal spacing between columns;
+        % if they are still too close, add more " " pairs
+        % until the result looks good
+     \column {
+      \line { \bold "7. "
+		\column {
+  "Hear and answer prayers devoutest,"
+ " Break, O Lord, each binding chain,"
+  "Dash the gates of death asunder,"
+  "Quell the devil and his train;"
+  "Bring the souls which Thou hast ransomed"
+  "Evermore in joy to reign."
+ "Amen."
+
+        }
+      	}
+    }
+  \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+  }
+}
+}
   \bottom
 }
 

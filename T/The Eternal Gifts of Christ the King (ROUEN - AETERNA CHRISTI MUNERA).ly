@@ -6,18 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-   poet = \markup{ \fontsize #4 \smallCaps "The Eternal Gifts of Christ the King"  }
-    meter = \markup { \small { Music: AETERNA CHRISTI MUNERA (ROUEN), L.M.; Rouen Church Melody, \italic "The English Hymnal," 1906} }
-    piece = \markup { \small {Text: \italic "Aeterna Christi munera," St. Ambrose (340-397); tr. J.M. Neale, \italic "The Hymnal Noted," 1851 }}
-    %breakbefore
-    %copyright = ""
-    tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {AETERNA CHRISTI MUNERA (ROUEN)  LM}
+    }
+    \right-column{
+      \line {Rouen Church Melody}
+      \line {harm. \italic "The English Hymnal," 1906}
+    }
+  }
 }
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Aeterna Christi munera"}
+      \line {Ambrose of Milan (340-397); tr. J.M. Neale, 1851}
+    } 
+  }
+}
+
 
 global = {
 	\key g \major
@@ -33,25 +47,25 @@ melody = \relative c' {
 	c( b) a | 
 	b( g) a | 
 	b( a4.) g8 | 
-	g2 \bar "||" 
+	g2 
 	
 	b4 | 
 	d2 d4 | 
 	b2 g4 | 
 	c( b) a | 
-	a2 \bar "||" \break
+	a2 
   
-	a4 | 
-	b2 g4 | 
-	e2 a4 | 
+	a4 |
+	b2 g4 |
+	e2 a4 |
 	g( fs) e  | 
-	d2 \bar "||" 
+	d2 
 	
 	d'4 | 
 	a4( b) g | 
 	c( b) a | 
 	b( a4.) g8 | 
-	g2 \bar "||"
+	g2 \bar "|"
 }
 
 soprano = \relative c' {
@@ -88,25 +102,25 @@ alto = \relative c' {
 	<e a> <d g> <d fs> | 
 	<d fs> <b e> <d fs> | 
 	<d g> <d fs>4. <b d>8 | 
-	<b d>2 \bar "||" 
+	<b d>2
 
     <d g>4 | 
 	<g b>2 <g b>4 | 
 	<d fs>2 <b e>4 | 
 	<<{ \voiceTwo g'2 } \\ { e4 d4} >> <c e>4 | 	
-	<d fs>2 \bar "||" \break
+	<d fs>2 
 	
 	<d fs>4 | 
 	<d fs>2 <b e>4 | 
 	<c e>2 <c e>4 | 
 	<b d>2 <g c>4 | 
-	s2 \bar "||" 
+	s2 
 	
     <fs' b>4 | 
 	<< { \voiceTwo d2 } \\ { fs4 g4 } >> <c, e> | 
 	<e a>  <<{ \voiceTwo d2 } \\ { g4 fs4 } >> | 
 	<d fs>4 <d fs>4. <b d>8 | 
-	<b d>2 \bar "||"
+	<b d>2
 }
 
 tenor = \relative c {
@@ -115,25 +129,25 @@ tenor = \relative c {
 	a b d | 
 	b s4 s4 | 
 	g4 s4 s4 | 
-	s2 \bar "||" 
+	s2  
 
 	s4 | 
 	g2 g4 | 
 	b2 s4 | 
 	c4 g a | 
-	s2 \bar "||" 
+	s2  
   
 	d4 | 
 	b2 g'4 | 
 	g2 a,4 | 
 	b2 c4 | 
-	<fs a>2 \bar "||" 
+	<fs a>2 
 	
 	b,4 | 
 	d g, c | 
 	a b d | 
 	b s4 s4 | 
-	s2 \bar "||"
+	s2 
 }
 
 bass = \relative c {
@@ -142,25 +156,25 @@ bass = \relative c {
 	s2. | 
 	s4 e4 d4 | 
 	s4 d4. g8 | 
-	g2 \bar "||" 
+	g2  
 	
 	g4 | 
 	s2. | 
 	s2 e4 | 
 	s2. | 
-	d2 \bar "||"
+	d2 
 	
 	s4 | 
 	s2 e4 | 
 	c2 s4 | 
 	s2. | 
-	d2 \bar "||" 
+	d2  
 	
 	s4 | 
 	s2. | 
 	s2. | 
 	s4 d4. <g g,>8 | 
-	<g g,>2 \bar "||"
+	<g g,>2
 }
 
 
@@ -188,57 +202,82 @@ verseThree = \lyricmode {
 	The Prince of this world o -- ver -- came.
 }
 
+verseFour = \lyricmode {
+  \set stanza = "4."
+     In these the Fa -- ther's glo -- ry shone,
+	In these the will of God the Son:
+	In these ex -- ults the Ho -- ly Ghost,
+	Through these re -- joice the Heav'n -- ly host.
+}
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
+verseFive = \lyricmode {
+  \set stanza = "5."
+  	Re -- deem -- er, hear us of Thy love,
+	That with this glo -- rious band a -- bove,
+	Here -- aft -- er, of Thine end -- less grace,
+	Thy ser -- vants al -- so may have place.
+}
+
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 112 4)
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 112 4)
+      }
     }
+    \include "hymn_layout.ly"
   }
-  \layout { }
+  \bottom
 }
 
-\markup { 
-	\large {
-	\fill-line {
-	\hspace #1.0
-	\column {
-		\line { \bold "4. "
-		\column {
-		"In these the Father's glory shone,"
-		"In these the will of God the Son:"
-		"In these exults the Holy Ghost,"
-		"Through these rejoice the Heav'nly host."
-		}
-		}
-		\vspace #1
-		\line { \bold "5. "
-		\column {
-		"Redeemer, hear us of Thy love,"
-		"That with this glorious band above,"
-		"Hereafter, of Thine endless grace,"
-		"Thy servants also may have place."
-  		}	
-		}
-		}
-	\hspace #1.0
-
-	}
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive }
+    >>
+    \include "hymn_layout.ly"
   }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }
+
 

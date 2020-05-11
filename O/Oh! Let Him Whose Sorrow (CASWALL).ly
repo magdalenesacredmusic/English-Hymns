@@ -1,4 +1,3 @@
-
 %{
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
@@ -7,17 +6,29 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup { \fontsize #4 \smallCaps "O Let Him Whose Sorrow" }
-  meter = \markup { \small { Music: CASWALL (WEM IN LEIDENSTAGEN), 6.5.6.5; Friedrich Filiz, 1847 } }
-  piece = \markup { \small {Text: \large \override #'(font-name . "CloisterBlack")  "Wem in Leidenstagen," H.S. Oswald, 1826; tr. F.E. Cox, 1841 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {CASWALL (WEM IN LEIDENSTAGEN) 65 65}
+    }
+    \column{
+      \line {Friedrich Filiz, 1847}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Wem in Leidenstagen"}
+      \line {H.S. Oswald, 1826. tr. F.E. Cox, 1841}
+    } 
+  }
 }
 
 global = {
@@ -111,32 +122,37 @@ verseFour = \lyricmode {
 }
 
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 80 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 84 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -175,6 +191,76 @@ verseFour = \lyricmode {
     }
   }
 }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "When in grief you languish,"
+            "He will dry the tear,"
+            "Who His children’s anguish"
+            "Soothes with succour near."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "All thy woe and sadness"
+            "In this world below,"
+            "Balance not the gladness"
+            "Thou in heaven shalt know,"
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "When thy gracious Saviour,"
+            "In the realms above,"
+            "Crowns thee with His favour,"
+            "Fills thee with His love."
+          }
+        }
+      }
+      \hspace #1.0
+    }
+  }
+}
+  \bottom
+}
+
+
 
 %{
 the text is altered in The English Hymnal as follows:

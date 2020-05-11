@@ -50,7 +50,7 @@ melody = \relative c'' {
   bf4 bf af |
   g2 ef4 |
   f4.( g8) f4 |
-  ef2. \bar "||"
+  ef2. \bar "|"
 
   af4 af g |
   c2 bf4 |

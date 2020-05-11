@@ -45,16 +45,16 @@ global = {
 melody = \relative c'' {
   \global
   gs4 gs b b |
-  e, fs gs2 \bar "||"
+  e, fs gs2 \bar "|"
 
   cs4 ds e gs, |
-  fs fs e2 \bar "||"
+  fs fs e2 \bar "|"
 
   b'4 fs gs gs |
-  cs gs as2 \bar "||"
+  cs gs as2 \bar "|"
 
   b4 fs gs8[ as] b4 |
-  cs cs b2 \bar "||"
+  cs cs b2 \bar "|"
 
   cs4( ds e) gs,4 |
   fs2 e \bar "||"

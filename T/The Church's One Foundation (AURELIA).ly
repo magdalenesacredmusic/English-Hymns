@@ -6,17 +6,28 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-   poet = \markup{ \fontsize #4 \smallCaps "The Church's One Foundation"  }
-    meter = \markup { \small { Music: AURELIA, 76.76. D., Samuel Sebastian Wesley, 1864 } }
-    piece = \markup { \small {Text: Samuel John Stone, \italic "Lyra Fidelium," 1866 }}
-    %breakbefore
-    %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {AURELIA  76 76 D}
+    }
+    \column{
+      \line {Samuel Sebastian Wesley, 1864}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Samuel John Stone, \italic "Lyra Fidelium," 1866}
+    } 
+  }
 }
 
 global = {
@@ -164,37 +175,36 @@ verseFour = \lyricmode {
 }
 %}
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-         sopranos { \voiceOne << \melody >> }
-      \context Voice =
-         altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-	  \context Lyrics = two \lyricsto sopranos \verseTwo
-	  \context Lyrics = three \lyricsto sopranos \verseThree
-	  %%% if more verses are needed, uncomment the following:
-	  %\context Lyrics = four \lyricsto sopranos \verseFour
+\book {
+  \include "hymn_paper_multipage.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-        tenors { \voiceOne << \tenor >> }
-      \context Voice =
-        basses { \voiceTwo << \bass >> }
-    >>
-  >>
-\midi { 
-   \context {
-       \Score 
-       tempoWholesPerMinute = #(ly:make-moment 84 4)
-            }
-       }
-  \layout { }
-}
-
-\markup {
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 84 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \fill-line {
     \hspace #0.1 % moves the column off the left margin;
         % can be removed if space on the page is tight
@@ -259,3 +269,98 @@ verseFour = \lyricmode {
       % can be removed if page space is tight
   }
 }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \fill-line {
+    \hspace #0.1 % moves the column off the left margin;
+        % can be removed if space on the page is tight
+     \column {
+      \line { \bold "4."
+        \column {
+        "Though with a scornful wonder" 
+		"Men see her sore oppressed," 
+		"By schisms rent asunder" 
+		"By heresies distressed:" 
+		"Yet saints their watch are keeping," 
+		"Their cry goes up “How long?”"
+		"And soon the night of weeping" 
+		"Shall be the morn of song!" 
+        }
+      }
+      \vspace #1.0 % adds vertical spacing between verses
+      \line { \bold "5."
+        \column {
+        "'Mid toil and tribulation" 
+		"And tumult of her war," 
+		"She waits the consummation" 
+		"Of peace forevermore;" 
+		"Till, with the vision glorious," 
+		"Her longing eyes are blest," 
+		"And the great Church victorious" 
+		"Shall be the Church at rest!" 
+        }
+      }
+    }
+    \hspace #0.1  % adds horizontal spacing between columns;
+        % if they are still too close, add more " " pairs
+        % until the result looks good
+     \column {
+      \line { \bold "6."
+        \column {
+        "Yet she on earth hath union" 
+		"With God the Three in One," 
+		"And mystic sweet communion" 
+		"With those whose rest is won," 
+		"With all her sons and daughters" 
+		"Who, by the Master's Hand" 
+		"Led through the deathly waters," 
+		"Repose in Eden-land." 
+        }
+      }
+      \vspace #1.0 % adds vertical spacing between verses
+      \line { \bold "7."
+        \column {
+        "O happy ones and holy!" 
+		"Lord, give us grace that we" 
+		"Like them, the meek and lowly," 
+		"On high may dwell with Thee:" 
+		"There, past the border mountains," 
+		"Where in sweet vales the Bride" 
+		"With Thee by living fountains" 
+		"For ever shall abide!" 
+        }
+      }
+    }
+  \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+  }
+}
+  \bottom
+}
+
+

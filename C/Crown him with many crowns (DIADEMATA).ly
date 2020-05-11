@@ -39,19 +39,19 @@ melody = \relative c' {
 	d4 d8 d fs4 fs |
 	b2. b4 |
 	a d, g fs |
-  e2. \bar "||" \break
+  e2. \bar ""  \break
   
   e4 |
   fs a b a |
   gs fs8[ e] a4 d |
   cs d b b |
-  a2. \bar "|." \break
+  a2. \bar "" 
   
   a4 |
   a fs e d |
   b'2. b4 |
   b gs fs e |
-  cs'2. \bar "||" \break
+  cs'2. \bar "" \break
   
   cs4 |
   d4. cs8 b4 a |

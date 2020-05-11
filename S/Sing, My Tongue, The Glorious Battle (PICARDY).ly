@@ -6,18 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Sing, My Tongue, the Glorious Battle"  }
-  meter = \markup { \small { Music: PICARDY, 87.87.87, French Carol; harm. R. Vaughan Williams, \italic "The English Hymnal"} }
-  piece = \markup { \small {Text: \italic "Pange, lingua, gloriosi proelium certaminis," Fortunatus; vv. 1-4 tr. P. Dearmer, vv. 6-10 tr. J.M. Neale }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {PICARDY  87 87 87}
+    }
+    \right-column{
+      \line {French Carol}
+      \line {harm. \italic "The English Hymnal," 1906}
+    }
+  }
 }
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Pange, lingua, gloriosi proelium certaminis"}
+      \line {Fortunatus; vs. 1-4 tr. Percy Dearmer; vs. 6-10 tr. J.M. Neale}
+    } 
+  }
+}
+
 
 global = {
   \key f \major
@@ -191,33 +205,37 @@ verseFive = \lyricmode {
 }
 
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Lyrics \lyricsto soprano \verseFive
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 96 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 84 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -287,4 +305,105 @@ verseFive = \lyricmode {
     }
   }
 }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "6. "
+          \column {
+            "He endured the nails, the spitting,"
+            "  Vinegar, and spear, and reed;"
+            "From that holy Body broken"
+            "  Blood and water forth proceed:"
+            "Earth, and stars, and sky, and ocean"
+            "  By that flood from stain are freed."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "Faithful Cross! above all other,"
+            "  One and only noble tree!"
+            "None in foliage, none in blossom,"
+            "  None in fruit thy peer may be;"
+            "Sweetest wood and sweetest iron!"
+            "  Sweetest weight is hung on thee."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "8. "
+          \column {
+            "Bend thy boughs, O Tree of Glory!"
+            "  Thy relaxing sinews bend;"
+            "For awhile the ancient rigour"
+            "  That thy birth bestowed, suspend;"
+            "And the King of heav'nly beauty"
+            "  On thy bosom gently tend!"
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "9. "
+          \column {
+            "Thou alone was counted worthy"
+            "  This world's ransom to uphold;"
+            "For a shipwreck'd race preparing"
+            "  Harbour, like the Ark of old;"
+            "With the sacred Blood anointed"
+            "  From the smitten Lamb that rolled."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "10. "
+          \column {
+            "To the Trinity be glory"
+            "  Everlasting, as is meet;"
+            "Equal to the Father, equal"
+            "  To the Son, and Paraclete:"
+            "Trinal Unity, whose praises"
+            "  All created things repeat."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+  \bottom
+}
+
+
 

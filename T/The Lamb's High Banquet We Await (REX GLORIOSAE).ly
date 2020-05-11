@@ -6,18 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "The Lamb's High Banquet We Await"  }
-  meter = \markup { \small { Music: REX GLORIOSAE, L.M.; French Church Melody, harm. \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: \italic "Ad cenam Agni providi," 7th c.; tr. J.M. Neale  }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {REX GLORIOSAE  LM}
+    }
+    \right-column{
+      \line {French Church Melody}
+      \line {harm. \italic "The English Hymnal," 1906}
+    }
+  }
 }
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Ad cenam Agni providi"}
+      \line {7th cent.; tr. J.M. Neale}
+    } 
+  }
+}
+
 
 global = {
   \key f \major
@@ -199,36 +213,37 @@ verseFour = \lyricmode {
   Our own un -- leav -- ened Bread sin -- cere.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 112 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 112 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -280,6 +295,89 @@ verseFour = \lyricmode {
     }
   }
 }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "O Thou, from whom hell's monarch flies,"
+            "O great, O very Sacrifice,"
+            "Thy captive people are set free,"
+            "And endless life restored in Thee."
+          }
+        }
+        \vspace #0.5
+        \line {
+          \bold "6. "
+          \column {
+            "For Christ, arising from the dead,"
+            "From conquered hell victorious sped,"
+            "And thrust the tyrant down to chains,"
+            "And Paradise for man regains."
+          }
+        }
+      }
+      \hspace # 0.1
+      \column {
+        \line {
+          \bold "7. "
+          \column {
+            "We pray Thee, King with glory decked,"
+            "In this our Paschal joy, protect"
+            "From all that death would fain effect"
+            "Thy ransomed flock, Thine own elect."
+          }
+        }
+        \vspace #0.5
+        \line {
+          \bold "8. "
+          \column {
+            "To Thee who, dead, again dost live,"
+            "All glory Lord, Thy people give;"
+            "All glory, as is ever meet,"
+            "To Father and to Paraclete. Amen."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+  \bottom
+}
+
+
 
 
 

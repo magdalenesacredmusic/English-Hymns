@@ -51,19 +51,19 @@ melody = \relative c'' {
   d4. a'8 |
   b4. b8 |
   cs4. cs8 |
-  d4. \bar "" \break
+  d4. \bar "" %\break
 
   d8 |
   d8[ cs] b[ a] |
   a8.[ g16 fs8] d'8 |
   d8[ cs] b[ a] |
-  a8.[ g16 fs8] \bar "" \break
+  a8.[ g16 fs8] \bar "" %\break
 
   fs8 |
   fs fs fs fs16[ g] |
   a4. g16[ fs] |
   e8 e e e16[ fs] |
-  g4. \bar "" \break
+  g4. \bar "" %\break
   
   fs16[ e] |
   d8( d'4) b8 |
@@ -165,7 +165,7 @@ verseOne = \lyricmode {
 
 verseTwo = \lyricmode {
   \set stanza = "2."
-  Joy to the earth! The Sa -- viour reigns:
+  Joy to the earth! The Sa -- vior reigns:
   Let men their songs em -- ploy;
   While fields and floods,
   Rocks, hills, and plains
@@ -177,7 +177,7 @@ verseTwo = \lyricmode {
 verseThree = \lyricmode {
   \set stanza = "3."
   No more let sins and sor -- rows grow,
-  Nor throns in -- fest the ground;
+  Nor thorns in -- fest the ground;
   He comes to make His bless -- ings flow
   Far as the curse is found,
   Far as the curse is found,
@@ -219,7 +219,7 @@ bassWords = \lyricmode {
     tagline = ""
   }
   \top
-  \score {
+  \score { %\transpose c g,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }

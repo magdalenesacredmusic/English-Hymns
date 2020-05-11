@@ -6,20 +6,36 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Thine Be the Glory"  }
-  meter = \markup { \small { Music: JUDAS MACCABEUS, 55.65.65.65. refrain 55.65.; G.F. Handel, arr. } }
-  piece = \markup { \small {Text: \italic "À toi la gloire," E. Bundry, 1904; tr. R.B. Hoyle, 1928  }}
-  %breakbefore
-  %copyright = ""
-  tagline = "
+top = \markup {
+  \fill-line {
+    \column {
+      \line {JUDAS MACCABEUS  55 65 65 65 Refrain 55 65}
+    }
+    \column{
+      \line {G.F. Handel, arr.}
+    }
+  }
 }
 
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "À toi la gloire"}
+      \line {E. Bundry, 1904; tr. R.B. Hoyle, 1928}
+    } 
+  }
+}
+
+
+
+\paper {
+  page-count = 1
+}
 
 global = {
   \key d \major
@@ -162,7 +178,7 @@ verseTwo = \lyricmode {
   Let the Church with glad -- ness hymns of tri -- umph sing,
   For her Lord now liv -- eth, death hath lost its sting;
   
-  Thine be the glo -- ry, ris -- en, con -- quer -- ing Son,
+  Thine be the glo -- ry, ris -- en, con -- qu'ring Son,
   End -- less is the vic -- t'ry Thou o'er death has won.
 }
 
@@ -174,30 +190,60 @@ verseThree = \lyricmode {
   Bring us safe through Jor -- dan to Thy home a -- bove.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 120 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score { \transpose c ef
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 120 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
 }

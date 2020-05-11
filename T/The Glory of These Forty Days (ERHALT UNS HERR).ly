@@ -6,18 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "The Glory of These Forty Days"  }
-  meter = \markup { \small { "Music: ERHALT' UNS, HERR, L.M.; Martin Luther; adapt. J.S. Bach" } }
-  piece = \markup { \small {Text: \italic "Clarum decus jejunii," St. Gregory the Great; tr. M.F. Bell, \italic "The English Hymnal" }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ERHALT' UNS, HERR   LM}
+    }
+    \column{
+      \line {Martin Luther; adapt. J.S. Bach}
+    }
+  }
 }
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Clarum decus jejunii"}
+      \line {Gregory the Great; tr. M.F. Bell}
+    } 
+  }
+}
+
 
 global = {
   \key f \minor
@@ -29,13 +42,19 @@ global = {
 melody = \relative c' {
   \global
   \partial 4
-  f8 g8 |
-  af4 g8 f8 e4 f8 g8 |
-  af4 g f \bar "||" af |
+  f8[ g8] |
+  af4 g8[ f8] e4 f8[ g8] |
+  af4 g f \bar "||" 
+  
+    af |
   bf bf c af |
-  bf bf c \bar "||" c |
-  df c8 df ef df c4 |
-  bf8 af bf4 af4 \bar "||" c |
+  bf bf c \bar "||" 
+  
+    c |
+  df c8[ df] ef[ df] c4 |
+  bf8[ af]bf4 af4 \bar "||" 
+  
+    c |
   af bf af g |
   f e f2 \bar "|."
 }
@@ -44,28 +63,28 @@ alto = \relative c' {
   \global
   \partial 4
   c4 |
-  f8 ef d4 c c8 e |
+  f8[ ef] df4 c c8[ e] |
   f4 e c
 
   f |
-  ef8 f g4 af c, |
-  f8 af g f e4
+  ef8[ f] g4 af c, |
+  f8[ af] g[ f] e4
 
   f |
-  f8 g af4 bf af |
-  g8 af af g ef4
+  f8[ g] af4 bf af |
+  g8[ af] af[ g] ef4
 
   g4 |
-  f f8 e8 f4 e! |
-  f8 df c4 c2 |
+  f f8[ e8] f4 e! |
+  f8[ df] c4 c2 |
 }
 
 tenor = \relative c' {
   \global
   \partial 4
-  af8 bf |
-  c4 bf8 af g4 af8 bf |
-  c8 df8 g,8 c8 af4
+  af8[ bf] |
+  c4 bf8[ af] g4 af8[ bf] |
+  c8[ df8] g,8[ c8] af4
 
   c4 |
   bf ef ef f |
@@ -73,11 +92,11 @@ tenor = \relative c' {
 
   af |
   bf ef ef ef |
-  df8 c df bf c4
+  df8[ c] df[ bf] c4
 
   c4 |
-  c bf c c8 bf8 |
-  af4 g8 af16 bf af2 |
+  c bf c c8[ bf8] |
+  af4 g8[ af16 bf] af2 |
 
 }
 
@@ -85,105 +104,121 @@ bass = \relative c, {
   \global
   \partial 4
   f4 |
-  f'4 bf,4 c8 bf af g |
-  f bf c4 f,4
+  f'4 bf,4 c8[ bf] af[ g] |
+  f[ bf] c4 f,4
 
   f'4 |
-  g ef af8 g f ef |
-  df8 c8 df4 c4
+  g ef af8[ g] f[ ef] |
+  df8[ c8] df4 c4
 
   f4 |
   bf, af g af |
   ef' ef af
 
   e |
-  f8 f,8 g4 af8 bf c4 |
-  df8 bf c4 f,2 |
+  f8[ f,8] g4 af8[ bf] c4 |
+  df8[ bf] c4 f,2 |
 
 }
 
 verseOne = \lyricmode {
   \set stanza = "1."
-  The _ glo -- ry _ of these _ for -- ty days
+  The glo -- ry of these for -- ty days
   We cel -- e -- brate with songs of praise;
-  For Christ, by _ Whom _ all things _ were made,
+  For Christ, by Whom all things were made,
   Him -- self has fast -- ed and has prayed.
 }
 
 verseTwo = \lyricmode {
   \set stanza = "2."
-  A -- _ lone and _ fast -- ing _ Mo -- ses saw
+  A -- lone and fast -- ing Mo -- ses saw
   The lov -- ing God Who gave the law;
-  And to E -- _ li -- _ jah, fast -- _ ing, came
+  And to E -- li -- jah, fast -- ing, came
   The steeds and char -- i -- ots of flame.
 }
 
 verseThree = \lyricmode {
   \set stanza = "3."
-  So _ Dan -- iel _ trained his _ mys -- tic sight,
+  So Dan -- iel trained his mys -- tic sight,
   De -- liv -- ered from the li -- ons’ might;
-  And John, the _ Bride -- _ groom’s friend, _ be -- came
+  And John, the Bride -- groom’s friend, be -- came
   The her -- ald of Mes -- si -- ah’s Name.
 }
 
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 72 4)
-    }
-  }
-  \layout {}
+verseFour = \lyricmode {
+  \set stanza = "4."
+  Then grant us, Lord, like them to be
+     Full oft in fast and prayer with thee;
+       Our spir -- its streng -- then with thy grace,
+       And give us joy to see thy face.
 }
 
-\markup {
-  \large {
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "4. "
-          \column {
-            "Then grant us, Lord, like them to be"
-            "Full oft in fast and prayer with Thee;"
-            "Our spirits strengthen with Thy grace,"
-            "And give us joy to see Thy face."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "5. "
-          \column {
-            "O Father, Son, and Spirit blest,"
-            "To thee be every prayer addrest,"
-            "Who art in threefold Name adored,"
-            "From age to age, the only Lord."
-          }
+verseFive = \lyricmode {
+  \set stanza = "5."
+            O Fa -- ther, Son, and Spir -- it blest,
+            To thee be ev -- 'ry prayer ad -- dressed,
+            Who art in three -- fold Name a -- dored,
+            From age to age, the on -- ly Lord.
+}
+  
+  \book {
+    \include "hymn_paper.ly"
+    \header {
+      tagline = ""
+    }
+    \top
+    \score {
+      \new ChoirStaff <<
+        \new Staff  <<
+          \new Voice = "soprano" { \voiceOne \melody }
+          \new Voice = "alto" { \voiceTwo \alto }
+        >>
+        \new Lyrics  \lyricsto soprano \verseOne
+        \new Lyrics  \lyricsto soprano \verseTwo
+        \new Lyrics  \lyricsto soprano \verseThree
+        \new Lyrics \lyricsto soprano \verseFour
+        \new Lyrics \lyricsto soprano \verseFive
+        \new Staff  <<
+          \clef bass
+          \new Voice = "tenor" { \voiceOne \tenor }
+          \new Voice = "bass" { \voiceTwo \bass }
+        >>
+      >>
+      \midi {
+        \context {
+          \Score
+          tempoWholesPerMinute = #(ly:make-moment 84 4)
         }
       }
-      \hspace #1.0
-
+      \include "hymn_layout.ly"
     }
+    \bottom
   }
-}
-
-
-
+  
+  %%%%%%
+  %%%%%%
+  %%%%%%
+  #(define output-suffix "Melody")
+  \book {
+    \include "lilypond-book-preamble.ly"
+    \include "hymn_melody_paper.ly"
+    \top
+    \score {
+      %\transpose c bf,
+      <<
+        \new Voice = "tune" {
+          \melody
+        }
+        \new Lyrics \lyricsto "tune" { \verseOne }
+        \new Lyrics \lyricsto "tune" { \verseTwo }
+        \new Lyrics \lyricsto "tune" { \verseThree }
+        \new Lyrics \lyricsto "tune" { \verseFour }
+        \new Lyrics \lyricsto "tune" { \verseFive }
+      >>
+      \include "hymn_layout.ly"
+    }
+    \markup { 
+      \vspace #0.5 
+    }
+    \bottom
+  }

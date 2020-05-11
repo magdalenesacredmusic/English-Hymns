@@ -6,16 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly" 
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {STUTTGART  87  87}
+    }
+    \right-column{
+      \line {C.F. Witt, 1715; adapt. H.J. Gauntlett, 1861}
+      \line {harm. \italic "The English Hymnal," 1906}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Charles Wesley, 1744}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Come, Thou Long Expected Jesus"  }
-  meter = \markup { \small { Music: STUTTGART, 87.87.; C.F. Witt, 1715; adapt. H.J. Gauntlett, 1861} }
-  piece = \markup { \small {Text: C. Wesley, 1744 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -29,13 +45,13 @@ global = {
 melody = \relative c' {
   \global
   d4 d g g |
-  a a b g  \bar "||"
+  a a b g  \bar "|"
 
   d'4 d e c |
-  a d b2 \bar "||"
+  a d b2 \bar "|"
 
   b4 b a b |
-  g a g fs \bar "||"
+  g a g fs \bar "|"
 
   g e d g |
   g fs g2 \bar "|."
@@ -251,105 +267,110 @@ bassb = \relative c' {
 %%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%
-\score {
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-      sopranos { \voiceOne << \melody >> }
-      \context Voice =
-      altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-      \context Lyrics = two \lyricsto sopranos \verseTwo
-      \context Lyrics = three \lyricsto sopranos \verseThree
-      \context Lyrics = four \lyricsto sopranos \verseFour
-
-    >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-      tenors { \voiceOne << \tenor >> }
-      \context Voice =
-      basses { \voiceTwo << \bass >> }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 84 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout {}
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 88 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \bottom
+  
+  %%%%%%%%%
+  \markup { \caps "Alternative Hamonizations"  }
+\markup { \small {Music: Harmony from  \italic "Hymns Ancient and Modern," 1861  }}
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodya }
+        \new Voice = "alto" { \voiceTwo \altoa }
+      >>
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenora }
+        \new Voice = "bass" { \voiceTwo \bassa }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 88 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+
+
+%%%%%%%%%%
+\markup { \small {Music: Harmony from  \italic "The Hymnal," 1916 }}
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodyb }
+        \new Voice = "alto" { \voiceTwo \altob }
+      >>
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenorb }
+        \new Voice = "bass" { \voiceTwo \bassb }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 88 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
 }
 
-
-%%%%%%%%%%%%%%%%
-%% score 2 %%%%%
-%%%%%%%%%%%%%%%%
-\markup { \caps "Alternative Hamonizations"  }
-
-\score {
-  <<
-    \context ChoirStaff <<
-      \context Staff = upper <<
-        \context Voice =
-        sopranos { \voiceOne << \melodya >> }
-        \context Voice =
-        altos { \voiceTwo << \altoa >> }
-
-      >>
-      \context Staff = lower <<
-        \clef bass
-        \context Voice =
-        tenors { \voiceOne << \tenora >> }
-        \context Voice =
-        basses { \voiceTwo << \bassa >> }
-      >>
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
     >>
-  >>
-  \header {
-    piece = \markup { \small {Music: Harmony from  \italic "The English Hymnal," 1906.  }}
+    \include "hymn_layout.ly"
   }
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 84 4)
-    }
+  \markup { 
+    \vspace #0.5 
   }
-  \layout {}
-}
-
-%%%%%%%%%%%%%%%%
-%% score 3 %%%%%
-%%%%%%%%%%%%%%%
-
-
-\score {
-  <<
-    \context ChoirStaff <<
-      \context Staff = upper <<
-        \context Voice =
-        sopranos { \voiceOne << \melodyb >> }
-        \context Voice =
-        altos { \voiceTwo << \altob >> }
-
-      >>
-      \context Staff = lower <<
-        \clef bass
-        \context Voice =
-        tenors { \voiceOne << \tenorb >> }
-        \context Voice =
-        basses { \voiceTwo << \bassb >> }
-      >>
-    >>
-  >>
-  \header {
-    piece = \markup { \small {Music: Harmony from  \italic "The Hymnal," 1916 }}
-  }
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 84 4)
-    }
-  }
-  \layout {}
+  \bottom
 }

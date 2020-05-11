@@ -6,18 +6,36 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {DIVINUM MYSTERIUM  87 87 87 7}
+    }
+    \right-column{
+      \line {Piae Cantiones, 1582}
+      \line {harm. \italic "The English Hymnal"}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line { \italic"Corde natus ex parentis"}
+      \line {Prudentius; tr. R.F. Davis}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Of the Father's Heart Begotten"  }
-  meter = \markup { \small { Music: DIVINUM MYSTERIUM, 87.87.87.7; Piae Cantiones, 1582; harm. \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: \italic"Corde natus ex parentis," Prudentius; tr. R.F. Davis  }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
+
 
 global = {
   \key e \major
@@ -239,33 +257,37 @@ And the Babe, the world's Re -- deem -- er,
 In her lov -- ing arms re -- ceived,
 }
 
-
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 152 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #0.1 % moves the column off the left margin;
@@ -351,3 +373,119 @@ In her lov -- ing arms re -- ceived,
     }
   }
 }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "This is he, whom seer and sibyl"
+            "  Sang in ages long gone by;"
+            "This is he of old revealed"
+            "  In the page of prophecy;"
+            "Lo! he comes, the promised Saviour;"
+            "  Let the world his praises cry!"
+          }
+        }
+        \vspace #0.5
+        \line {
+          \bold "6. "
+          \column {
+            "Sing, ye heights of heaven, his praises;"
+            "  Angels and Archangels, sing!"
+            "Wheresoe'er ye be, ye faithful,"
+            "  Let your joyous anthems ring,"
+            "Every tongue his name confessing,"
+            "  Countless voices answering,"
+          }
+        }
+      }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "7. "
+          \column {
+            "Hail! thou Judge of souls departed;"
+            "  Hail! of all the living King!"
+            "On the Father's right hand thronèd,"
+            "  Through his courts thy praises ring,"
+            "Till at last for all offences"
+            "  Righteous judgement thou shalt bring,"
+          }
+        }
+        \vspace #0.5
+        \line {
+          \bold "8. "
+          \column {
+           "Now let old and young uniting"
+           "  Chant to thee harrmonious lays,"
+           "Maid and matron hymn thy glory,"
+           "  Infant lips their anthem raise,"
+           "Boys and girls together singing"
+           "  With pure heart their song of praise,"
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+
+
+\markup \fill-line {
+  \center-column 	{
+    \large {
+      \vspace #1.5
+      \column {
+        \line {
+          \bold "9. "
+          \column {
+         "Let the storm and summer sunshine,"
+            "  Gliding stream and sounding shore,"
+            "Sea and forest, frost and zephyr,"
+            "  Day and night their Lord adore;"
+            "Let creation join to laud thee"
+            "  Through the ages evermore,"
+          }
+        }
+        \hspace #1.0
+      }
+    }
+  }
+}
+  \bottom
+}
+

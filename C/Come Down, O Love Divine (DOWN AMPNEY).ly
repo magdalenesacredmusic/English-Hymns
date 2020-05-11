@@ -55,58 +55,58 @@ melody = \relative c' {
   \global
   d2 e4 fs |
   a2 b |
-  a1 \bar "||"
+  a1 \bar "|"
 
   a2 b4 a |
   d( cs) b2 |
-  a2 \breathmark \bar "||" \break
+  a2 \bar "|" \break
 
   a2 |
   b4 a g fs |
   e d e fs8[ g] |
-  e2 d^\fermata \bar "||" \break
+  e2 d \bar "|" \break
 
   d'2 cs4 b |
   a2 b |
-  a1 \bar "||"
+  a1 \bar "|"
 
   c2 b4 a |
   g2 fs |
-  e^\fermata \bar "||" \break
+  e \bar "|" \break
 
   e2 |
   a4 b a g |
   fs d e fs8[ g] |
-  e2 d^\fermata \bar "|."
+  e2 d \bar "|."
 }
 
 alto = \relative c' {
   \global
   a2 a4 d |
   d( cs) b( cs) |
-  d1 \bar "||"
+  d1 |
 
   fs2 fs4 e |
   d( e) d2 |
-  cs \bar "||"
+  cs |
 
   d2 |
   d4 cs d d |
   b d d d |
-  d( cs) d2 \bar "||"
+  d( cs) d2 |
 
   fs2 fs4 d |
   fs2 e4( d) |
-  cs1 \bar "||"
+  cs1 |
 
   e2 d4 d |
   b( cs) d2 |
-  a2 \bar "||"
+  a2 |
 
   cs |
   d4 d cs d8[ e] |
   a,4 d d d |
-  d( cs) d2 \bar "|."
+  d( cs) d2 |
 }
 
 tenor = \relative c {
@@ -116,54 +116,54 @@ tenor = \relative c {
   fs1 |
   a2 d,4 e |
   fs( a) a( gs) |
-  a2 \bar "||"
+  a2 |
 
   fs2 |
   g4 e g a |
   g a b b |
-  a4.( g8) fs2 \bar "||"
+  a4.( g8) fs2 |
 
   b2 a4 b |
   d( cs) b2 |
-  cs1 \bar "||"
+  cs1 |
 
   g4( a) b fs |
   g2 a4( b) |
-  cs2 \bar "||"
+  cs2 |
 
   a2 |
   a4 g e b' |
   a a b g |
-  a4.( g8) fs2 \bar "|."
+  a4.( g8) fs2 |
 }
 
 bass = \relative c {
   \global
   d2 cs4 d |
   a2 g |
-  d'1 \bar "||"
+  d'1 |
 
   d2 d4 cs |
   b( cs) e2 |
-  a,2 \bar "||"
+  a,2 |
 
   d2 |
   g,4 a b d |
   g fs g e |
-  a,2 d_\fermata \bar "||"
+  a,2 d |
 
   b' fs4 g |
   d( fs) gs2 |
-  a1 \bar "||"
+  a1 |
 
   e4( fs) g d |
   e2 fs4( g) |
-  a2_\fermata \bar "||"
+  a2 |
 
   a,4( g) |
   fs g a d8[ cs] |
   d4 fs g e |
-  a,2 d_\fermata \bar "|."
+  a,2 d \bar "|."
 }
 
 verseOne = \lyricmode {

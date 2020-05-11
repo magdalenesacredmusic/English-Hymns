@@ -86,6 +86,49 @@ melody = \relative c' {
     f2. \bar "|."
 }
 
+melodya = \relative c' {
+  \global
+  f2 f4 |
+  f( e) f |
+  g( a) g |
+  f2.
+
+  a2 a4 | \break
+  a( g) f | 
+  c'( bf) a4 |
+  a g2 |
+
+  f2 f4 |
+  f( e) f | \break
+  g( a) g |
+  f2. | 
+
+  a2 a4 |
+  a( g) f |
+  c'( bf) a4 |
+  a g2 | \break
+
+    g2 a4 |
+    bf( a) g | 
+    a2 bf4 |
+    c2. |
+
+    d2 d4 | \break
+    c( bf) a |
+    bf( a) g |
+    f2. | 
+
+    g2 a4 |
+    bf( a) g | \break
+    a2 bf4 |
+    c2.
+
+    d2 d4 |
+    c( bf) a |
+    bf( a) g |
+    f2. \bar "|."
+}
+
 alto = \relative c' {
   \global 
   c2 c4 |
@@ -379,7 +422,7 @@ verseThree = \lyricmode {
 }
 
 \book {
-  \include "hymn_paper.ly"
+  \include "hymn_paper_multipage.ly.ly"
   \header {
     tagline = ""
   }
@@ -447,7 +490,7 @@ verseThree = \lyricmode {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
-        \melody
+        \melodya
       }
       \new Lyrics \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }

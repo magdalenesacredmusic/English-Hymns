@@ -41,19 +41,19 @@ global = {
 melody = \relative c' {
   \global
   f4 f f g |
-  a4. g8 f2 \bar "||"
+  a4. g8 f2 \bar "|"
 
   g4 a g c |
-  c b c2 \bar "||"
+  c b c2 \bar "|"
 
   d4 c bf a |
-  g4. f8 f2 \bar "||"
+  g4. f8 f2 \bar "|"
 
   f4 bf a bf8[ c] |
-  d4 c bf2 \bar "||"
+  d4 c bf2 \bar "|"
 
   a4 c bf a |
-  g f e2 \bar "||"
+  g f e2 \bar "|"
 
   g4 bf a g |
   f e f2 \bar "|."

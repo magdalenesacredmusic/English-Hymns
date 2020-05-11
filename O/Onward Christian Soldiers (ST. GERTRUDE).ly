@@ -6,17 +6,31 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Onward Christian Soldiers"  }
-  meter = \markup { \small { Music: ST. GERTRUDE, 6.5.6.5. \italic "with Refrain;" A.S. Sullivan, 1871 } }
-  piece = \markup { \small {Text: S. Baring-Gould, 1865 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {ST. GERTRUDE  65 65 with Refrain}
+    }
+    \column{
+      \line {Arthur Sullivan, 1871}
+    }
+  }
 }
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Sabine Baring-Gould, 1865}
+    } 
+  }
+}
+%}
+
 
 global = {
   \key f \major
@@ -204,31 +218,36 @@ verseFour = \lyricmode {
 }
 %}
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 108 4)
-    }
+\book {
+  \include "hymn_paper_multipage.ly.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 108 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -281,4 +300,87 @@ verseFour = \lyricmode {
     }
   }
 }
+  \bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "4. "
+          \column {
+            "What the saints established"
+            "  That I hold for true."
+            "What the saints believèd,"
+            "  That I believe too."
+            "Long as earth endureth,"
+            "  Men the faith will hold,"
+            "Kingdoms, nations, empires,"
+            "  In destruction rolled."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "5. "
+          \column {
+            "Crowns and thrones may perish,"
+            "  Kingdoms rise and wane,"
+            "But the church of Jesus"
+            "  Constant will remain."
+            "Gates of hell can never"
+            "  'gainst that church prevail;"
+            "We have Christ’s own promise,"
+            "  and that cannot fail."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Onward then, ye people,"
+            "  Join our happy throng,"
+            "Blend with ours your voices"
+            "  In the triumph song."
+            "Glory, laud and honor"
+            "  Unto Christ the King,"
+            "This through countless ages"
+            "  Men and angels sing."
+
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+  \bottom
+}
+
+
 

@@ -6,16 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {PLAISTOW  LM}
+    }
+    \right-column{
+      \line {from \italic "Magdalen Hymns," c. 1760}
+      \line {\italic "The English Hymnal"}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {\italic "Jesu quadragenariae"}
+      \line {c. 9th cent.; tr. T.A. Lacey, \italic "The English Hymnal"}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "O Jesu Christ, From Thee Began"  }
-  meter = \markup { \small { Music: PLAISTOW, L.M.; from \italic "Magdalen Hymns," c. 1760, \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: \italic "Jesu quadragenariae," c. 9th cent.; \italic tr. T.A. Lacey, \italic "The English Hymnal" }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
 }
 
@@ -85,7 +102,7 @@ bass = \relative c {
 
 verseOne = \lyricmode {
   \set stanza = "1."
-  O Je -- su Christ, from thee be -- gan
+  O Je -- sus Christ, from thee be -- gan
   This heal -- ing for the soul of man,
   By fast -- ing sought, by fast -- ing found,
   Through for -- ty days of year -- ly round;
@@ -116,32 +133,37 @@ verseFour = \lyricmode {
 }
 
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 72 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 84 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -171,7 +193,64 @@ verseFour = \lyricmode {
     }
   }
 }
+  \bottom
+}
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "But now let every heart prepare,"
+            "By sacrifice of fast and prayer,"
+            "To keep with joy magnifical"
+            "The solemn Easter festival."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Father and Son and Spirit blest,"
+            "To Thee be every prayer addrest,"
+            "Who art in threefold Name adored,"
+            "From age to age, the only Lord."
+          }
+        }
+      }
+      \hspace #1.0
 
+    }
+  }
+}
+  \bottom
+}
 
 

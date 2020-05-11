@@ -6,18 +6,32 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
 
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "O What Their Joy and Their Glory Must Be"  }
-  meter = \markup { \small { Music: REGNATOR ORBIS, 10.10.10.10; adapt. from \italic "La Feillée;" arr. \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: \italic "O quanta qualia sunt illa Sabbata," P. Abelard; tr. J.M. Neale  }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
+top = \markup {
+  \fill-line {
+    \column {
+      \line {REGNATOR ORBIS  10 10 10 10}
+    }
+    \right-column{
+      \line {adapt. from \italic "La Feillée"}
+      \line {arr. \italic "The English Hymnal," 1906}
+    }
+  }
 }
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line { \italic "O quanta qualia sunt illa Sabbata"}
+      \line {Peter Abelard; tr. J.M. Neale}
+    } 
+  }
+}
+
 
 global = {
   \key g \major
@@ -178,32 +192,37 @@ verseFour = \lyricmode {
 }
 
 
-\score {
-  \new ChoirStaff <<
-    \new Staff  <<
-      \new Voice = "soprano" { \voiceOne \melody }
-      \new Voice = "alto" { \voiceTwo \alto }
-    >>
-    \new Lyrics  \lyricsto soprano \verseOne
-    \new Lyrics  \lyricsto soprano \verseTwo
-    \new Lyrics  \lyricsto soprano \verseThree
-    \new Lyrics \lyricsto soprano \verseFour
-    \new Staff  <<
-      \clef bass
-      \new Voice = "tenor" { \voiceOne \tenor }
-      \new Voice = "bass" { \voiceTwo \bass }
-    >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 112 4)
-    }
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
   }
-  \layout { }
-}
-
-\markup {
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 84 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \markup {
   \large {
     \fill-line {
       \hspace #1.0
@@ -212,7 +231,7 @@ verseFour = \lyricmode {
           \bold "5. "
           \column {
             "There dawns no Sabbath, no Sabbath is o'er,"
-            "Those Sabbath-keepers have one adn no more;"
+            "Those Sabbath-keepers have one and no more;"
             "One and unending is that triumph-song"
             "Which to the Angels and us shall belong."
           }
@@ -242,6 +261,71 @@ verseFour = \lyricmode {
     }
   }
 }
+  \bottom
+}
 
-
-
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "There dawns no Sabbath, no Sabbath is o'er,"
+            "Those Sabbath-keepers have one and no more;"
+            "One and unending is that triumph-song"
+            "Which to the Angels and us shall belong."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Now, in the meantime, with hearts raised on high,"
+            "We for that country must yearn and must sigh,"
+            "Seeking Jerusalem, dear native land,"
+            "Through our long exile on Babylon's strand."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "Low before him with our praises we fall,"
+            "Of whom and in whom and through whom are all;"
+            "Of whom, the Father; and in whom, the Son;"
+            "And through whom, the Spirit, with them ever One."
+          }
+        }
+      }
+      \hspace #1.0
+    }
+  }
+}
+  \bottom
+}

@@ -67,7 +67,7 @@ melody = \relative c' {
   ef4 g bf |
   c8[ bf] g4 ef8[ g] |
   f4 ef ef |
-  ef2. \bar "||"
+  ef2. \bar "|."
 }
 
 alto = \relative c' {

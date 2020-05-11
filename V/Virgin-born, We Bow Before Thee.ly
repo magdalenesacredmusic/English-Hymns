@@ -6,18 +6,33 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.18.2"
 \include "english.ly"
-\include "hymnstyle.ly"
+\include "hymn_definitions.ly"
+
+top = \markup {
+  \fill-line {
+    \column {
+      \line {MON DIEU, PRÊTE-MOI L'OREILLE, 88 77 D}
+    }
+    \right-column{
+      \line {Louis Bourgeois}
+      \line {harm. \italic "The English Hymnal"}
+    }
+  }
+}
+
+bottom = \markup  {
+  \fill-line {
+    \null 
+    \right-column {
+      \line {Reginald Herber, 1827}
+    }
+  } 
+}
 
 \header {
-  poet = \markup{ \fontsize #4 \smallCaps "Virgin-born, We Bow Before Thee"  }
-  meter = \markup { \small { Music: MON DIEU, PRÊTE-MOI L'OREILLE, 88.77. D; L. Bourgeois; \italic "The English Hymnal" } }
-  piece = \markup { \small {Text: R. Herber, 1827 }}
-  %breakbefore
-  %copyright = ""
   tagline = ""
-
 }
 
 global = {
@@ -29,37 +44,17 @@ global = {
 
 melody = \relative c'' {
   \global
-  g2^\markup {Voices in Unison} g |
+  g2 g |
   f4 g a bf |
   a2 g \bar "||"
 
   g2 g |
   f4 g a bf |
-  a2 <<
-    {
-      \voiceOne
-      \once \override NoteColumn #'force-hshift = #1.8 g2
-    }
-    \new Voice = "alternative" {
-      \voiceTwo
-      g4 g4
-    }
-  >>
-  \oneVoice \bar "||"
+  a2 \tieDashed g4~ g4 \bar "||"
 
   bf2 a |
   g4 bf a g |
-  <<
-    {
-      \voiceOne
-      \once \override NoteColumn #'force-hshift = #1.9 f1
-    }
-    \new Voice = "alternative" {
-      \voiceTwo
-      f2. f4
-    }
-  >>
-  \oneVoice \bar "||"
+ f2.~ f4  \bar "||"
 
   f2 e |
   d4 g g f |
@@ -75,52 +70,7 @@ melody = \relative c'' {
 
   bf2 a |
   g4 bf a g |
-  <<
-    {
-      \voiceOne
-      \once \override NoteColumn #'force-hshift = #1.9 f1
-    }
-    \new Voice = "alternative" {
-      \voiceTwo
-      f2. f4
-    }
-  >>
-  \oneVoice \bar "||"
-
-  f2 e2 |
-  d4 g g f |
-  g1 \bar "|."
-}
-
-soprano = \relative c'' {
-  \global
-  g2 g |
-  f4 g a bf |
-  a2 g \bar "||"
-
-  g2 g |
-  f4 g a bf |
-  a2 g2 \bar "||"
-
-  bf2 a |
-  g4 bf a g |
-  f1 \bar "||"
-
-  f2 e |
-  d4 g g f |
-  g1 \bar "||"
-
-  bf2 c |
-  d4 d c bf |
-  c2 bf \bar "||"
-
-  bf2 \once \override NoteColumn #'force-hshift = #0.8 c |
-  <bf d>4 <bf d> c bf |
-  <af c>2 bf \bar "||"
-
-  bf2 a |
-  g4 bf a g |
-  f1 \bar "||"
+  f2.~ f4 \bar "||"
 
   f2 e2 |
   d4 g g f |
@@ -129,13 +79,13 @@ soprano = \relative c'' {
 
 alto = \relative c' {
   \global
-  d2 d |
+  d2^\markup {\italic "To be sung in unison"} d |
   d4 e f f |
   f ef! d2 \bar "||"
 
   d2 ef |
   bf4 ef ef f |
-  f2 ef \bar "||"
+  f2 ef2 \bar "||"
 
   f2 f |
   ef4 g f e |
@@ -191,7 +141,7 @@ tenor = \relative c' {
 
   <bf d>2. c4 |
   bf4 d c4. bf8 |
-  a1 \bar "||"
+  a2.~ a4 \bar "||"
 
   a2 a4 g |
   f bf bf bf |
@@ -206,11 +156,11 @@ bass = \relative c {
 
   g4 f ef c |
   d ef c bf |
-  d2 ef \bar "||"
+  \tieDashed d2 ef4~ ef4 \bar "||"
 
   bf4 c d2 |
   ef4 g, a8 bf c4 |
-  f2. e4
+  f2.( e4)
 
   d4 f a a, |
   bf g d'2 |
@@ -236,64 +186,88 @@ bass = \relative c {
 
 verseOne = \lyricmode {
   \set stanza = "1."
+  \set ignoreMelismata = ##t 
   Vir -- gin -- born, we bow be -- fore thee:
-  Bless -- èd was the womb that bore thee;
-  Ma -- ry, Mo -- ther meek and mild,
+  Bless -- èd was the womb that bore thee; _
+  Ma -- ry, Mo -- ther meek and mild, _
   Bless -- èd was she in her Child.
 
   Bless -- èd was the breast that fed thee;
   Bless -- èd was the hand that led thee;
-  Bless -- èd was the par -- \set associatedVoice = alternative ent's eye \set associatedVoice = melody That
+  Bless -- èd was the par -- ent's eye 
+  That
   watched thy slumb' -- ring in -- fan -- cy.
 }
 
 verseTwo = \lyricmode {
   \set stanza = "2."
+  \set ignoreMelismata = ##t
   Bless -- èd she by all cre -- a -- tion,
-  Who brought forth the world's sal -- \set associatedVoice = alternative va -- tion, \set associatedVoice = melody And
-  bless -- èd they- for ev -- \set associatedVoice = alternative er blest, \set associatedVoice = melody Who
+  Who brought forth the world's sal -- va -- tion, 
+  And
+  bless -- èd they- for ev -- er blest,  Who
   love thee most and serve thee best.
   Vir -- gin -- born, we bow be -- fore thee:
   Bless -- èd was the womb that bore thee;
-  Ma -- ry, Mo -- ther meek and mild,
+  Ma -- ry, Mo -- ther meek and mild, _
   Bless -- èd was she in her Child.
 }
 
-verseThree = \lyricmode {
-  \set stanza = "3."
 
-}
-
-
-\score {
-  <<
-    \new Voice = "melody" {\melody }
-    \new Lyrics \lyricsto "melody" \verseOne
-    \new Lyrics \lyricsto "melody" \verseTwo
-    \new Lyrics \lyricsto "melody" \verseThree
-
-    \context ChoirStaff <<
-      \context Staff = upper <<
-        \context Voice =
-        sopranos { \voiceOne << \soprano >> }
-        \context Voice =
-        altos { \voiceTwo << \alto >> }
-
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
       >>
-      \context Staff = lower <<
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Staff  <<
         \clef bass
-        \context Voice =
-        tenors { \voiceOne << \tenor >> }
-        \context Voice =
-        basses { \voiceTwo << \bass >> }
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
       >>
     >>
-  >>
-  \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 80 4)
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
     }
+    \include "hymn_layout.ly"
   }
-  \layout {}
+  \bottom
 }
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(define output-suffix "Melody")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_melody_paper.ly"
+  \top
+  \score {
+    %\transpose c bf,
+    <<
+      \new Voice = "tune" {
+        \melody
+      }
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+    >>
+    \include "hymn_layout.ly"
+  }
+  \markup { 
+    \vspace #0.5 
+  }
+  \bottom
+}
+
+

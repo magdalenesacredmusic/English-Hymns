@@ -178,7 +178,7 @@ verseFour = \lyricmode {
     tagline = ""
   }
   \top
-  \score {
+  \score { \transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }

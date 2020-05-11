@@ -13,10 +13,10 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 top = \markup {
 \fill-line {
       \column {
-          \line {THE CALL 77 77}
+          \line \small {THE CALL 77 77}
       }
       \column{
-      \line {Ralph Vaughan Williams, 1911}
+      \line \small {Ralph Vaughan Williams, 1911}
       }
 }
 }
@@ -25,7 +25,7 @@ bottom = \markup  {
  \fill-line {
    \null 
    \right-column {
-     \line {George Herbert (1593-1633)}
+     \line \small {George Herbert (1593-1633)}
    }
   } 
 }
@@ -104,7 +104,7 @@ verseOne = \lyricmode {
         Come, my way, my truth, my life:
         Such a way, as gives us breath;
         Such a truth, as ends all strife;
-        such a life as con -- quers death.
+        such a life as kill -- eth death.
 }
 
 verseTwo = \lyricmode {
@@ -112,7 +112,7 @@ verseTwo = \lyricmode {
 	Come, my light, my feast, my strength:
 	Such a light as shows a feast;
 	Such a feast as mends in length;
-	Such a strength as makes his guest.
+	Such a strength as makes __ his guest.
 }
 
 verseThree = \lyricmode {
@@ -120,12 +120,7 @@ verseThree = \lyricmode {
 	Come, my joy, my love, my heart:
 	Such a joy as none can move;
 	Such a love as none can part;
-	Such a heart as joys in love.
-}
-
-verseFour = \lyricmode {
-	\set stanza = "4."
-	
+	Such a heart as joys __ in love.
 }
 
 
@@ -144,7 +139,6 @@ verseFour = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseOne
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -179,7 +173,6 @@ verseFour = \lyricmode {
       \new Lyrics \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour }
     >>
     \include "hymn_layout.ly"
   }

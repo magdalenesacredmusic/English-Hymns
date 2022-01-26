@@ -5,6 +5,10 @@ Occasionally a more traditional version of the words was used instead of the poe
 Use of the original masculine pronouns has been retained.
 Use of archaic pronouns (Thee, Thy) has also been retained.
 
+Two significant changes were made to adapt the texts for American English:
+- 'Jesu' was changed to 'Jesus'
+- Spelling was Americanized ('favour' became 'favor', 'splendour' splendor', etc)
+
 Like the texts, the hymn tunes and harmonizations have tried to use the most authentic sources. 
 Occasionally a more recent harmonization is offered for very old tunes. 
 When multiple harmonizations are found for a single tune, an editorial decision has been made as to which harmonization is the best. 

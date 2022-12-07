@@ -6,9 +6,23 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
+
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Attr. Martin Luther; Tr. St. 1, and 2 Anon.; St. 3 John Thomas McFarland (1851-1913), 1892
+      }
+      \wordwrap {
+        Music: MUELLER (AWAY IN A MANGER), 11 11 11 11, James R. Murray (1841-1905), 1887
+      }
+    }
+  }
+}
 
 top = \markup {
 \fill-line {
@@ -156,42 +170,42 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
-  A -- way in a man -- ger,
-  No crib for His bed,
-  The lit -- tle Lord Je -- sus
-  Laid down His sweet head;
-  The stars in the sky _
-  Looked down where He lay,
-  The lit -- tle Lord Je -- sus,
-  a -- sleep on the hay.
-}
+	\vOne
+	A -- way in a man -- ger, 
+	No crib for His bed,
+	The lit -- tle Lord Je -- sus 
+	Laid down His sweet head;
+	The stars in the sky _
+	Looked down where He lay,
+	The lit -- tle Lord Je -- sus, 
+	a -- sleep on the hay.
+	}
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
-  The cat -- tle are low -- ing,
-  The poor ba -- by wakes,
-  But lit -- tle Lord Je -- sus,
-  No cry -- ing He makes.
-  I love thee, Lord Je -- sus!
-  Look down from the sky,
-  And stay by my cra -- dle
-  Till morn -- ing is nigh.
+	\vTwo
+	The cat -- tle are low -- ing, 
+	The poor ba -- by wakes,
+	But lit -- tle Lord Je -- sus, 
+	No cry -- ing He makes.
+	I love thee, Lord Je -- sus!
+	Look down from the sky,
+	And stay by my cra -- dle 
+	Till morn -- ing is nigh.
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
-  Be near me, Lord Je -- sus,
-  I ask Thee to stay
-  Close by me for -- ev -- er,
-  And love me, I pray;
-  Bless all the dear chil -- dren
-  In Thy ten -- der care,
-  And fit us for heav -- en,
-  To live with Thee there.
+	\vThree
+	Be near me, Lord Je -- sus,
+	I ask Thee to stay
+	Close by me for -- ev -- er,
+	And love me, I pray;
+	Bless all the dear chil -- dren 
+	In Thy ten -- der care,
+	And fit us for heav -- en,
+	To live with Thee there.
 }
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
@@ -227,11 +241,51 @@ verseThree = \lyricmode {
 %%%%%%
 %%%%%%
 %%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+   
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
 #(define output-suffix "Melody")
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %\top
   \score {
     %\transpose c bf,
     <<
@@ -247,7 +301,8 @@ verseThree = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %\bottom
+  \refs
 }
 
 

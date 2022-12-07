@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: William C. Dix (1837-98), 1866
+      }
+      \wordwrap {
+        Music: HYFRYDOL, 87 87 D, Rowland H. Prichard (1811-87), 1830; Harm. \italic "The English Hymnal," 1906
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -198,7 +211,7 @@ bass = \relative c, {
 }
 
 verseOne = \lyricmode {
-	\set stanza = "1."
+	\vOne
 	Al -- le -- lu -- ia! Sing to Je -- sus 
 	His the scep -- tre, his the throne;
 	Al -- le -- lu -- ia! His the tri -- umph,
@@ -210,7 +223,7 @@ verseOne = \lyricmode {
 	}
 
 verseTwo = \lyricmode {
-	\set stanza = "2."
+	\vTwo
 	Al -- le -- lu -- ia! Bread of heav -- en,
 	Here on earth our food, our stay;
 	Al -- le -- lu -- ia! Here the sin -- ful 
@@ -222,7 +235,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-	\set stanza = "3."
+	\vThree
 	Al -- le -- lu -- ia! King e -- ter -- nal,
 	You the Lord of lords we own:
 	Al -- le -- lu -- ia! Born of Mar -- y, 
@@ -233,13 +246,13 @@ verseThree = \lyricmode {
 	In the Eu -- cha -- ris -- tic feast.
 }
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+% \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -263,7 +276,49 @@ verseThree = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+ % \bottom
+ \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      %\new Lyrics \lyricsto soprano \verseFour
+     % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
 
 %%%%%%
@@ -273,7 +328,7 @@ verseThree = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -289,5 +344,6 @@ verseThree = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %\bottom
+  \refs
 }

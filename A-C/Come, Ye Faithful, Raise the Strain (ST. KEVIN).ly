@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "ασωμεν παντες λαοι," St. John Damascene, 780; Tr. John Mason Neale (1818-66), 1862
+      }
+      \wordwrap {
+        Music: ST. KEVIN, 76 76 D, Arthur Sullivan (1842-1900), 1872
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -120,10 +133,10 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Come, ye faith -- ful, raise the strain
   Of tri -- um -- phant glad -- ness!
-  GOD hath brought His Is -- ra -- el
+  God hath brought His Is -- ra -- el
   In -- to joy from sad -- ness
   Loosed from Pha -- raoh’s bit -- ter yoke
   Ja -- cob’s sons and daugh -- ters;
@@ -132,7 +145,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   ’Tis the Spring, of souls to -- day;
   Christ hath burst His pris -- on;
   And from three days’ sleep in death,
@@ -144,7 +157,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Now the Queen of Sea -- sons, bright
   With the day of Splen -- dour,
   With the roy -- al Feast of feasts,
@@ -156,7 +169,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4. "
+  \vFour
   Nei -- ther might the gates of death,
   Nor the tomb’s dark por -- tal,
   Nor the watch -- ers, nor the seal,
@@ -167,63 +180,6 @@ verseFour = \lyricmode {
   Pass -- eth hu -- man know -- ing.
 }
 
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 45 2)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
-}
+verseFive = {}
 
-%%%%%%
-%%%%%%
-%%%%%%
-#(define output-suffix "Melody")
-\book {
-  \include "lilypond-book-preamble.ly"
-  \include "hymn_melody_paper.ly"
-  \top
-  \score {
-    %\transpose c bf,
-    <<
-      \new Voice = "tune" {
-        \melody
-      }
-      \new Lyrics \lyricsto "tune" { \verseOne }
-      \new Lyrics \lyricsto "tune" { \verseTwo }
-      \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour }
-    >>
-    \include "hymn_layout.ly"
-  }
-  \markup { 
-    \vspace #0.5 
-  }
-  \bottom
-}
-
+\include "hymn_scores.ly"

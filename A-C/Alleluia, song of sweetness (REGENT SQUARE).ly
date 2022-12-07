@@ -6,9 +6,23 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
+
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Alleluia, dulce carmen," 11th cent.; Tr. J.M. Neale (1818-66), alt.
+      }
+      \wordwrap {
+        Music: REGENT SQUARE, 87 87 87, Henry Smart (1813-79), 1866
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -116,7 +130,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Al -- le -- lu -- ia, song of sweet -- ness,
   Voice of joy that can -- not die;
   Al -- le -- lu -- ia is the an -- them
@@ -126,7 +140,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Al -- le -- lu -- ia thou re -- sound -- est,
   True Je -- ru -- sa -- lem and free;
   Al -- le -- lu -- ia, joy -- ful moth -- er,
@@ -136,7 +150,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Al -- le -- lu -- ia can -- not al -- ways
   Be our song while here be -- low;
   Al -- le -- lu -- ia our trans -- gres -- sions
@@ -146,7 +160,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   There -- fore in our hymns we pray thee,
   Grant us, bless -- ed Trin -- i -- ty,
   At the last to keep thine Eas -- ter
@@ -155,12 +169,13 @@ verseFour = \lyricmode {
   Al -- le -- lu -- ia joy -- ful -- ly.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
- \top
+ %\top
   \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
@@ -185,9 +200,50 @@ verseFour = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+ % \bottom
+ \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+     % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -195,7 +251,7 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %\top
   \score {
     %\transpose c bf,
     <<
@@ -212,5 +268,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-\bottom
+%\bottom
+\refs
 }

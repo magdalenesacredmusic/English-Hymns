@@ -13,6 +13,18 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %%%%%%%%
 %%%%%%%%
 %%%%%%%%
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \line {
+        Text: EIN FESTE BURG, 87 87 66 66 7, Martin Luther, 1529
+      }
+      \wordwrap {
+        Music: \italic "Ein feste burg", Martin Luther, 1529; Tr. Fredrick H. Hedge, 1852
+      }
+    }
+  }
+}
 
 top = \markup {
 \fill-line {
@@ -49,25 +61,25 @@ melody = \relative c'' {
   c4 c g8[ a] b4 |
   c8[ b] a4 g c |
   b a g a |
-  f8[( e] d4) c4 \bar "|"
+  f8[( e] d4) c4 \bar ""
 
   c'4 |
   c4 c g8[ a] b4 |
   c8[ b] a4 g c |
   b a g a |
-  f8([ e] d4) c \bar "|"
+  f8([ e] d4) c \bar "" \break
 
   c4 |
   g' a g fs |
   g2. c,4 |
   g' g a b |
-  c2.  \bar "|"
+  c2.  \bar ""
 
   b4 |
   c b a a |
   g2. a4 |
   a g a f |
-  e2. \bar "|"
+  e2. \bar ""
 
   c'4 |
   b a g a |
@@ -205,14 +217,18 @@ verseFour = \lyricmode {
   His king -- dom is for -- ev --  er.
 }
 
+%%%%%
+%%%%
+%%%%
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
 
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -237,9 +253,48 @@ verseFour = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  \refs
 }
-
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      %\new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  %\bottom
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -247,7 +302,7 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %\top
   \score {
     %\transpose c bf,
     <<
@@ -261,10 +316,11 @@ verseFour = \lyricmode {
     >>
     \include "hymn_layout.ly"
   }
-  \markup { 
-    \vspace #0.5 
+  %\bottom
+  \markup {
+    \vspace #1
   }
-  \bottom
+  \refs
 }
 
 

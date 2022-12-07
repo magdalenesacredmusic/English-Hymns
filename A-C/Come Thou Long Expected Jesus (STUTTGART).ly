@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Charles Wesley (1707-88), 1744
+      }
+      \wordwrap {
+        Music: STUTTGART, 87 87, C.F. Witt, 1715; adapt. H.J. Gauntlett, 1861; Harm. \italic "The English Hymnal," 1906
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -45,13 +58,13 @@ global = {
 melody = \relative c' {
   \global
   d4 d g g |
-  a a b g  \bar "|"
+  a a b g  |
 
   d'4 d e c |
-  a d b2 \bar "|"
+  a d b2 |
 
   b4 b a b |
-  g a g fs \bar "|"
+  g a g fs |
 
   g e d g |
   g fs g2 \bar "|."
@@ -104,7 +117,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1. "
+  \vOne
   Come, thou long ex -- pect -- ed Je -- sus,
   Born to set thy peo -- ple free;
   From our fears and sins re -- lease us,
@@ -112,7 +125,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Is -- rael's strength and con -- so -- la -- tion
   Hope of all the earth thou art;
   Dear de -- sire of ev -- 'ry na -- tion,
@@ -120,7 +133,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Born thy peo -- ple to de -- liv -- er,
   Born a child and yet a king,
   Born to reign in us for ev -- er,
@@ -128,7 +141,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   By thine own e -- ter -- nal Spir -- it
   Rule in all our hearts a -- lone;
   By thine all-suf -- fi -- cient mer -- it
@@ -142,13 +155,13 @@ verseFour = \lyricmode {
 melodya = \relative c' {
   \global
   d4 d g g |
-  a a b g  \bar "||"
+  a a b g  |
 
   d'4 d e c |
-  a d b2 \bar "||" \break
+  a d b2 | \break
 
   b4 b a b |
-  g a g fs \bar "||"
+  g a g fs |
 
   g e d g |
   g fs g2 \bar "|."
@@ -205,13 +218,13 @@ bassa = \relative c {
 melodyb = \relative c' {
   \global
   d4 d g g |
-  a a b g  \bar "||"
+  a a b g  |
 
   d'4 d e c |
-  a d b2 \bar "||" \break
+  a d b2 | \break
 
   b4 b a b |
-  g a g fs \bar "||"
+  g a g fs |
 
   g e d g |
   g fs g2 \bar "|."
@@ -297,7 +310,11 @@ bassb = \relative c' {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  \refs
+  
+  \markup {
+    \vspace #2
+  }
   
   %%%%%%%%%
   \markup { \caps "Alternative Hamonizations"  }
@@ -308,6 +325,10 @@ bassb = \relative c' {
         \new Voice = "soprano" { \voiceOne \melodya }
         \new Voice = "alto" { \voiceTwo \altoa }
       >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenora }
@@ -332,6 +353,10 @@ bassb = \relative c' {
         \new Voice = "soprano" { \voiceOne \melodyb }
         \new Voice = "alto" { \voiceTwo \altob }
       >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenorb }
@@ -351,11 +376,51 @@ bassb = \relative c' {
 %%%%%%
 %%%%%%
 %%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { \transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
 #(define output-suffix "Melody")
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  
   \score {
     \transpose c bf,
     <<
@@ -372,5 +437,5 @@ bassb = \relative c' {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  \refs
 }

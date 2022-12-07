@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Christopher Wordsworth (1807-85)
+      }
+      \wordwrap {
+        Music: EBENEZER (TON-Y-BOTEL), 87 87 D, From an anthem by Thomas Williams (1869-1944), 1890
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -47,17 +60,17 @@ melody = \relative c' {
 f2 \tuplet 3/2 {f4 \melisma  g af \melismaEnd} g2 f |
 g \tuplet 3/2 {g4  \melisma af bf \melismaEnd} af4.( g8) f2 |
 c' \tuplet 3/2 {bf4  \melisma c df \melismaEnd} c4.( bf8) af2 |
-bf4.( af8) g2 f1 \bar "||"
+bf4.( af8) g2 f1 \bar "|"
 
 f2 \tuplet 3/2 {f4  \melisma g af \melismaEnd} g2 f |
 g \tuplet 3/2 {g4  \melisma af bf \melismaEnd} af4.( g8) f2 |
 c' \tuplet 3/2 {bf4  \melisma c df \melismaEnd} c4.( bf8) af2 |
-bf4.( af8) g2 f1 \bar "||"
+bf4.( af8) g2 f1 \bar "|"
 
 c'2 \tuplet 3/2 {af4  \melisma bf c \melismaEnd} bf2 bf |
 af \tuplet 3/2 {f4  \melisma g af \melismaEnd} g2 g |
 f \tuplet 3/2 {f4  \melisma g af \melismaEnd} bf2 bf |
-af \tuplet 3/2 {bf4  \melisma af bf \melismaEnd} c1 \bar "||"
+af \tuplet 3/2 {bf4  \melisma af bf \melismaEnd} c1 \bar "|"
 
 f,2 \tuplet 3/2 {f4  \melisma g af \melismaEnd} g2 f |
 g \tuplet 3/2 {g4  \melisma af bf \melismaEnd} af4.( g8) f2 |
@@ -136,7 +149,7 @@ bf c f1
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1. "
+  \vOne
 Al -- le -- lu -- ia! Al -- lu -- lu -- ia!
   Hearts to heav'n and voic -- es raise;
 Sing to God a hymn of glad -- ness,
@@ -148,7 +161,7 @@ Je -- sus Christ, the King of Glo -- ry,
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2. "
+  \vTwo
 Christ is ris -- en, Christ the first -- fruits
   Of the ho -- ly har -- vest field
 Which will all its full a -- bun -- dance
@@ -160,7 +173,7 @@ Ri -- pened by his glo -- rious sun -- shine
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3. "
+  \vThree
 Christ is ris -- en, we are ris -- en!
   Shed up -- on us heav'n -- ly grace,
 Rain and dew and gleams of glo -- ry
@@ -172,7 +185,7 @@ And by an -- gel hands be gath -- ered
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4. "
+  \vFour
 Al -- le -- lu -- ia! Al -- lu -- lu -- ia!
   Glo -- ry be to God on high;
 Al -- le -- lu -- ia! to the Sa -- vior
@@ -183,13 +196,13 @@ Al -- le -- lu -- ia! Al -- lu -- lu -- ia!
   To the Tri -- une Ma -- jes -- ty.
 }
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -214,9 +227,50 @@ Al -- le -- lu -- ia! Al -- lu -- lu -- ia!
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+ % \bottom
+ \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+     % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -224,7 +278,7 @@ Al -- le -- lu -- ia! Al -- lu -- lu -- ia!
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -241,5 +295,6 @@ Al -- le -- lu -- ia! Al -- lu -- lu -- ia!
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  \refs
+  %\bottom
 }

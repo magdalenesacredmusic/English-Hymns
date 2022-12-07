@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Anon., English, c. 1757
+      }
+      \wordwrap {
+        Music: ITALIAN HYMN, 664 666 4, Felix de Giardini, alt.; Harm. traditional
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -137,7 +150,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1. "
+  \vOne
   Come, Thou Al -- migh -- ty King,
   Help us thy name to sing,
   Help us to praise, 
@@ -148,7 +161,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2. "
+  \vTwo
   Come, Thou In -- car -- nate Word, 
  Gird on Thy migh -- ty sword,
  Our prayer at -- tend!
@@ -159,7 +172,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3. "
+  \vThree
   Come, Ho -- ly Com -- for -- ter,
   Thy Sa -- cred wit -- ness bear,
   In this glad hour!
@@ -170,7 +183,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4. "
+  \vFour
   To the great One in Three
   E -- ter -- nal prais -- es be
   Hence ev -- er -- more!
@@ -180,13 +193,54 @@ verseFour = \lyricmode {
   Love and a -- dore!
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  % \bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -208,11 +262,11 @@ verseFour = \lyricmode {
         tempoWholesPerMinute = #(ly:make-moment 96 4)
       }
     }
-    \include "hymn_layout.ly"
-  }
-  \bottom
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
-
 %%%%%%
 %%%%%%
 %%%%%%
@@ -220,7 +274,7 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
@@ -237,8 +291,10 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
+
 
 
 %{ Verse 2 as printed in Martin Madan's "The Collection of Psalm and Hymn Tunes," 1769:

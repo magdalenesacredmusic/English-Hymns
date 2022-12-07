@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Tröstet, tröstet, meine Lieben," Johann Olearius (1611-84), 1671; tr. Catherine Winkworth (1827-78), 1863
+      }
+      \wordwrap {
+        Music: GENEVA 42, 87 87 77 88, Louis Bourgeois (c. 1510 – 1559), 1551; Harm. Claude Goudimel (1510-1572), 1564
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -134,7 +147,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Com -- fort, com -- fort ye my peo -- ple,
   Speak ye peace, thus saith our God;
   Com -- fort those who sit in dark -- ness,
@@ -146,7 +159,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Yea, her sins our God will par -- don,
   Blot -- ting out each dark mis -- deed;
   All that well de -- served His an -- ger
@@ -158,7 +171,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   For E -- li -- jah's voice is cry -- ing
   In the des -- ert far and near,
   Bid -- ding all men to re -- pent -- ance,
@@ -171,7 +184,7 @@ verseThree = \lyricmode {
 
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Make ye straight what long was crook -- ed,
   Make the rough -- er plac -- es plain:
   Let your hearts be true and hum -- ble,
@@ -182,64 +195,6 @@ verseFour = \lyricmode {
   That his word is nev -- er bro -- ken.
 }
 
+verseFive = {}
 
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 112 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
-}
-
-%%%%%%
-%%%%%%
-%%%%%%
-#(define output-suffix "Melody")
-\book {
-  \include "lilypond-book-preamble.ly"
-  \include "hymn_melody_paper.ly"
-  \top
-  \score {
-    %\transpose c bf,
-    <<
-      \new Voice = "tune" {
-        \melody
-      }
-      \new Lyrics \lyricsto "tune" { \verseOne }
-      \new Lyrics \lyricsto "tune" { \verseTwo }
-      \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour }
-    >>
-    \include "hymn_layout.ly"
-  }
-  \markup { 
-    \vspace #0.5 
-  }
-  \bottom
-}
-
+\include "hymn_scores.ly"

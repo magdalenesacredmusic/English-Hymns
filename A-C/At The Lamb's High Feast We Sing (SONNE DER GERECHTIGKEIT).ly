@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Ad regias Agni dapes," 6th cent; Tr. Robert Campbell, 1849; Adapt. \italic "Annus Sanctus," 1884
+      }
+      \wordwrap {
+        Music: SONNE DER GERECHTIGKEIT, 77 77, \italic "Kirchengeseng," Bohemian Brethren, 1566
+      }
+    }
+  }
+}
 
 top = \markup {
 \fill-line {
@@ -25,7 +38,7 @@ bottom = \markup  {
  \fill-line {
    \null 
    \right-column {
-     \line {\italic "Ad regias Agni dapes," Latin, 6th cent}
+     \line {\italic "Ad regias Agni dapes," 6th cent}
      \line { tr. Robert Campbell, 1849; adapt. \italic "Annus Sanctus," 1884}
    }
   } 
@@ -109,7 +122,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-	\set stanza = "1."
+	\vOne
 	At the Lamb’s high feast we sing,
 	Praise to our vic -- to -- rious King,
 	Washed our gar -- ments in the tide
@@ -121,7 +134,7 @@ verseOne = \lyricmode {
 	}
 
 verseTwo = \lyricmode {
-	\set stanza = "2."
+	\vTwo
 	Praise we Him, whose love di -- vine
 	Gives the guests his blood for wine,
 	Gives his bod -- y for the feast,
@@ -129,7 +142,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-	\set stanza = "3."
+	\vThree
 	Where the pas -- chal blood is poured,
 	Death’s dark an -- gel sheathes his sword;
 	Is -- rael’s hosts tri -- um -- phant go
@@ -137,51 +150,15 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-	\set stanza = "4."
+	\vFour
 	Christ, the Lamb whose blood was shed,
 	Pas -- chal vic -- tim, pas -- chal bread;
 	With sin -- cer -- i -- ty and love
 	Eat we man -- na from a -- bove.
 }
 
-
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 60 2)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
-  \markup {
-    	\vspace #1
-  }
-  
-  \markup {
-	\large {
+extraVerses =  \markup {
+	\fontsize #0 {
   \fill-line {
     \hspace #0.1 % moves the column off the left margin;
         % can be removed if space on the page is tight
@@ -238,6 +215,93 @@ verseFour = \lyricmode {
   }
 }
 }
+  
+#(set-global-staff-size 20)
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+ % \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 60 2)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+\extraVerses
+\markup {
+  \vspace #1
+}
+  \refs
+%  \bottom
+}
+
+%
+%%%%%%%%
+%%%%%%%%%%
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+     % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \extraVerses
+  \markup {
+    \vspace #1
+  }
+  \refs
+  %\bottom
 }
 
 %%%%%%
@@ -247,7 +311,7 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -264,7 +328,12 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  \extraVerses
+  \markup { 
+    \vspace #0.5 
+  }
+  \refs
+ % \bottom
 }
 
 

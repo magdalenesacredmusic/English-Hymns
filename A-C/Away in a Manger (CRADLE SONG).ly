@@ -6,9 +6,23 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Attr. Martin Luther; Tr. St. 1, and 2 Anon.; St. 3 John Thomas McFarland (1851-1913), 1892
+      }
+
+      \wordwrap {
+        Music: CRADLE SONG, 11 11 11 11, William J. Kirkpatrick (1838-1921), 1895
+      }
+    }
+  }
+}
 
 top = \markup {
 \fill-line {
@@ -155,7 +169,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-	\set stanza = "1."
+	\vOne
 	A -- way in a man -- ger, 
 	No crib for His bed,
 	The lit -- tle Lord Je -- sus 
@@ -167,7 +181,7 @@ verseOne = \lyricmode {
 	}
 
 verseTwo = \lyricmode {
-	\set stanza = "2."
+	\vTwo
 	The cat -- tle are low -- ing, 
 	The poor ba -- by wakes,
 	But lit -- tle Lord Je -- sus, 
@@ -179,7 +193,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-	\set stanza = "3."
+	\vThree
 	Be near me, Lord Je -- sus,
 	I ask Thee to stay
 	Close by me for -- ev -- er,
@@ -190,12 +204,13 @@ verseThree = \lyricmode {
 	To live with Thee there.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+ % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -219,7 +234,46 @@ verseThree = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %\bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
 }
 
 %%%%%%
@@ -229,7 +283,7 @@ verseThree = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -245,5 +299,6 @@ verseThree = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %\bottom
+  \refs
 }

@@ -5,10 +5,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
-
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Victimae Paschali laudes;" Tr. Jane Elizabeth Leeson (1807-82) in Henry Fornby's \italic "Catholic Hymns," 1851
+      }
+      \wordwrap {
+        Music: VICTIMAE PASCHALI, 77 77 D, Adapt. from \italic "Katholisches Gesangbuch," 1859; Harmony from various sources
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -136,7 +148,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Christ the Lord is ris'n to -- day:
   Chris -- tians, haste your vows to pay;
   Of -- fer ye your prais -- es meet
@@ -148,7 +160,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Christ, the Vic -- tim un -- de -- filed,
   Man to God hath re -- con ciled;
   Whilst in strange and aw -- ful strife
@@ -160,7 +172,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Say, O won -- d'ring Ma -- ry, say,
   What thou saw -- est on thy way?
   “I be -- held, where Christ had lain,
@@ -172,7 +184,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Christ, who once for sin -- ners bled,
   Now the first -- born from the dead,
   Thron'd in end -- less might and pow'r,
@@ -183,12 +195,13 @@ verseFour = \lyricmode {
   Help and save us, gra -- cious Lord!
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -208,14 +221,54 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 80 4)
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -223,7 +276,7 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
@@ -240,5 +293,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }

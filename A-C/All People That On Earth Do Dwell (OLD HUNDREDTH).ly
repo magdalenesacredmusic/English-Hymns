@@ -10,6 +10,19 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Psalm 100," versified by William Kethe, \italic Day's "Psalter," 1651
+      }
+      \wordwrap {
+        Music: OLD HUNDREDTH, LM, Louis Bourgeois, \italic "Genevan Psalter," 1551
+      }
+    }
+  }
+}
+
 top = \markup {
 \fill-line {
       \column {
@@ -134,11 +147,11 @@ bass = \relative c {
 	fs' |
 	g4 e d a |
 	b( c) d2 |
-	g
+	g,
 }
 
 verseOne = \lyricmode {
-	\set stanza = "1."
+	\vOne
 	All peo -- ple that on earth do dwell,
 	Sing to the Lord with cheer -- ful voice.
 	Him serve with fear, His praise forth tell;
@@ -146,7 +159,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-	\set stanza = "2."
+	\vTwo
 	The Lord, ye know, is God in -- deed;
 	With -- out our aid He did us make;
 	We are His folk, He doth us feed,
@@ -154,7 +167,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-	\set stanza = "3."
+	\vThree
 	O en -- ter then His gates with praise;
 	Ap -- proach with joy His courts un -- to;
 	Praise, laud, and bless His Name al -- ways,
@@ -163,7 +176,7 @@ verseThree = \lyricmode {
 
 
 verseFour = \lyricmode {
-	\set stanza = "4."
+	\vFour
 	For why? the Lord our God is good;
 	His mer -- cy is for ev -- er sure;
 	His truth at all times firm -- ly stood,
@@ -171,7 +184,7 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-	\set stanza = "5."
+	\vFive
 	To Fa -- ther, Son and Ho -- ly Ghost,
 	The God Whom Heav'n and earth a -- dore,
 	From men and from the an -- gel host
@@ -407,13 +420,16 @@ bassb = \relative c {
 	g,
 }
 
-
+%%%%%
+%%%%%
+%%%%%
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper_multipage.ly"
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -439,7 +455,8 @@ bassb = \relative c {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  \refs
+  %\bottom
   \pageBreak
   %%%%%%%%%%%%%%%%
 %% score 2 %%%%%
@@ -457,22 +474,17 @@ bassb = \relative c {
 
 \score { <<
 	 \new Voice = "melodya" {\melodya }
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-         sopranos { \voiceOne << \sopranoa >> }
-      \context Voice =
-         altos { \voiceTwo << \altoa >> }
-      
+  \new ChoirStaff <<
+   \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodya }
+        \new Voice = "alto" { \voiceTwo \altoa }
+      >>
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenora }
+        \new Voice = "bass" { \voiceTwo \bassa }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-        tenors { \voiceOne << \tenora >> }
-      \context Voice =
-        basses { \voiceTwo << \bassa >> }
-    >>
-  >>
 >>
 \midi { 
    \context {
@@ -498,22 +510,17 @@ bassb = \relative c {
 }
 \score { <<
 	 \new Voice = "melodyb" {\melodyb }
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-         sopranos { \voiceOne << \sopranob >> }
-      \context Voice =
-         altos { \voiceTwo << \altob >> }
-      
+	 \new ChoirStaff <<
+  \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodyb }
+        \new Voice = "alto" { \voiceTwo \altob }
+      >>
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenorb }
+        \new Voice = "bass" { \voiceTwo \bassb }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-        tenors { \voiceOne << \tenorb >> }
-      \context Voice =
-        basses { \voiceTwo << \bassb >> }
-    >>
-  >>
 >>
 \midi { 
    \context {
@@ -528,11 +535,130 @@ bassb = \relative c {
 %%%%%%
 %%%%%%
 %%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+}
+
+%%%%%%%%%%%%%%  
+#(define output-suffix "Hymnal2")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \markup {
+\fill-line {
+      \column {
+          \line {\caps "Alternative Version" - \small "Melody in Tenor"}
+      }
+      \column{
+      \line {Louis Bourgeois, \italic "Genevan Psalter," 1551}
+      }
+}
+}
+
+\score { <<
+	 \new Voice = "melodya" {\melodya }
+  \new ChoirStaff <<
+   \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodya }
+        \new Voice = "alto" { \voiceTwo \altoa }
+      >>
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenora }
+        \new Voice = "bass" { \voiceTwo \bassa }
+      >>
+    >>
+>>
+\midi { 
+   \context {
+       \Score 
+       tempoWholesPerMinute = #(ly:make-moment 84 4)
+            }
+       } 
+    \include "hymn_layout.ly"
+} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%
+#(define output-suffix "Hymnal3")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  
+  \markup {
+\fill-line {
+      \column {
+          \line {\caps "Alternative Version" - \small "Melody in Tenor"}
+      }
+      \column{
+      \line {Harmony by John Dowland}
+      }
+}
+}
+\score { <<
+	 \new Voice = "melodyb" {\melodyb }
+	   \new ChoirStaff <<
+  \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodyb }
+        \new Voice = "alto" { \voiceTwo \altob }
+      >>
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenorb }
+        \new Voice = "bass" { \voiceTwo \bassb }
+      >>
+    >>
+         >>
+\midi { 
+   \context {
+       \Score 
+       tempoWholesPerMinute = #(ly:make-moment 84 4)
+            }
+       } 
+    \include "hymn_layout.ly"
+}
+}
+ % }
+%%%%%%
+%%%%%%
+%%%%%%
 #(define output-suffix "Melody")
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -550,5 +676,6 @@ bassb = \relative c {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  \refs
+  %\bottom
 }

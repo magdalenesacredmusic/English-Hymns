@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Veni, sancte Spiritus," 13th cent.; Tr. John Mason Neale (1818-66)
+      }
+      \wordwrap {
+        Music: VENI SANCTE SPIRITUS 7 7 7 D, Samuel Webbe the elder (1740-1816)
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -123,7 +136,7 @@ bass = \relative c, {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Come, Thou ho -- ly Pa -- ra -- clete,
   And from Thy ce -- les -- tial seat
   Send Thy light and bril -- lian -- cy:
@@ -133,7 +146,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Come, of com -- for -- ters the best,
   Of the soul the sweet -- est guest,
   Come in toil re -- fresh -- ing -- ly:
@@ -143,7 +156,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   O Thou Light, most pure and blest,
   Shine with -- in the in -- most breat
   Of Thy faith -- ful com -- pan -- y.
@@ -153,7 +166,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   What is soil -- èd, make Thou pure;
   What is wound -- ed, work its cure;
   What is parch -- èd, fruc -- ti -- fy;
@@ -164,7 +177,7 @@ verseFour = \lyricmode {
 
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   Fill Thy faith -- ful, who con -- fide
   In Thy pow'r to guard and guide,
   With Thy sev'n -- fold Mys -- ter -- y.
@@ -174,66 +187,4 @@ verseFive = \lyricmode {
 }
 
 
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Lyrics \lyricsto soprano \verseFive
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 84 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
-}
-
-%%%%%%
-%%%%%%
-%%%%%%
-#(define output-suffix "Melody")
-\book {
-  \include "lilypond-book-preamble.ly"
-  \include "hymn_melody_paper.ly"
-  \top
-  \score {
-    %\transpose c bf,
-    <<
-      \new Voice = "tune" {
-        \melody
-      }
-      \new Lyrics \lyricsto "tune" { \verseOne }
-      \new Lyrics \lyricsto "tune" { \verseTwo }
-      \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive}
-    >>
-    \include "hymn_layout.ly"
-  }
-  \markup { 
-    \vspace #0.5 
-  }
-  \bottom
-}
-
-
+\include "hymn_scores.ly"

@@ -6,9 +6,23 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \line {
+        Text: Charles Wesley (1707-1788)
+      }
+      \wordwrap {
+        Music: {LLANFAIR 74 74 D, "Welsh Hymn Melody"; Harm. R. Vaughan Williams, \italic "The English Hymnal"
+      }
+    }
+  }
+}
+}
 
 top = \markup {
 \fill-line {
@@ -62,7 +76,7 @@ melody = \relative c'' {
 
   g,4 g b b |
   d c8[ b] a2 |
-  d4.(^\markup {\italic "In unison"} c8 b4) c8[ b] |
+  d4.( c8 b4) c8[ b] |
   a2 g \bar "|."
 }
 
@@ -85,7 +99,7 @@ alto = \relative c' {
 
   g4 d d g |
   g a8[ g] fs2 |
-  << { \voiceTwo d4 e8[ fs] <d g>4 c8[ d]} \\ { \voiceFour d2 s4 g } >> |
+  << { \voiceTwo d4^\markup {\italic "In unison"} e8[ fs] <d g>4 c8[ d]} \\ { \voiceFour d2 s4 g } >> |
   <e g>4 <d fs> d2 \bar "|."
 }
 
@@ -136,7 +150,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Christ, the Lord, is ris'n to -- day, Al -- le -- lu -- ia!
   Sons of men and an -- gels say!, Al -- le -- lu -- ia!
   Raise your joys and tri -- umphs high, Al -- le -- lu -- ia!
@@ -145,7 +159,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Love's re -- deem -- ing work is done, Al -- le -- lu -- ia!
   Fought the fight, the bat -- tle won; Al -- le -- lu -- ia!
   Lo! our Sun's ec -- lipse is o'er, Al -- le -- lu -- ia!
@@ -153,7 +167,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Vain the stone, the watch, the seal, Al -- le -- lu -- ia!
   Christ hath burst the gates of hell: Al -- le -- lu -- ia!
   Death in vain for -- bids His rise, Al -- le -- lu -- ia!
@@ -162,20 +176,61 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Lives a -- gain our glo -- rious King, Al -- le -- lu -- ia!
   Where, O death, is now thy sting? Al -- le -- lu -- ia!
   Once He died our souls to save, Al -- le -- lu -- ia!
   Where thy vic -- to -- ry, O grave? Al -- le -- lu -- ia!
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score { %\transpose c bf,
+  % \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  % \bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -197,11 +252,11 @@ verseFour = \lyricmode {
         tempoWholesPerMinute = #(ly:make-moment 96 4)
       }
     }
-    \include "hymn_layout.ly"
-  }
-  \bottom
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
-
 %%%%%%
 %%%%%%
 %%%%%%
@@ -209,7 +264,7 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
@@ -226,8 +281,10 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
+
 
 
 %{ \markup {

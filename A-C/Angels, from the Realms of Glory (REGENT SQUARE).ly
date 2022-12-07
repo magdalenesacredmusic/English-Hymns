@@ -10,13 +10,26 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: James Montgomery (1771-1854), 1816, 1825
+      }
+      \wordwrap {
+        Music: REGENT SQUARE, 87 87 87, Henry Smart (1813-79), 1866
+      }
+    }
+  }
+}
+
 top = \markup {
 \fill-line {
       \column {
           \line {REGENT SQUARE 87 87 87}
       }
       \column{
-      \line {Henry Smart, 1866}
+      \line {Henry Smart (1813-79), 1866}
       }
 }
 }
@@ -46,14 +59,14 @@ melody = \relative c' {
   f4 d bf' f |
   d'4. c8 bf4 f |
   g g f bf |
-  f ef d2 \bar "||"
+  f ef d2 \bar "|"
 
   f4 d bf' f |
   d'4. c8 bf4 a |
   bf a g a8[ bf] |
-  a4 g f2 \bar "||"
+  a4 g f2 \bar "|" %\break
 
-  c'4.^\markup {Refrain} c8 a4 f |
+  c'4.^\markup {\smallCaps Refrain.} c8 a4 f |
   d'4. c8 bf4 g |
   ef' d c bf |
   bf a bf2 \bar "|."
@@ -114,7 +127,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   An -- gels, from the realms of glo -- ry,
   Wing your flight o'er all the earth;
   Ye who sang cre -- a -- tion's sto -- ry,
@@ -122,30 +135,33 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Shep -- herds, in the fields a -- bid -- ing,
   Watch -- ing o'er your flocks by night,
   God with man is now re -- sid -- ing,
   Yon -- der shines the in -- fant light;
   
-    {
+   
+}
+
+verseThree = \lyricmode {
+  \vThree
+  Sag -- es, leave your con -- tem -- pla -- tions,
+  Bright -- er vi -- sions beam a -- far;
+  Seek the great De -- sire of na -- tions;
+  Ye have seen his na -- tal star;
+  
+   {
       \override LyricText #'font-shape = #'italic  
+ \unset shortVocalName
  Come and wor -- ship,
     come and wor -- ship,
     Wor -- ship Christ, the new -- born King.
   }
 }
 
-verseThree = \lyricmode {
-  \set stanza = "3."
-  Sag -- es, leave your con -- tem -- pla -- tions,
-  Bright -- er vi -- sions beam a -- far;
-  Seek the great De -- sire of na -- tions;
-  Ye have seen his na -- tal star;
-}
-
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Saints, be -- fore the al -- tar bend -- ing,
   Watch -- ing long in hope and fear,
   Sud -- den -- ly the Lord, des -- cend -- ing,
@@ -153,20 +169,20 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   All cre -- a -- tion, join in prais -- ing
   God, the Fa -- ther, Spir -- it, Son,
   Ev -- er -- more your voic -- es rais -- ing
   To th’e -- ter -- nal Three in One.
 }
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+ % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -192,7 +208,49 @@ verseFive = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %\bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
 
 %%%%%%
@@ -202,7 +260,7 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -220,7 +278,8 @@ verseFive = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  \refs
+  %\bottom
 }
 
   %{ The orgininal verses 5-7 are found below.

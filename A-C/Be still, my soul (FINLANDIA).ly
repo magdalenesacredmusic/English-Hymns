@@ -6,11 +6,25 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Stille, mein Wille; dein Jesus hilft siegen," Kathrina von Schlegel (1697-1797); Tr. Jane Borthwick (1813-1897)
+      }
+      \wordwrap {
+        Music: FINLANDIA,  10 10  10 10  10 10, Jean Sibelius (1865-1957)
+      }
+    }
+  }
+}
+
 top = \markup {
+  \tiny {
   \fill-line {
     \column {
       \line {FINLANDIA  10 10  10 10  10 10}
@@ -20,8 +34,10 @@ top = \markup {
     }
   }
 }
+}
 
 bottom = \markup  {
+  \tiny {
   \fill-line {
     \null
     \right-column {
@@ -30,6 +46,7 @@ bottom = \markup  {
       \line {Tr. Jane Borthwick (1813-1897)}
     }
   }
+}
 }
 
 \header {
@@ -48,16 +65,16 @@ melody = \relative c'' {
   \partial 2. a4 g a |
   bf2. a4 |
   g a f4. g8 |
-  g4( a2.~ |
-  a4) a g a |
+  g4( a2.)~ |
+  a4 a g a |
   bf2. a4 |
   g a f4. g8 |
   a1~ |
   a4 c c c |
   d2. a4 |
   a c c4. g8 |
-  g4( bf2.~ |
-  bf4) \bar ""
+  g4( bf2.)~ |
+  bf4 \bar ""
     bf a g |
     a2. f4 |
     f g g4. a8 |
@@ -65,8 +82,8 @@ melody = \relative c'' {
     a4 c c c |
     d2. a4 |
     a c c4. g8 |
-    g4( bf2.~ |
-    bf4) bf a g |
+    g4( bf2.)~ |
+    bf4 bf a g |
     a2. f4 |
     f g g4. f8 |
     f1~ | 
@@ -109,24 +126,24 @@ tenor = \relative c' {
   c4 c c |
   c2. c4 |
   c c bf4. bf8 |
-  bf4( c2.~ |
-  c4) c c c |
+  bf4( c2.)~ |
+  c4 c c c |
   c2. c4 |
   c c bf4. bf8 |
   c1~ |
   c4 a a a |
   a2. d4 |
   d c c4. c8 |
-  c4( d2.~ |
-  d4) d c d |
+  c4( d2.)~ |
+  d4 d c d |
   c2. c4 |
   d d d4. cs8 |
   cs1~ |
   cs4 c a a |
   a2. d4 |
   d c c4. c8 |
-  c4( d2.~ |
-  d4) d c d |
+  c4( d2.)~ |
+  d4 d c d |
   c2. a4 |
   a bf bf4. a8 |
   a1~ |
@@ -138,16 +155,16 @@ bass = \relative c {
  f4 bf a |
  g2. f4 |
  bf a bf4. g8 |
- g4( f2.~ |
- f4) f bf a |
+ g4( f2.)~ |
+ f4 f bf a |
  g2. f4 |
  bf a bf4. g8 |
  f1~ |
  f4 f f e |
  d2. d4 |
  d a a4. c8 |
- c4( g2.~ |
- g4) 
+ c4( g2.)~ |
+ g4 
    g a bf |
    c2. a'4 |
    bf4 bf bf4. a8 |
@@ -155,8 +172,8 @@ bass = \relative c {
    a4 f f e |
    d2. d4 |
    d a' a4. c8 |
-   c4( g2.~ |
-   g4) g, a bf |
+   c4( g2.)~ |
+   g4 g, a bf |
    c2. c4 |
    c c c4. f8 |
    f1~ |
@@ -164,7 +181,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Be still, my soul— the Lord is on thy side!
   Bear pa -- tient --  ly the cross of grief or pain;
   Leave to thy God to or -- der and pro -- vide—
@@ -174,7 +191,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Be still, my soul— thy God doth un -- der -- take
   To guide the fu -- ture as he has the past;
   Thy hope, thy con -- fi -- dence let noth -- ing shake—
@@ -184,7 +201,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Be still, my soul— the hour is has -- t'ning on
   When we shall be for -- ev -- er with the Lord,
   When dis -- ap -- point -- ment, grief, and fear are gone,
@@ -193,12 +210,14 @@ verseThree = \lyricmode {
   All safe and bless -- ed we shall meet at last.
 }
 
+#(set-global-staff-size 20)
 \book {
-  \include "hymn_paper.ly"
+ % \include "lilypond-book-preamble.ly"
+  %\include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -222,9 +241,48 @@ verseThree = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+%  \bottom
+\refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -232,7 +290,7 @@ verseThree = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -248,5 +306,6 @@ verseThree = \lyricmode {
   \markup {
     \vspace #0.5
   }
-  \bottom
+%  \bottom
+\refs
 }

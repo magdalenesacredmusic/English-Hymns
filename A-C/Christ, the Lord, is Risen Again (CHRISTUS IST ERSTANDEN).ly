@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Christus ist erstanden," Michael Weisse (ca. 1488-1534), 1531; Tr. Catherine Winkworth (1827-78), 1858
+      }
+      \wordwrap {
+        Music: CHRIST IST ERSTANDEN 77 77, German, 13th ent.; Harmony Anonymous
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -163,13 +176,14 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Christ the Lord is ris'n a -- gain;
   Christ hath bro -- ken ev' -- ry chain
   Hark! an -- gel -- ic voi -- ces cry,
   Sing -- ing ev -- er -- more on high,
   Al -- le -- lu -- ia!
-
+  
+  \vOff
   Al -- le -- lu -- ia! Al -- le -- lu -- ia!
   Al -- le -- lu -- ia!
   Hark, an -- gel -- ic voi -- ces cry,
@@ -178,7 +192,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   He Who gave for us His life,
   Who for us en -- dured the strife,
   Is our Pas -- chal Lamb to -- day;
@@ -187,7 +201,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   He Who bore all pain and loss
   Com -- fort -- less up -- on the Cross,
   Lives in glo -- ry now on high,
@@ -196,7 +210,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   He Who slum -- bered in the grave,
   Is ex -- alt -- ed now to save;
   Through the u -- ni -- verse it rings
@@ -204,86 +218,49 @@ verseFour = \lyricmode {
   Al -- le -- lu -- ia!
 }
 
-
 verseFive = \lyricmode {
-  \set stanza = "5."
-  Now he bids us tell a -- broad,
-  How the lost may be re -- stored,
-  How the pen -- i -- tent for -- giv'n,
-  How we too may en -- ter heav'n.
-  Al -- le -- lu -- ia!
 }
 
 verseSix = \lyricmode {
-  \set stanza = "6."
-  Thou, our Pas -- chal Lamb in -- deed,
-  Christ, Thy ran -- somed peo -- ple feed;
-  Take our sins and guilt a -- way,
-  That we all may sing for aye:
-  Al -- le -- lu -- ia!
 }
 
-
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Lyrics \lyricsto soprano \verseFive
-      \new Lyrics \lyricsto soprano \verseSix
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 100 4)
+extraVerses =     \markup {
+  \large {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Now he bids us tell abroad,"
+            "How the lost may be restored,"
+            "How the penitent forgiv'n,"
+            "How we too may enter heav'n."
+            "Alleluia!"
+          }
+        }
       }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "6. "
+          \column {
+            "Thou, our Paschal Lamb indeed,"
+            "Christ, Thy ransomed people feed;"
+            "Take our sins and guilt away,"
+            "That we all may sing for aye:"
+            "Alleluia!"
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
     }
-    \include "hymn_layout.ly"
   }
-  \bottom
 }
 
-%%%%%%
-%%%%%%
-%%%%%%
-#(define output-suffix "Melody")
-\book {
-  \include "lilypond-book-preamble.ly"
-  \include "hymn_melody_paper.ly"
-  \top
-  \score {
-    %\transpose c bf,
-    <<
-      \new Voice = "tune" {
-        \melody
-      }
-      \new Lyrics \lyricsto "tune" { \verseOne }
-      \new Lyrics \lyricsto "tune" { \verseTwo }
-      \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive}
-      \new Lyrics \lyricsto "tune" {\verseSix}
-    >>
-    \include "hymn_layout.ly"
-  }
-  \markup { 
-    \vspace #0.5 
-  }
-  \bottom
-}
+
+\include "hymn_scores_extra.ly"

@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Rop tú mo Baile," D. Forgaill, 6th cent.; Tr. Mary E. Byrne, 1905; versified Eleanor H. Hull, 1912
+      }
+      \wordwrap {
+        Music: SLANE, 10 10 9 10, Irish traditional
+      }
+    }
+  }
+}
 
 top = \markup {
 \fill-line {
@@ -140,7 +153,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
 Be thou my vi -- sion, O Lord of my heart;
 Naught be all else to me, save that thou art.
 Thou my best thought, by day or by night,
@@ -148,7 +161,7 @@ Wak -- ing or sleep -- ing, thy pre -- sence my light.
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
 Be thou my Wis -- dom, and thou my true Word;
 I ev -- er with thee and thou with me, Lord;
 Thou my great Fa -- ther, I thy true son;
@@ -156,7 +169,7 @@ Thou in me dwell -- ing, and I with thee one.
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Be thou my bat -- tle shield, sword for the fight;
 Be thou my dig -- ni -- ty, thou my de -- light;
 Thou my soul’s shel -- ter, thou my high tow'r:
@@ -164,7 +177,7 @@ Raise thou me heav'n -- ward, O pow'r of my pow'r.
 }
 
 verseFour = \lyricmode {
-	\set stanza = "4."
+	\vFour
 Rich -- es I heed not, nor man’s emp -- ty praise,
 Thou mine in -- her -- i -- tance, now and al -- ways:
 Thou and thou on -- ly, first in my heart,
@@ -172,20 +185,20 @@ High King of Heav -- en, my trea -- sure thou art.
 }
 
 verseFive = \lyricmode {
-	\set stanza = "5."
+	\vFive
 High King of heav -- en, my vic -- to -- ry won,
 May I reach Heav -- en’s joys, O bright Heav'n’s Sun!
 Heart of my \set ignoreMelismata = ##t own heart, \unset ignoreMelismata what -- ev -- er be -- fall,
 Still be my vi -- sion, O rul -- er of all.	
 }
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -211,9 +224,50 @@ Still be my vi -- sion, O rul -- er of all.
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %\bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -221,7 +275,7 @@ Still be my vi -- sion, O rul -- er of all.
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %\top
   \score {
     %\transpose c bf,
     <<
@@ -239,5 +293,6 @@ Still be my vi -- sion, O rul -- er of all.
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+ % \bottom
+ \refs
 }

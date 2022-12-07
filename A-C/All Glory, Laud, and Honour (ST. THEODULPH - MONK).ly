@@ -10,6 +10,19 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \line {
+        Text: \italic "Gloria, laus, et honor," Palm Sunday Procession; Tr. J.M. Neale, \italic "Hymns Ancient and Modern"
+      }
+      \wordwrap {
+        Music: ST. THEODULPH, 76 76 D, Melchior Teschner; Harm. W.H. Monk
+      }
+    }
+  }
+}
+
 top = \markup {
 \fill-line {
       \column {
@@ -172,7 +185,7 @@ refrainText = \lyricmode {
     {
       \override LyricText #'font-shape = #'italic
       All glo -- ry, laud, and hon -- our
-      To Thee, Re -- dee -- mer, King,
+      To thee, Re -- dee -- mer, King,
     }
     \new Lyrics {
       \set associatedVoice = "refrain"
@@ -194,7 +207,7 @@ verseTwo = \lyricmode {
 verseThree = \lyricmode {
   \set stanza = "3."
   The com -- pa -- ny of An -- gels
-  Are prais -- ing Thee on high,
+  Are prais -- ing thee on high,
   And mor -- tal men and all things
   Cre -- a -- ted make re -- ply.
 }
@@ -202,16 +215,16 @@ verseThree = \lyricmode {
 verseFour = \lyricmode {
   \set stanza = "4."
   The peo -- ple of the He -- brews
-  With palms to meet Thee went:
+  With palms to meet thee went:
   Our praise and pray'r and an -- thems
-  Be -- fore Thee we pre -- sent.
+  Be -- fore thee we pre -- sent.
 }
 
 verseFive = \lyricmode {
   \set stanza = "5."
-  To Thee be-- fore Thy Pas -- sion
+  To thee be-- fore thy Pas -- sion
   They sang their hymns of praise;
-  To Thee now high ex -- alt -- ed
+  To thee now high ex -- alt -- ed
   Our mel -- o -- dy we raise.
 }
 
@@ -232,7 +245,7 @@ verseSix = \lyricmode {
   \header {
     tagline = ""
   }
-  \top
+  %\top
 \score { \transpose c bf,
   \context ChoirStaff <<
     \context Staff = upper <<
@@ -270,7 +283,8 @@ verseSix = \lyricmode {
   }
     \include "hymn_layout.ly"
   }
-  \bottom
+ % \bottom
+ \refs
 }
 
 %%%%%%
@@ -280,7 +294,7 @@ verseSix = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -302,5 +316,6 @@ verseSix = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+ % \bottom
+ \refs
 }

@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Adesto, sancta Trinitas," c. 10th cent.; Tr. John Mason Neale (1818-66)
+      }
+      \wordwrap {
+        Music: ADESTO SANCTA TRINITAS, LM, Chartes Church Melody; Harm. R. Vaughan Williams, 1906
+      }
+    }
+  }
+}
 
 top = \markup {
 \fill-line {
@@ -46,7 +59,7 @@ global = {
 melody = \relative c'' {
   \global
   \partial 4
-  g4^\markup { \italic "To be sung in unison." } |
+  g4 |
   g2 d4 |
   g2 g4 |
   a2 a4 |
@@ -74,7 +87,7 @@ melody = \relative c'' {
 alto = \relative c' {
   \global
   \partial 4
-  <b d>4 |
+  <b d>4^\markup { \italic "Unison."}  |
   <b d>2 b4 |
   b2 <b e>4 |
   <d fs>2 <d fs>4 |
@@ -157,7 +170,7 @@ bass = \relative c {
 
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Be pre -- sent, Ho -- ly Tri -- ni -- ty,
   Like splen -- dor, and one De -- i -- ty;
   Of things a -- bove, and things be -- low,
@@ -165,7 +178,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Thee all the ar -- mies of the sky
   A -- dore, and laud, and mag -- ni -- fy;
   And na -- ture, in her tri -- ple frame,
@@ -173,7 +186,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   And we, too, thanks and ho -- mage pay,
   Thine own a -- dor -- ing flock to -- day;
   O join to that ce -- les -- tial song
@@ -181,7 +194,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Light, sole and one, we Thee con -- fess,
   With trip -- le praise we right -- ly bless;
   Al -- pha and O -- me -- ga we own,
@@ -189,20 +202,20 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   To Thee, O un -- be -- got -- ten One,
   And Thee, O sole -- be -- got -- ten Son,
   And Thee, O Ho -- ly Ghost, we raise
   Our e -- qual and e -- ter -- nal praise.
 }
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+ % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -228,9 +241,50 @@ verseFive = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+ % \bottom
+ \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -238,7 +292,7 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -256,7 +310,8 @@ verseFive = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  \refs
+ %\bottom
 }
 
 

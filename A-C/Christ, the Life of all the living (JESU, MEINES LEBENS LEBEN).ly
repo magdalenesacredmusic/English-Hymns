@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Jesu, meines Lebens Leben," Ernst Christoph Homburg (1605-81); Tr. Catherine Winkworth (1829-78), alt.
+      }
+      \wordwrap {
+        Music: JESU, MEINES LEBENS LEBEN 87 87 77 77, Darmstadt \italic "Gesangbuch," 1687
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -138,7 +151,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Christ, the Life of all the liv -- ing, 
   Christ the Death of death, our foe,
   Who thy -- self for us once giv -- ing
@@ -150,7 +163,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Thou, O Christ, hast ta -- ken on thee
   Bit -- ter strokes, a cru -- el rod;
   Pain and scorn were heaped up -- on thee,
@@ -162,7 +175,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Thou didst bear the smit -- ing on -- ly
   That it might not fall on me;
   Stood -- est false -- ly charged and lone -- ly
@@ -174,7 +187,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Then for all that wrought our par -- don,
   For thy sor -- rows deep and sore,
   For thine an -- guish in the gar -- den,
@@ -185,62 +198,6 @@ verseFour = \lyricmode {
   Praise thee ev -- er -- more on high.
 }
 
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 96 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
-}
+verseFive = {}
 
-%%%%%%
-%%%%%%
-%%%%%%
-#(define output-suffix "Melody")
-\book {
-  \include "lilypond-book-preamble.ly"
-  \include "hymn_melody_paper.ly"
-  \top
-  \score {
-    %\transpose c bf,
-    <<
-      \new Voice = "tune" {
-        \melody
-      }
-      \new Lyrics \lyricsto "tune" { \verseOne }
-      \new Lyrics \lyricsto "tune" { \verseTwo }
-      \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour}
-    >>
-    \include "hymn_layout.ly"
-  }
-  \markup {
-    \vspace #0.5
-  }
-  \bottom
-}
+\include "hymn_scores.ly"

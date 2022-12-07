@@ -10,6 +10,19 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Psalm 47," para. Anon., \italic "The Psalter," 1912
+      }
+      \wordwrap {
+        Music: ST. THOMAS (WILLIAMS), 66 86, \italic "Williams' Psalmody," 1770; \italic "The English Hymnal," 1906
+      }
+    }
+  }
+}
+
 top = \markup {
   \fill-line {
     \column {
@@ -164,13 +177,13 @@ For none can save but God a -- lone,
 He is the Lord Most High.
 }
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -196,7 +209,49 @@ He is the Lord Most High.
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %\bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
 
 %%%%%%
@@ -206,7 +261,7 @@ He is the Lord Most High.
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %\top
   \score {
     %\transpose c bf,
     <<
@@ -224,5 +279,6 @@ He is the Lord Most High.
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %\bottom
+  \refs
 }

@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Christe, sanctorum decus Angelorum," 9th cent.; Tr. Athelstan Riley (1858-1945), 1906
+      }
+      \wordwrap {
+        Music: COELITES PLAUDANT 11 11 11 5, Rouen Church Melody, Harm. Ralph Vaughan Williams (1872-1958)
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -51,7 +64,7 @@ melody = \relative c'' {
   c( b) c2 |
   
   c2 d4 d |
-  e( d) a2 |
+  e( c) a2 |
   d4. a8 b4 c |
   b( a) g2 |
   
@@ -66,7 +79,7 @@ melody = \relative c'' {
 
   c4( d c b) |
   c1
-\bar "|."
+  \bar "|."
 }
 
 alto = \relative c' {
@@ -121,30 +134,30 @@ tenor = \relative c' {
 
 bass = \relative c {
   \global
- c2 e4 f |
- g,2 a |
- f'4. d8 e4 f |
- g2 c, |
+  c2 e4 f |
+  g,2 a |
+  f'4. d8 e4 f |
+  g2 c, |
  
- a'2 g4 g |
- c, a d2 |
- b4. d8 g,4 a |
- b d g,2 |
+  a'2 g4 g |
+  c, a d2 |
+  b4. d8 g,4 a |
+  b d g,2 |
  
- c2 a4 g |
- d' a d2 |
- f4. d8 e4 f |
- d a' e2 |
- g2 a4 d, |
- e4 f g2 |
- c,,1 |
+  c2 a4 g |
+  d' a d2 |
+  f4. d8 e4 f |
+  d a' e2 |
+  g2 a4 d, |
+  e4 f g2 |
+  c,,1 |
  
- a'4 d, e g |
- c,1
+  a'4 d, e g |
+  c,1
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Christ, the fair glo -- ry of the ho -- ly An -- gels,
   Thou who hast made us, thou who o'er us rul -- est,
   Grant of thy mer -- cy un -- to us thy ser -- vants
@@ -152,7 +165,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Send thy Arch -- an -- gel, Mich -- ael, to our suc -- cor;
   Peace -- mak -- er bless -- èd, may he ban -- ish from us
   Striv -- ing and hat -- red, so that for the peace -- ful
@@ -160,7 +173,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Send thy Arch -- an -- gel, Gab -- ri -- el, the might -- y;
   Her -- ald of heav -- en, may he from us mor -- tals
   Spurn the old ser -- pent, watch -- ing o'er the tem -- ples
@@ -168,37 +181,60 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Send thy Arch -- an -- gel, Raph -- ael, the re -- stor -- er
   Of the mis -- guid -- ed ways of men who wan -- der,
   Who at thy bid -- ding strength -- ens soul and bod -- y
   With thine an -- oint -- ing.
+  \vOff
+  \set stanza = "6." A -- men.
 }
 
-verseFive = \lyricmode {
-  \set stanza = "5."
-  May the blest Moth -- er of our God and Sav -- ior,
-  May the as -- semb -- ly of the Saints in glo -- ry,
-  May the ce -- les -- tial com -- pan -- ies of An -- gels
-  Ev -- er as -- sist us.
+verseFive = \lyricmode {}
+
+verseSix = \lyricmode {}
+
+extraVerses =     
+\markup {
+    \vspace #1
+  \fontsize #1 {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "May the blest Mother of our God and Savior,"
+            "May the assembly of the Saints in glory,"
+            "May the celestial companies of Angels"
+            "Ever assist us."
+          }
+        }
+    \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+           "Father almighty, Son and Holy Spirit,"
+            "God ever blessèd, be thou our preserver;"
+            "Thine is the glory which the Angels worship,"
+            "Veiling their faces.   Amen."
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
 }
 
-verseSix = \lyricmode {
-  \set stanza = "6."
-  Fa -- ther al -- might -- y, Son and Ho -- ly Spir -- it,
-  God ev -- er bless -- èd, be thou our pre -- serv -- er;
-  Thine is the glo -- ry which the An -- gels wor -- ship,
-  Veil -- ing their fac -- es.
-  
-    \set stanza = "6." A -- men.
-}
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -208,9 +244,7 @@ verseSix = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseOne
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Lyrics \lyricsto soprano \verseFive
-      \new Lyrics \lyricsto soprano \verseSix      
+      \new Lyrics \lyricsto soprano \verseFour    
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -225,9 +259,56 @@ verseSix = \lyricmode {
     }
     \include "hymn_layout_ragged.ly"
   }
-  \bottom
+  \extraVerses
+  \markup {
+    \vspace #1
+  }
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout_ragged.ly"
+  }  
+    \extraVerses
+  \markup {
+    \vspace #1
+  }
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -235,7 +316,7 @@ verseSix = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %\top
   \score {
     %\transpose c bf,
     <<
@@ -245,14 +326,17 @@ verseSix = \lyricmode {
       \new Lyrics \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour}
-      \new Lyrics \lyricsto "tune" { \verseFive }
-      \new Lyrics \lyricsto "tune" { \verseSix }      
+      \new Lyrics \lyricsto "tune" { \verseFour}      
     >>
-    \include "hymn_layout.ly"
+    \include "hymn_layout_ragged.ly"
   }
   \markup {
     \vspace #0.5
   }
-  \bottom
+    \extraVerses
+  \markup {
+    \vspace #1
+  }
+ % \bottom
+ \refs
 }

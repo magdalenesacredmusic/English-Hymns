@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Henry Alford (1810-71), 1865
+      }
+      \wordwrap {
+        Music: ST. GEORGE'S WINDSOR, 77 77 D, George J. Elvey (1816-93)
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -25,7 +38,7 @@ bottom = \markup  {
   \fill-line {
     \null 
     \right-column {
-      \line {Henry Alford, 1865}
+      \line {Henry Alford (1810-71), 1865}
     }
   } 
 }
@@ -147,7 +160,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Come, ye thank -- ful peo -- ple, come,
   Raise the song of har -- vest -- home:
   All is safe -- ly gath -- ered in,
@@ -159,7 +172,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   We our -- selves are God's own field,
   Fruit un -- to his praise to yield;
   Wheat and tares to -- ge -- ther sown,
@@ -171,7 +184,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   For the Lord our God shall come,
   And shall take his har -- vest home;
   From his field shall in that day
@@ -183,7 +196,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Then, thou Church tri -- um -- phant, come,
   Raise the song of har -- vest -- home!
   All are safe -- ly gath -- ered in,
@@ -194,63 +207,6 @@ verseFour = \lyricmode {
   Raise the glo -- rious har -- vest -- home!
 }
 
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score { \transpose c bf,
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 96 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
-}
+verseFive = {}
 
-%%%%%%
-%%%%%%
-%%%%%%
-#(define output-suffix "Melody")
-\book {
-  \include "lilypond-book-preamble.ly"
-  \include "hymn_melody_paper.ly"
-  \top
-  \score {
-    \transpose c bf,
-    <<
-      \new Voice = "tune" {
-        \melody
-      }
-      \new Lyrics \lyricsto "tune" { \verseOne }
-      \new Lyrics \lyricsto "tune" { \verseTwo }
-      \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour }
-    >>
-    \include "hymn_layout.ly"
-  }
-  \markup { 
-    \vspace #0.5 
-  }
-  \bottom
-}
-
+\include "hymn_scores.ly"

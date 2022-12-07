@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: "Christ lag in Todesbanden," Martin Luther, 1524; Tr. R. Massie, \italic "Martin Luther's Spiritual Songs"
+      }
+      \wordwrap {
+        Music: CHRIST LAG IN TODESBANDEN  Irreg., Johann Walther (1496-1570); Harm. \italic "The Chorale Book for England," 1865
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -49,20 +62,49 @@ melody = \relative c'' {
   a4 g a c d |
   c b a \bar "" 
     a |
-  f g a f |
+  f g \bar "" a f |
   e2 d4 \bar "" 
   
     a'4 |
   g a c d |
   c b a \bar "" 
     a4 |
-  f g a f |
+  f g \bar "" a f |
   e2 d2 \bar ""
 
   d4 f g d |
   f g a \bar "" 
     a4 |
-  d c d e |
+  d c \bar "" d e |
+  c b a \bar "" 
+    a4 |
+  c a c g |
+  f( e) d2 \bar ""
+
+  a'4 g8[ f] e2 |
+  d2. \bar "|."
+}
+
+melodya = \relative c'' {
+  \global
+  \partial 4
+  a4 g a c d |
+  c b a \bar "" 
+    a |
+  f g \bar "" \break a f |
+  e2 d4 \bar "" 
+  
+    a'4 |
+  g a c d |
+  c b a \bar "" \break
+    a4 |
+  f g \bar "" a f |
+  e2 d2 \bar ""
+
+  d4 f g d |
+  f g a \bar "" 
+    a4 |
+  d c \bar "" d e |
   c b a \bar "" 
     a4 |
   c a c g |
@@ -91,7 +133,7 @@ alto = \relative c' {
   f e a gs |
   e e c c |
   c c e d |
-  d( cs) d2 |
+  d( cs) \bar "" d2 |
 
   d4 d cs2 |
   d2.
@@ -153,7 +195,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Christ Je -- sus lay in Death's strong bands,
   For our of -- fen -- ces gi -- ven;
   But now at God's right hand He stands,
@@ -165,7 +207,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   No man from Death could vic -- t'ry win,
   O'er all man -- kind he reign -- ed;
   A -- las! that com -- eth of our sin,
@@ -177,7 +219,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Christ Je -- sus, God's own Son, came down,
   That He might us de -- li -- ver,
   And sin des -- troy -- ing, took his crown
@@ -189,7 +231,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   It was a strange and dread -- ful strife,
   When Life and Death con -- tend -- ed;
   The vic -- to -- ry re -- mained with Life,
@@ -202,7 +244,7 @@ verseFour = \lyricmode {
 
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   Here the true Pas -- chal Lamb we see,
   Whom God so free -- ly gave us;
   He died on the ac -- curs -- ed tree
@@ -214,7 +256,7 @@ verseFive = \lyricmode {
 }
 
 verseSix = \lyricmode {
-  \set stanza = "6."
+  \vSix
   So let us keep the fes -- ti -- val
   Where -- to the Lord in -- vites us;
   Christ is Him -- self the joy of all,
@@ -226,7 +268,7 @@ verseSix = \lyricmode {
 }
 
 verseSeven = \lyricmode {
-  \set stanza = "7."
+  \vSeven
   Then let us feast this Eas -- ter day
   On the true Bread of heav -- en;
   The Word of grace hath purged a -- way
@@ -357,9 +399,10 @@ bassa = \relative c {
   \header {
     tagline = ""
   }
-  \top
+ % \top
   \score {
-    \new ChoirStaff <<
+    \new ChoirStaff %\with { \override ChoirStaff.Clef #'space-alist = #((right-edge extra-space . 0.5)) }
+                            <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
         \new Voice = "alto" { \voiceTwo \alto }
@@ -407,7 +450,71 @@ bassa = \relative c {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %\bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodya }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+   \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodya }
+        \new Voice = "alto" { \voiceTwo \altoa }
+      >>
+      \new Lyrics \lyricsto soprano \verseSix
+      \new Lyrics \lyricsto soprano \verseSeven
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenora }
+        \new Voice = "bass" { \voiceTwo \bassa }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 86 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  %\bottom
+  \refs
 }
 
 %%%%%%
@@ -417,12 +524,12 @@ bassa = \relative c {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
-        \melody
+        \melodya
       }
       \new Lyrics \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
@@ -432,12 +539,56 @@ bassa = \relative c {
     >>
     \include "hymn_layout.ly"
   }
+    \markup { 
+    \vspace #0.5 
+  }
+  
+   \markup {
+    \vspace #1
+  \fontsize #1 {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "So let us keep the festival"
+  "Whereto the Lord invites us;"
+  "Christ is himself the joy of all,"
+  "The sun that warms and lights us."
+  "By His grace He doth impart"
+  "Eternal sunshine to the heart;"
+  "The night of sin is ended!"
+  "Hallelujah!"
+          }
+        }
+    \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Then let us feast this Easter day"
+  "On the true Bread of heaven;"
+  "The Word of grace hath purged away"
+  "The old and wicked leaven:"
+  "Christ alone our souls will feed,"
+  "He is our meat and drink indeed;"
+ "Faith lives upon no other."
+  "Hallelujah!"
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+ % \bottom
+ \refs
 }
 %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%
-

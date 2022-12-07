@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Isaac Watts (1674-1748)
+      }
+      \wordwrap {
+        Music: NATIVITY, CM, Henry Lahee (1826-1912)
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -16,7 +29,7 @@ top = \markup {
       \line {NATIVITY  CM}
     }
     \column{
-      \line {Hanry Lahee (1826-1912)}
+      \line {Henry Lahee (1826-1912)}
     }
   }
 }
@@ -100,7 +113,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Come, let us join our cheer -- ful songs
   With an -- gels round the throne;
   Ten thou -- sand thou -- sand are their tongues,
@@ -108,7 +121,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   'Wor -- thy the Lamb that died,' they cry,
   'To be ex -- alt -- ed thus;'
   'Wor -- thy the Lamb', our lips re -- ply,
@@ -116,7 +129,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Je -- sus is wor -- thy to re -- ceive
   Ho -- nor and power di -- vine;
   And bless -- ings more than we can give
@@ -124,69 +137,14 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Let all cre -- a -- tion join in one
   To bless the sa -- cred name
   Of him that sits up -- on the throne,
   And to a -- dore the Lamb.
 }
 
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 96 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
+verseFive = \lyricmode {
 }
 
-%%%%%%
-%%%%%%
-%%%%%%
-#(define output-suffix "Melody")
-\book {
-  \include "lilypond-book-preamble.ly"
-  \include "hymn_melody_paper.ly"
-  \top
-  \score {
-    %\transpose c bf,
-    <<
-      \new Voice = "tune" {
-        \melody
-      }
-      \new Lyrics \lyricsto "tune" { \verseOne }
-      \new Lyrics \lyricsto "tune" { \verseTwo }
-      \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour}
-    >>
-    \include "hymn_layout.ly"
-  }
-  \markup {
-    \vspace #0.5
-  }
-  \bottom
-}
+\include "hymn_scores.ly"

@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Caroline M. Noel (1817-77), 1870
+      }
+      \wordwrap {
+        Music: KING'S WESTON, 65 65 D, Ralph Vaughan Williams, 1925
+      }
+    }
+  }
+}
 
 top = \markup {
 \fill-line {
@@ -25,7 +38,7 @@ bottom = \markup  {
  \fill-line {
    \null 
    \right-column {
-     \line {C.M. Noel, 1870}
+     \line {Caroline M. Noel, 1870}
    }
   } 
 }
@@ -227,40 +240,7 @@ verseSeven = \lyricmode {
   King of glo -- ry now.
 }
 
-
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 100 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
-  
-    \markup {
+extraVerses =     \markup {
   \large {
     \fill-line {
       \hspace #0.1 % moves the column off the left margin;
@@ -271,8 +251,8 @@ verseSeven = \lyricmode {
           \column {
      "Name Him, brothers, name_Him,"
   "With love as strong as death"
-  "But with awe and won der,"
-  "And with bat ed breath!"
+  "But with awe and wonder,"
+  "And with bated breath!"
   "He is God the Savior,"
   "He is Christ the Lord,"
   "Ever to be worshipped,"
@@ -304,7 +284,9 @@ verseSeven = \lyricmode {
   }
 }
 
+lastverse =
 \markup {
+  \vspace #1
   \large {
     \fill-line {
         \line {
@@ -324,8 +306,94 @@ verseSeven = \lyricmode {
       \hspace #1.0
 
     }
-  }  
+  } 
+  
+  %%%%%%%%%%%
+  %%%%%%%
+  %%%%%%%%
+#(set-global-staff-size 20)
+\book {
+  \include "hymn_paper_multipage.ly"
+  \header {
+    tagline = ""
+  }
+ % \top
+  \score { \transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 100 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  } 
+ \extraVerses
+ \lastverse
+  \markup {
+    \vspace #1
+  }
+  \refs
+}
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+    %  \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \extraVerses
+  \lastverse
+  \markup {
+    \vspace #1
+  }
+  \refs
+  %\bottom
 }
 
 %%%%%%
@@ -346,14 +414,19 @@ verseSeven = \lyricmode {
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive}
-      \new Lyrics \lyricsto "tune" { \verseSix }
-      \new Lyrics \lyricsto "tune" { \verseSeven}
+     % \new Lyrics \lyricsto "tune" { \verseFive}
+     % \new Lyrics \lyricsto "tune" { \verseSix }
+     % \new Lyrics \lyricsto "tune" { \verseSeven}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+ \extraVerses
+ \lastverse
+  \markup {
+    \vspace #1
+  }
+  \refs
 }

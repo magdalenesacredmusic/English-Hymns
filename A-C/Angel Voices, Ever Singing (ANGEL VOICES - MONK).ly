@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version  "2.18.0-1"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Francis Pott (1832-1909), 1861
+      }
+      \wordwrap {
+        Music: ANGEL VOICES, 85 85 843. Edwin George Monk (1819-1900), 1861
+      }
+    }
+  }
+}
 
 
 %{
@@ -111,7 +124,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1. "
+  \vOne
 An -- gel voic -- es, ev -- er sing -- ing,
 Round Thy throne of light,
 An -- gel harps, for -- ev -- er ring -- ing,
@@ -123,7 +136,7 @@ Lord of might.
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2. "
+  \vTwo
 Thou Who art be -- yond the farth -- est
 Mor -- tal eye can scan,
 Can it be that Thou re -- gard -- est
@@ -134,18 +147,18 @@ Yea, we can.
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3. "
+  \vThree
 Yea, we know Thy love re -- joic -- es
 O’er each work of Thine;
-Thou didst ears and hands and voic - es
+Thou didst ears and hands and voic -- es
 For Thy praise com -- bine;
-Crafts -- man’s art and music’s mea -- sure
+Crafts -- man’s art and mu -- sic’s mea -- sure
 For Thy plea -- sure
  All com -- bine.
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4. "
+  \vFour
 Here, great God, to -- day we of -- fer
 Of Thine own to Thee;
 And for Thine ac -- cept -- ance prof -- fer,
@@ -156,7 +169,7 @@ Mel -- o -- dy.
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5. "
+  \vFive
 Ho -- nour, glo -- ry, might and mer -- it,
 Thine shall ev -- er be,
 Fa -- ther, Son, and Ho -- ly Spir -- it,
@@ -166,17 +179,12 @@ Earth and Heav -- en
 Ren -- der Thee.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
-
-\header {
-  poet = \markup{ \fontsize #4 \smallCaps "Angel Voices, Ever Singing"  }
-  meter = \markup { \small { Music: ANGEL VOICES 85.85.843.; E.G. Monk, 1861}}
-  piece = \markup { \small {Text: F. Pott, 1861 }}
-  %breakbefore
-  %copyright = ""
-  tagline = ""
-}
+  \header {
+    tagline = ""
+  }
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -202,6 +210,48 @@ Ren -- der Thee.
     }
     \include "hymn_layout.ly"
   }
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
 
 %%%%%%
@@ -225,13 +275,8 @@ Ren -- der Thee.
     >>
     \include "hymn_layout.ly"
   }
-  \markup \override #'(baseline-skip . 1.7) {
-    \vspace #0.7
-    \teeny
-    \column {
-      \line { Music: ANGEL VOICES 85.85.843.; E.G. Monk, 1861 }
-      \line { Text: F. Pott, 1861 }
-    }
+  \markup {
+    \vspace #1
   }
-
+ \refs
 }

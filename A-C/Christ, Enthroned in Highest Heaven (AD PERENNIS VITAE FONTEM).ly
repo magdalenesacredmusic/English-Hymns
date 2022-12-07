@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: "De profundis exclamantes," 13th cent.; Tr. Richard Frederick Littledale (1833–90)
+      }
+      \wordwrap {
+        Music: AD PERENNIS VITAE FONTEM, 87 87 87, Tours Breviary; \italic "The English Hymnal," 1906
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -43,7 +56,7 @@ global = {
 
 melody = \relative c' {
   \global
-  d4^\markup {\italic "To be sung in unison."} d f g a d, \bar "|"
+  d4 d f g a d, \bar "|"
   g2 e \bar "|"
 
   f4 f g a bf bf \bar "|"
@@ -66,7 +79,7 @@ melody = \relative c' {
 
 melodya = \relative c' {
   \global
-  d4^\markup {\italic "To be sung in unison."} d f g a d, \bar "|"
+  d4^\markup {\italic "Unison."} d f g a d, \bar "|"
   g2 e \bar "|"
 
   f4 f g a bf bf \bar "|"
@@ -148,7 +161,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Christ, en -- throned in high -- est heav -- en,
   Hear us cry -- ing from the deep,
   For the faith -- ful ones de -- part -- ed,
@@ -158,7 +171,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   King of Glo -- ry, hear our voic -- es,
   Grant thy faith -- ful rest, we pray;
   We have sinn'd, and may not bide it,
@@ -168,7 +181,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   That which thou thy -- self hast of -- fered
   To thy Fa -- ther, of -- fer we;
   Let it win for them a bless -- ing,
@@ -178,7 +191,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   They are thine, O take them quick -- ly,
   Thou their Hope, O raise them high;
   Ev -- er hop -- ing, ev -- er trust -- ing,
@@ -188,7 +201,7 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   Let thy plen -- teous lov -- ing -- kind -- ness
   On them, as we pray, be poured;
   Let them through thy bound -- less mer -- cy,
@@ -200,7 +213,7 @@ verseFive = \lyricmode {
 }
 
 verseSix = \lyricmode {
-  \set stanza = "6."
+  \vSix
   When, O kind and ra -- diant Je -- sus,
   Kneels the Queen thy throne be -- fore,
   Let the court of Saints at -- tend -- ing,
@@ -210,7 +223,7 @@ verseSix = \lyricmode {
 }
 
 verseSeven = \lyricmode {
-  \set stanza = "7."
+  \vSeven
   Hear and an -- swer prayers de -- vout -- est,
   Break, O Lord, each bind -- ing chain,
   Dash the gates of death a -- sund -- er,
@@ -220,12 +233,59 @@ verseSeven = \lyricmode {
   A -- men.
 }
 
+extraVerses =
+  \markup {
+	\large {
+  \fill-line {
+    \hspace #0.1 % moves the column off the left margin;
+        % can be removed if space on the page is tight
+     \column {
+      \line { \bold "6. "
+		\column {
+  "When, O kind and radiant Jesus,"
+  "Kneels the Queen thy throne before,"
+  "Let the court of Saints attending,"
+  "Mercy for the dead implore;"
+  "Hearken, loving Friend of sinners,"
+  "Whom the Cross exalted bore."
+        }
+     	}
+
+    }
+    \hspace #0.1  % adds horizontal spacing between columns;
+        % if they are still too close, add more " " pairs
+        % until the result looks good
+     \column {
+      \line { \bold "7. "
+		\column {
+  "Hear and answer prayers devoutest,"
+  "Break, O Lord, each binding chain,"
+  "Dash the gates of death asunder,"
+  "Quell the devil and his train;"
+  "Bring the souls which thou hast"
+  "                                  ransomed"
+  "Evermore in joy to reign."
+ "Amen."
+
+        }
+      	}
+    }
+  \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+  }
+}
+}
+
+%%%%%%%%%%%
+%%%%%%%%%%%%
+%%%%%%%%%%%%%
+#(set-global-staff-size 20)
 \book {
-  \include "hymn_paper.ly"
+  \include "hymn_paper_multipage.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -237,8 +297,6 @@ verseSeven = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
       \new Lyrics \lyricsto soprano \verseFive
-     % \new Lyrics \lyricsto soprano \verseSix
-    %  \new Lyrics \lyricsto soprano \verseSeven
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -248,57 +306,62 @@ verseSeven = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 100 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-   \markup {
-	\large {
-  \fill-line {
-    \hspace #0.1 % moves the column off the left margin;
-        % can be removed if space on the page is tight
-     \column {
-      \line { \bold "6. "
-		\column {
-  "When, O kind and radiant Jesus,"
-  "Kneels the Queen thy throne before,"
-  "Let the court of Saints attending,"
-  "Mercy for the dead implore;"
-  "Hearken, loving Friend of sinners,"
-  "Whom the Cross exalted bore."
-        }
-     	}
-
-    }
-    \hspace #0.1  % adds horizontal spacing between columns;
-        % if they are still too close, add more " " pairs
-        % until the result looks good
-     \column {
-      \line { \bold "7. "
-		\column {
-  "Hear and answer prayers devoutest,"
- " Break, O Lord, each binding chain,"
-  "Dash the gates of death asunder,"
-  "Quell the devil and his train;"
-  "Bring the souls which thou hast ransomed"
-  "Evermore in joy to reign."
- "Amen."
-
-        }
-      	}
-    }
-  \hspace #0.1 % gives some extra space on the right margin;
-      % can be removed if page space is tight
+  \extraVerses
+  \markup { 
+    \vspace #0.5 
   }
-}
-}
-  \bottom
+  \refs
 }
 
- 
-
-
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }   
+    \extraVerses
+  \markup { 
+    \vspace #0.5 
+  }
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -306,66 +369,27 @@ verseSeven = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
-        \melodya
+        \melody
       }
       \new Lyrics \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
       \new Lyrics \lyricsto "tune" { \verseFive}
-     % \new Lyrics \lyricsto "tune" {\verseSix }
-    %\new Lyrics \lyricsto "tune" {\verseSeven}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-   \markup {
-	\large {
-  \fill-line {
-    \hspace #0.1 % moves the column off the left margin;
-        % can be removed if space on the page is tight
-     \column {
-      \line { \bold "6. "
-		\column {
-  "When, O kind and radiant Jesus,"
-  "Kneels the Queen thy throne before,"
-  "Let the court of Saints attending,"
-  "Mercy for the dead implore;"
-  "Hearken, loving Friend of sinners,"
-  "Whom the Cross exalted bore."
-        }
-     	}
-
-    }
-    \hspace #0.1  % adds horizontal spacing between columns;
-        % if they are still too close, add more " " pairs
-        % until the result looks good
-     \column {
-      \line { \bold "7. "
-		\column {
-  "Hear and answer prayers devoutest,"
- " Break, O Lord, each binding chain,"
-  "Dash the gates of death asunder,"
-  "Quell the devil and his train;"
-  "Bring the souls which thou hast ransomed"
-  "Evermore in joy to reign."
- "Amen."
-
-        }
-      	}
-    }
-  \hspace #0.1 % gives some extra space on the right margin;
-      % can be removed if page space is tight
+  \extraVerses
+  \markup { 
+    \vspace #0.5 
   }
+  \refs
 }
-}
-  \bottom
-}
-

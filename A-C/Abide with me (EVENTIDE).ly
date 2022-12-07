@@ -10,6 +10,19 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \line {
+        Text: H.F. Lyle (1793-1847)
+      }
+      \wordwrap {
+        Music: EVENTIDE, 10 10 10 10, W.H. Monk (1823 – 1889)
+      }
+    }
+  }
+}
+
 top = \markup {
 \fill-line {
       \column {
@@ -127,7 +140,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1. "
+  \vOne
   A -- bide with me: fast falls the e -- ven -- tide;
   The dark -- ness deep -- ens; Lord, with me a -- bide:
   When oth -- er help -- ers fail and com -- forts flee,
@@ -135,7 +148,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2. "
+  \vTwo
   Swift to its close ebbs out life's lit -- tle day,
   Earth's joys grow dim, its glo -- ries pass a -- way,
   Change and de -- cay in all a -- round I see;
@@ -143,7 +156,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3. "
+  \vThree
 	I need thy pres -- ence ev -- 'ry pass -- ing hour;
 	What but thy grace can foil the temp -- ter's pow'r?
 	Who, like thy -- self, my guide and stay can be?
@@ -151,7 +164,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-	\set stanza = "4. "
+	\vFour
 	I fear no foe, with thee at hand to bless;
 	Ills have no weight, and tears no bit -- ter -- ness.
 	Where is death's sting? where, grave, thy vic -- to -- ry?
@@ -159,7 +172,7 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-	\set stanza = "5. "
+	\vFive
 	Hold thou thy Cross be -- fore my clos -- ing eyes;
 	Shine through the gloom, and point me to the skies;
 	Heav'n's morn -- ing breaks, and earth's vain sha -- dows flee:
@@ -167,11 +180,11 @@ verseFive = \lyricmode {
 }
 
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
 
-\top
+%\top
 
   \header {
     tagline = ""
@@ -206,20 +219,59 @@ verseFive = \lyricmode {
        }
     \include "hymn_layout.ly"
   }
-  \bottom
+  \refs
+  %\bottom
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+    \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  } 
+  \refs
+%  \bottom
+}
 
 %%%%%%
 %%%%%%
 %%%%%%
 #(define output-suffix "Melody")
 \book {
-  #(set-global-staff-size 16)
-  %#(layout-set-staff-size 15)
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -242,5 +294,8 @@ verseFive = \lyricmode {
       \line{ Text: H.F. Lyle (1793-1847) }
     }
   } %}
-\bottom
+\markup {
+  \vspace #1
+}
+\refs
 }

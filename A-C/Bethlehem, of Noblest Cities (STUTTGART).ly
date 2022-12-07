@@ -6,9 +6,23 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "O sola magnarum urbium," Prudentius, 4th cent.; 
+        Tr. Edward Caswall, 1851
+      }
+      \wordwrap {
+        Music: STUTTGART, 87 87, C.F. Witt, 1715; Adapt. H.J. Gauntlett, 1861; Harm. \italic "The English Hymnal," 1906
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -103,7 +117,7 @@ bass = \relative c {
   d4 d g,2
 }
 verseOne = \lyricmode {
-  \set stanza = "1. "
+  \vOne
   Beth -- le -- hem, of no -- blest cit -- ies
   None can once with thee com -- pare;
   Thou a -- lone the Lord from heav -- en
@@ -111,7 +125,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Fair -- er than the sun at morn -- ing
   Was the star that told his birth;
   To the lands their God an -- nounc -- ing,
@@ -119,7 +133,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   By its lam -- bent beau -- ty guid -- ed,
   See, the East -- ern Kings ap -- pear;
   See them bend, their gifts to of -- fer,—
@@ -127,7 +141,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Of -- fer -- ings of my -- stic mean -- ing!—
   In -- cense doth the God dis -- close;
   Gold a Roy -- al child pro -- claim -- eth;
@@ -135,7 +149,7 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   Ho -- ly Je -- sus! in thy bright -- ness
   To the Gen -- tile world dis -- play’d!
   With the Fa -- ther, and the Spir -- it,
@@ -270,13 +284,13 @@ bassb = \relative c' {
   d4 d g,2
 }
 
-
+#(set-global-staff-size 20)
 \book {
-  \include "hymn_paper.ly"
+  \include "hymn_paper_multipage.ly"
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -302,7 +316,12 @@ bassb = \relative c' {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+ % \bottom
+ \refs
+ 
+ \markup {
+   \vspace #1
+ }
   
   %%%%%%%%%
   \markup { \caps "Alternative Hamonizations"  }
@@ -328,7 +347,7 @@ bassb = \relative c' {
     \include "hymn_layout.ly"
   }
 
-
+\pageBreak
 %%%%%%%%%%
 \markup { \small {Music: Harmony from  \italic "The Hymnal," 1916 }}
   \score {
@@ -356,11 +375,52 @@ bassb = \relative c' {
 %%%%%%
 %%%%%%
 %%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
 #(define output-suffix "Melody")
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -378,5 +438,6 @@ bassb = \relative c' {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+ % \bottom
+ \refs
 }

@@ -10,6 +10,19 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Les anges dans nos campagnes," French Carol; Tr. James Chadwick (1813-1882), 1862
+      }
+      \wordwrap {
+        Music: GLORIA, 77 77  with refrain, French carol; Harm. Edward Shippen Barnes (1887-1958)
+      }
+    }
+  }
+}
+
 top = \markup {
 \fill-line {
       \column {
@@ -54,7 +67,7 @@ melody = \relative c'' {
   a4 g a c | \noBreak
   a4. g8 f2 \bar "||" \break
 
-  c'2(^\markup {Refrain} d8[ c bf a] |
+  c'2(^\markup {\smallCaps Refrain.} d8[ c bf a] |
   bf2 c8[ bf a g] |
   a2 bf8[ a g f] |
   g4.) c,8 c2 |
@@ -82,7 +95,7 @@ melodya = \relative c'' {
   a4 g a c | %\noBreak
   a4. g8 f2 \bar "||" \break
 
-  c'2(^\markup {Refrain} d8[ c bf a] |
+  c'2(^\markup {\smallCaps Refrain.} d8[ c bf a] |
   bf2 c8[ bf a g] |
   a2 bf8[ a g f] |
   g4.) c,8 c2 |
@@ -183,18 +196,20 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   An -- gels we have heard on high
   Sweet -- ly sing -- ing o’er the plains,
   And the moun -- tains in re -- ply
   Ech -- o back their joy -- ous strains.
+  
+  \vOff
 
   Gló -- ri -- a in ex -- cél -- sis De -- o!
   Gló -- ri -- a in ex -- cél -- sis De -- o!
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Shep -- herds, why this ju -- bi -- lee?
   Why your joy -- ous strains pro -- long?
   What the glad -- some tid -- ings be
@@ -202,7 +217,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Come to Beth -- le -- hem and see
   Christ Whose birth the an -- gels sing;
   Come, a -- dore on bend -- ed knee,
@@ -210,20 +225,20 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   See Him in a man -- ger laid,
   Whom the choirs of an -- gels praise;
   Ma -- ry, Jo -- seph, lend your aid,
   While our hearts in love we raise.
 }
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+ % \top
   \score { %\transpose c d
     \new ChoirStaff <<
       \new Staff  <<
@@ -248,9 +263,50 @@ verseFour = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+ % \bottom
+ \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+     % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -258,7 +314,7 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -275,6 +331,7 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+ % \bottom
+ \refs
 }
 

@@ -10,6 +10,19 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Regina caeli jubila," Anon.; Tr. \italic "Psallite," 1901
+      }
+      \wordwrap {
+        Music: REGINA CAELI, JUBILA  8 5 8 4 7, \italic "Leisentritt's Gesangbuch," 1584; Harm. various
+      }
+    }
+  }
+}
+
 top = \markup {
 \fill-line {
       \column {
@@ -115,16 +128,17 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-	\set stanza = "1."
+	\vOne
 	Be joy -- ful, Ma -- ry, heav'n -- ly Queen,
 	\ital Gau -- de, Ma -- rí -- a!  \italOff
 	Now let thine eyes with glad -- ness beam.
+	\vOff
 	\ital Al -- le -- lú -- ia!
 	Lae -- tá -- re, O Ma -- rí -- a!
 }
 
 verseTwo = \lyricmode {
-	\set stanza = "2."
+	\vTwo
 	Whom thou didst bear by heav -- en's grace,
 	\ital Gau -- de, Ma -- rí -- a!  \italOff
 	Did all our guilt and sin ef -- face.
@@ -132,7 +146,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-	\set stanza = "3."
+	\vThree
 	The Lord has ris -- en from the dead,
 	\ital Gau -- de, Ma -- rí -- a!  \italOff
 	He rose with might, as He had said.
@@ -140,20 +154,20 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-	\set stanza = "4."
+	\vFour
 	O pray to God, thou Vir -- gin fair,
 	\ital Gau -- de, Ma -- rí -- a!  \italOff	
 	That He our souls to heav -- en bear.
 
 }
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+ % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -178,7 +192,48 @@ verseFour = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %\bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
 
 %%%%%%
@@ -188,7 +243,7 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -205,5 +260,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+ % \bottom
+ \refs
 }

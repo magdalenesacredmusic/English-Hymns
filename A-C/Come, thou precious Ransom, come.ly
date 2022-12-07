@@ -5,10 +5,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
-
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Komm, du wertes Lösegeld," Johann, G. Olearius, 1664; Tr. August Crull (1845-1923), alt.
+      }
+      \wordwrap {
+        Music: MEINEM JESUM LASS ICH NICHT, 78 78 77, \italic "Neuverfertiges Gesangbuch," Darmstadt, 1699
+      }
+    }
+  }
+}
 
 top = \markup {
 \fill-line {
@@ -121,7 +133,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Come, thou pre -- cious Ran -- som, come,
 On -- ly hope for sin -- ful mor -- tals!
 Come, O Sa -- vior of the world!
@@ -131,7 +143,7 @@ An -- xious -- ly we wait for thee.
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
 En -- ter now my wait -- ing heart,
 Glo -- rious King and Lord most ho -- ly.
 Dwell in me and ne'er de -- part,
@@ -141,7 +153,7 @@ When Thou art my guest di -- vine!
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
 My ho -- san -- nas and my palms
 Gra -- cious -- ly re -- ceive, I pray thee;
 Ev -- er -- more, as best I can,
@@ -151,7 +163,7 @@ Lord, thy mer -- it through thy grace.
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
 Hail! Ho -- san -- na, Da -- vid's Son!
 Je -- sus, hear our sup -- pli -- ca -- tion!
 Let thy king -- dom, scep -- ter, crown,
@@ -161,13 +173,54 @@ Hail! Ho -- san -- na to our King.
 }
 
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+    \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  % \bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -189,11 +242,11 @@ Hail! Ho -- san -- na to our King.
         tempoWholesPerMinute = #(ly:make-moment 96 4)
       }
     }
-    \include "hymn_layout.ly"
-  }
-  \bottom
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
-
 %%%%%%
 %%%%%%
 %%%%%%
@@ -201,7 +254,7 @@ Hail! Ho -- san -- na to our King.
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
@@ -218,5 +271,6 @@ Hail! Ho -- san -- na to our King.
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }

@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Christian Henry Bateman (1813–1889), 1843
+      }
+      \wordwrap {
+        Music: MADRID, 66 66 D, Spanish Melody, arr. David Evans (1874-1948), 1927
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -25,7 +38,7 @@ bottom = \markup  {
   \fill-line {
     \null
     \right-column {
-      \line {Chrisian H. Bateman, 1843}
+      \line {Christian Henry Bateman (1813–1889), 1843}
     }
   }
 }
@@ -128,7 +141,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Come, Chris -- tians, join to sing
     _ _ _ _ _ _
   
@@ -141,7 +154,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Come, lift your hearts on high,
 	  \override Lyrics.LyricText.font-shape = #'italic  
 	    Al -- le -- lu -- ia! A -- men!
@@ -158,7 +171,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Praise yet our Christ a -- gain,
     _ _ _ _ _ _
     Life shall not end the strain;
@@ -169,61 +182,7 @@ verseThree = \lyricmode {
         _ _ _ _ _ _
 }
 
+verseFour = {}
+verseFive = {}
 
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 96 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
-}
-
-%%%%%%
-%%%%%%
-%%%%%%
-#(define output-suffix "Melody")
-\book {
-  \include "lilypond-book-preamble.ly"
-  \include "hymn_melody_paper.ly"
-  \top
-  \score {
-    %\transpose c bf,
-    <<
-      \new Voice = "tune" {
-        \melody
-      }
-      \new Lyrics \lyricsto "tune" { \verseOne }
-      \new Lyrics \lyricsto "tune" { \verseTwo }
-      \new Lyrics \lyricsto "tune" { \verseThree }
-    >>
-    \include "hymn_layout.ly"
-  }
-  \markup {
-    \vspace #0.5
-  }
-  \bottom
-}
+\include "hymn_scores.ly"

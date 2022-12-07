@@ -10,6 +10,19 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \line {
+        Text: \italic "Herzliebster Jesu," Johann Heermann, c. 1630; Tr. Robert Bridges, 1899
+      }
+      \wordwrap {
+        Music: HERZLIEBSTER JESU, 11 11 11 5, Johann Crüger, 1640
+      }
+    }
+  }
+}
+
 top = \markup {
 \fill-line {
       \column {
@@ -127,7 +140,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Ah, ho -- ly Je -- sus, how hast Thou of -- fen -- ded,
   That man to judge Thee hath in hate pre -- ten -- ded?
   By foes de -- rid -- ed, by Thine own re -- jec -- ted
@@ -135,7 +148,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Who was the guil -- ty? Who brought this up -- on Thee?
   A -- las, my trea -- son, Je -- sus, hath un -- done Thee.
   ’Twas I, Lord, Je -- sus, I it was de -- nied Thee!
@@ -143,7 +156,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Lo, the Good Shep -- herd for the sheep is of -- fered;
   The slave hath sin -- ned, and the Son hath suf -- fered;
   For man’s a -- tone -- ment, while he noth -- ing heed -- eth,
@@ -151,7 +164,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   For me, kind Je -- sus, was Thy in -- car -- na -- tion,
   Thy mor -- tal sor -- row, and Thy life’s ob -- la -- tion;
   Thy death of an -- guish and Thy bit -- ter pas -- sion,
@@ -159,19 +172,22 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   There -- fore, kind Je -- sus, since I can -- not pay Thee,
   I do a -- dore Thee, and will ev -- er pray Thee,
   Think on Thy pi -- ty and Thy love un -- swerv -- ing,
   Not my de -- serv -- ing.
 }
-
+%%%%%
+%%%%%%%
+%%%%%%
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -197,17 +213,59 @@ verseFive = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %\bottom
+  \refs
 }
 
 %%%%%%
 %%%%%%
 %%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+    \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+\refs
+  %\bottom
+}
+
+%%%%%%%
+%%%%%%%
+%%%%%%%
 #(define output-suffix "Melody")
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+ % \top
   \score {
     %\transpose c bf,
     <<
@@ -222,8 +280,8 @@ verseFive = \lyricmode {
     >>
     \include "hymn_layout.ly"
   }
-  \markup { 
-    \vspace #0.5 
-  }
-  \bottom
+\markup {
+  \vspace #1
+}
+ \refs
 }

@@ -10,6 +10,19 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Richard Frederick Littledale (1833-90)
+      }
+      \wordwrap {
+        Music: GOLDEN SHEAVES, 87 87 D, Arthur Sullivan, 1874
+      }
+    }
+  }
+}
+
 top = \markup {
 \fill-line {
       \column {
@@ -188,7 +201,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   A -- rise, O Ark of Christ the Lord,
   To thy cel -- es -- tial sta -- tion,
 	While An -- gel hosts with glad ac -- cord
@@ -200,7 +213,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   O Li -- ly of the Val -- leys fair,
 	O sealed and crys -- tal Foun -- tain,
   Thy place is near -- est to Him there
@@ -212,7 +225,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   He came to thee, a Babe a -- lone,
   From all His pomp de -- scend -- ing:
   Thou cam -- est, ra -- diant to His Throne,
@@ -224,7 +237,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   That crown with twelve pure stars be -- dight,
   In ray a -- round is shedd -- ing,
   The sun hath made thy rai -- ment bright,
@@ -235,9 +248,9 @@ verseFour = \lyricmode {
   Thy soul to an -- guish steel -- ing.
 }
 
-verseFive = \lyricmode {
-  \set stanza = "5."
-  Though rob’d and crown’d, thou low -- ly art,
+%{ verseFive = \lyricmode {
+  \vFive
+  Though robed and crowned, thou low -- ly art,
   O stain -- less Moth -- er -- maid -- en,
   And feel -- est for each hu -- man heart
   With sin and sor -- row la -- den;
@@ -248,7 +261,7 @@ verseFive = \lyricmode {
 }
 
 verseSix = \lyricmode {
-  \set stanza = "6."
+  \vSix
   A -- rise, O Ark of Christ the Lord,
   To thy ce -- les -- tial sta -- tion,
   While an -- gel hosts with glad ac -- cord
@@ -258,14 +271,60 @@ verseSix = \lyricmode {
   Praise be to Christ, thine on -- ly Son,
 	And to thy Spouse, the Spir -- it.
 }
+%}
 
+extraVerses =
+ \markup {
+    \vspace #1
+  \fontsize #1 {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Though robed and crowned, thou lowly art,"
+ "O stainless Mother-maiden,"
+  "And feelest for each human heart"
+  "With sin and sorrow laden;"
+  "Then to thy Son for sinners pray"
+  "As Mother interceding,"
+ "Ask on, He will not say thee nay,"
+ "But grant thee all thy pleading."
+          }
+        }
+    \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Arise, O Ark of Christ the Lord,"
+  "To thy celestial station,"
+  "While angel hosts with glad accord"
+  "Sing out their acclamation."
+  "To God the Father praise be done,"
+  "Who gave thee grace and merit;"
+  "Praise be to Christ, thine only Son,"
+	"And to thy Spouse, the Spirit."
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
 
+%%%%%%%
+%%%%%%%
+%%%%%%%
+#(set-global-staff-size 20)
 \book {
-  \include "hymn_paper.ly"
+  \include "hymn_paper_multipage.ly"
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -276,8 +335,8 @@ verseSix = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
-      \new Lyrics \lyricsto soprano \verseFive
-      \new Lyrics \lyricsto soprano \verseSix
+      %\new Lyrics \lyricsto soprano \verseFive
+      %\new Lyrics \lyricsto soprano \verseSix
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -292,9 +351,59 @@ verseSix = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  \extraVerses
+ \markup {
+   \vspace #0.5
+ }
+  %\bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      %\new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \extraVerses
+ \markup {
+   \vspace #0.5
+ }
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -302,7 +411,7 @@ verseSix = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %\top
   \score {
     %\transpose c bf,
     <<
@@ -313,13 +422,19 @@ verseSix = \lyricmode {
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive}
-      \new Lyrics \lyricsto "tune" { \verseSix }
+     % \new Lyrics \lyricsto "tune" { \verseFive}
+     % \new Lyrics \lyricsto "tune" { \verseSix }
     >>
-    \include "hymn_layout.ly"
+    \include "hymn_melody_layout.ly"
   }
+  
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  \extraVerses
+ \markup {
+   \vspace #0.5
+ }
+ % \bottom
+ \refs
 }

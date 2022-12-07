@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Komm, Heiliger Geist, Herre Gott," Martin Luther 1524; Tr. Catherine Winkworth and others
+      }
+      \wordwrap {
+        Music: KOMM, HEILIGER GEIST, HERRE GOTT, L M D with alleluias, Melody, 15th cent., \italic "Erfurt Gesangbuch," 1524
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -51,7 +64,7 @@ melody = \relative c'' {
   g bf a8[ bf] c4 g f8[ d] \bar "|"
   c2 b'4\rest c,4 \bar "|"
   f g a8( c4) bf8 a4 g \bar "|"
-  a2 b4\rest \bar "||"
+  a2 b4\rest \bar ""
 
   a4 \bar "|"
   c d c g a b \bar "|"
@@ -142,7 +155,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Come, Ho -- ly Ghost, God and Lord!
   Be all Thy grac -- es now out -- poured
   On each be -- liev -- er’s mind and heart;
@@ -155,7 +168,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Thou ho -- ly Light, Guide di -- vine,
   Oh, cause the Word of Life to shine!
   Teach us to know our God a -- right
@@ -168,7 +181,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Thou ho -- ly Fire, Com -- fort true,
   Grant us the will Thy work to do
   And in Thy ser -- vice to a -- bide;
@@ -180,60 +193,7 @@ verseThree = \lyricmode {
   Hal -- le -- lu -- jah! Hal -- le -- lu -- jah!
 }
 
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 88 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
-}
+verseFour = { }
+verseFive = {}
 
-%%%%%%
-%%%%%%
-%%%%%%
-#(define output-suffix "Melody")
-\book {
-  \include "lilypond-book-preamble.ly"
-  \include "hymn_melody_paper.ly"
-  \top
-  \score {
-    %\transpose c bf,
-    <<
-      \new Voice = "tune" {
-        \melody
-      }
-      \new Lyrics \lyricsto "tune" { \verseOne }
-      \new Lyrics \lyricsto "tune" { \verseTwo }
-      \new Lyrics \lyricsto "tune" { \verseThree }
-    >>
-    \include "hymn_layout.ly"
-  }
-  \markup { 
-    \vspace #0.5 
-  }
-  \bottom
-}
+\include "hymn_scores.ly"

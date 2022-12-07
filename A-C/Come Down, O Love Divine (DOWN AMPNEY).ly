@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Discendi, Amor santo," Bianco da Siena, (d. 1434); Tr. Richard Francis Littledale (1833-90), 1867
+      }
+      \wordwrap {
+        Music: DOWN AMPNEY 6 6 11 D, Ralph Vaughan Williams, 1906
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -59,7 +72,7 @@ melody = \relative c' {
 
   a2 b4 a |
   d( cs) b2 |
-  a2 \bar "|" \break
+  a2 \bar "" \break
 
   a2 |
   b4 a g fs |
@@ -72,7 +85,7 @@ melody = \relative c' {
 
   c2 b4 a |
   g2 fs |
-  e \bar "|" \break
+  e \bar "" \break
 
   e2 |
   a4 b a g |
@@ -88,7 +101,7 @@ alto = \relative c' {
 
   fs2 fs4 e |
   d( e) d2 |
-  cs |
+  cs 
 
   d2 |
   d4 cs d d |
@@ -101,7 +114,7 @@ alto = \relative c' {
 
   e2 d4 d |
   b( cs) d2 |
-  a2 |
+  a2 
 
   cs |
   d4 d cs d8[ e] |
@@ -116,7 +129,7 @@ tenor = \relative c {
   fs1 |
   a2 d,4 e |
   fs( a) a( gs) |
-  a2 |
+  a2 
 
   fs2 |
   g4 e g a |
@@ -129,7 +142,7 @@ tenor = \relative c {
 
   g4( a) b fs |
   g2 a4( b) |
-  cs2 |
+  cs2 
 
   a2 |
   a4 g e b' |
@@ -145,7 +158,7 @@ bass = \relative c {
 
   d2 d4 cs |
   b( cs) e2 |
-  a,2 |
+  a,2 
 
   d2 |
   g,4 a b d |
@@ -158,7 +171,7 @@ bass = \relative c {
 
   e4( fs) g d |
   e2 fs4( g) |
-  a2 |
+  a2 
 
   a,4( g) |
   fs g a d8[ cs] |
@@ -167,7 +180,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Come down, O Love di -- vine,
   Seek thou this soul of mine,
   And vi -- sit it with thine own ar -- dour glow -- ing;
@@ -177,7 +190,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   O let it free -- ly burn,
   Till earth -- ly pas -- sions turn
   To dust and ash -- es in its heat con -- sum -- ing;
@@ -187,7 +200,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Let ho -- ly cha -- ri -- ty
   Mine out -- ward ves -- ture be,
   And low -- li -- ness be -- come mine in -- ner cloth -- ing;
@@ -197,7 +210,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   And so the yearn -- ing strong,
   With which the soul will long,
   Shall far out -- pass the pow'r of hu -- man tel -- ling;
@@ -206,62 +219,6 @@ verseFour = \lyricmode {
   Where -- in the Ho -- ly Spi -- rit makes his dwel -- ling.
 }
 
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 88 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
-}
+verseFive = {}
 
-%%%%%%
-%%%%%%
-%%%%%%
-#(define output-suffix "Melody")
-\book {
-  \include "lilypond-book-preamble.ly"
-  \include "hymn_melody_paper.ly"
-  \top
-  \score {
-    %\transpose c bf,
-    <<
-      \new Voice = "tune" {
-        \melody
-      }
-      \new Lyrics \lyricsto "tune" { \verseOne }
-      \new Lyrics \lyricsto "tune" { \verseTwo }
-      \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour }
-    >>
-    \include "hymn_layout.ly"
-  }
-  \markup { 
-    \vspace #0.5 
-  }
-  \bottom
-}
+\include "hymn_scores.ly"

@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Veni, Redemptor gentium," St. Ambrose; Tr. J.M. Neale (1818-66), as per \italic "The English Hymnal," 1906
+      }
+      \wordwrap {
+        Music: PUER NOBIS NASCITUR, LM, Michael Praetorius (1571-1621); Harm. George R. Woodward (1848-1934), 1902
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -53,7 +66,7 @@ melody = \relative c' {
   a'2 a4 |
   a4( b) cs |
   d2 d4 |
-  d2 \bar "|"
+  d2 \bar ""
 
   a4 |
   d2 d4 |
@@ -77,7 +90,7 @@ alto = \relative c' {
   d( g) fs |
   e2 e4 |
   fs2 g4 |
-  fs2 \bar "||"
+  fs2 
 
   e4 |
   d( fs) e |
@@ -87,7 +100,7 @@ alto = \relative c' {
   e2 d4 |
   cs2 d4 |
   b2 a4 |
-  a2 \bar "|."
+  a2 
 }
 
 tenor = \relative c {
@@ -101,7 +114,7 @@ tenor = \relative c {
   d2 a4 |
   a2 a4 |
   a2 b4 |
-  a2 \bar "||"
+  a2
 
   a4 |
   b2 b4 |
@@ -111,7 +124,7 @@ tenor = \relative c {
   e2 a4 |
   a2 a4 |
   g( fs) e |
-  fs2 \bar "|."
+  fs2 
 }
 
 bass = \relative c {
@@ -125,7 +138,7 @@ bass = \relative c {
   fs( e) d |
   cs2 a4 |
   d2 d4 |
-  d2 \bar "||"
+  d2
 
   cs4 |
   b( a) gs |
@@ -135,11 +148,11 @@ bass = \relative c {
   cs2 d4 |
   a( g) fs |
   g2 a4 |
-  d2 \bar "|."
+  d2 
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Come, Thou Re -- deem -- er of the earth,
   And man -- i -- fest Thy vir -- gin birth:
   Let ev' -- ry age a -- dor -- ing fall;
@@ -147,7 +160,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Be -- got -- ten of no hu -- man will,
   But of the Spi -- rit, Thou art still
   The Word of God in flesh ar -- rayed,
@@ -155,7 +168,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   The vir -- gin womb that bur -- den gained
   With vir -- gin ho -- nor all un -- stained;
   The ban -- ners there of vir -- tue glow;
@@ -163,20 +176,81 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Forth from His cham -- ber go -- eth He,
   That roy -- al home of pur -- i -- ty,
   A giant in two -- fold sub -- stance one,
   Re -- joic -- ing now His course to run.
 }
 
+extraVerses =
+ \markup {
+  \large {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "From God the Father He proceeds,"
+            "To God the Father back He speeds;"
+            "His course He runs to death and hell,"
+            "Returning on God’s throne to dwell."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "O equal to the Father, Thou!"
+            "Gird on Thy fleshly mantle now;"
+            "The weakness of our mortal state"
+            "With deathless might invigorate."
+          }
+        }
+      }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "7. "
+          \column {
+            "Thy cradle here shall glitter bright,"
+            "And darkness breathe a newer light,"
+            "Where endless faith shall shine serene,"
+            "And twilight never intervene."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "8. "
+          \column {
+            "All laud to God the Father be,"
+            "All praise, eternal Son, to Thee;"
+            "All glory, as is ever meet,"
+            "To God the Holy Paraclete."
 
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+
+%%%%%
+%%%%%
+%%%%%
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -196,75 +270,62 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 112 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
-  
-  \markup {
-            \vspace #3
-  \large {
-    \fill-line {
-      \hspace #0.1 % moves the column off the left margin;
-      % can be removed if space on the page is tight
-      \column {
-        \line {
-          \bold "5. "
-          \column {
-            "From God the Father He proceeds,"
-            "To God the Father back He speeds;"
-            "His course He runs to death and hell,"
-            "Returning on God’s throne to dwell."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "6. "
-          \column {
-            "O equal to the Father, Thou!"
-            "Gird on Thy fleshly mantle now;"
-            "The weakness of our mortal state"
-            "With deathless might invigorate."
-          }
-        }
-      }
-      \hspace #0.1  % adds horizontal spacing between columns;
-      % if they are still too close, add more " " pairs
-      % until the result looks good
-      \column {
-        \line {
-          \bold "7. "
-          \column {
-            "Thy cradle here shall glitter bright,"
-            "And darkness breathe a newer light,"
-            "Where endless faith shall shine serene,"
-            "And twilight never intervene."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "8. "
-          \column {
-            "All laud to God the Father be,"
-            "All praise, eternal Son, to Thee;"
-            "All glory, as is ever meet,"
-            "To God the Holy Paraclete."
-
-          }
-        }
-      }
-      \hspace #0.1 % gives some extra space on the right margin;
-      % can be removed if page space is tight
-    }
+  \extraVerses
+  \markup { 
+    \vspace #0.5 
   }
+  % \bottom
+  \refs
 }
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  } 
+  \extraVerses
+  \markup { 
+    \vspace #0.5 
+  }
+  \refs
+  %\bottom
 }
-
-
-
-
 %%%%%%
 %%%%%%
 %%%%%%
@@ -272,7 +333,7 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
@@ -289,64 +350,9 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
-  
-  \markup {
-  \large {
-    \fill-line {
-      \hspace #0.1 % moves the column off the left margin;
-      % can be removed if space on the page is tight
-      \column {
-        \line {
-          \bold "5. "
-          \column {
-            "From God the Father He proceeds,"
-            "To God the Father back He speeds;"
-            "His course He runs to death and hell,"
-            "Returning on God’s throne to dwell."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "6. "
-          \column {
-            "O equal to the Father, Thou!"
-            "Gird on Thy fleshly mantle now;"
-            "The weakness of our mortal state"
-            "With deathless might invigorate."
-          }
-        }
-      }
-      \hspace #0.1  % adds horizontal spacing between columns;
-      % if they are still too close, add more " " pairs
-      % until the result looks good
-      \column {
-        \line {
-          \bold "7. "
-          \column {
-            "Thy cradle here shall glitter bright,"
-            "And darkness breathe a newer light,"
-            "Where endless faith shall shine serene,"
-            "And twilight never intervene."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "8. "
-          \column {
-            "All laud to God the Father be,"
-            "All praise, eternal Son, to Thee;"
-            "All glory, as is ever meet,"
-            "To God the Holy Paraclete."
-
-          }
-        }
-      }
-      \hspace #0.1 % gives some extra space on the right margin;
-      % can be removed if page space is tight
-    }
+\extraVerses
+  \markup { 
+    \vspace #0.5 
   }
+  \refs
 }
-
-}
-

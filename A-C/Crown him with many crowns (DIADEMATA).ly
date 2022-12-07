@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Matthew Bridges (1800-94)
+      }
+      \wordwrap {
+        Music: DIADEMATA,  DSM, George Elvey (1816 – 1893)
+      }
+    }
+  }
+}
 
 top = \markup {
 \fill-line {
@@ -42,6 +55,32 @@ melody = \relative c' {
   e2. \bar ""  \break
   
   e4 |
+  fs a b a | 
+  gs fs8[ e] a4 d | 
+  cs d b b | 
+  a2. \bar "" 
+  
+  a4 |
+  a fs e d |
+  b'2. b4 |
+  b gs fs e |
+  cs'2. \bar "" \break
+  
+  cs4 |
+  d4. cs8 b4 a |
+  g e fs a |
+  g fs e e |
+  d1 \bar "|."
+}
+
+melodya = \relative c' {
+	\global
+	d4 d8 d fs4 fs |
+	b2. b4 |
+	a d, g fs | %\break
+  e2. \bar ""  %\break
+  
+  e4 |
   fs a b a |
   gs fs8[ e] a4 d |
   cs d b b |
@@ -51,7 +90,7 @@ melody = \relative c' {
   a fs e d |
   b'2. b4 |
   b gs fs e |
-  cs'2. \bar "" \break
+  cs'2. \bar "" %\break
   
   cs4 |
   d4. cs8 b4 a |
@@ -139,7 +178,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1. "
+  \vOne
   Crown him with man -- y crowns,
   The Lamb up -- on his throne;
   Hark! how the heav'n -- ly an -- them drowns
@@ -151,7 +190,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2. "
+  \vTwo
   Crown him the Vir -- gin's Son,
   The God in -- car -- nate born,
   Whose arm those crim -- son tro -- phies won
@@ -163,7 +202,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3. "
+  \vThree
   Crown him the Lord of love!
   Be -- hold his hands and side,
   Rich wounds yet vi -- si -- ble a -- bove
@@ -175,7 +214,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-	\set stanza = "4. "
+	\vFour
   Crown him the Lord of peace,
   Whose pow'r a scep -- tre sways
   From pole to pole, that wars may cease,
@@ -187,7 +226,7 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-	\set stanza = "5. "
+	\vFive
   Crown him the Lord of years,
   The Po -- ten -- tate of time,
   Cre -- a -- tor of the roll -- ing spheres,
@@ -198,73 +237,107 @@ verseFive = \lyricmode {
   Who lives- and loves- and saves.
 }
 
-
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
-
-\top
-
   \header {
     tagline = ""
   }
-
-\score { %\transpose c d
-  \context ChoirStaff <<
-    \context Staff = upper <<
-      \context Voice =
-         sopranos { \voiceOne << \melody >> }
-      \context Voice =
-         altos { \voiceTwo << \alto >> }
-      \context Lyrics = one \lyricsto sopranos \verseOne
-	  \context Lyrics = two \lyricsto sopranos \verseTwo
-	  \context Lyrics = three \lyricsto sopranos \verseThree
-	  \context Lyrics = four \lyricsto sopranos \verseFour
-	  \context Lyrics = five \lyricsto sopranos \verseFive
+  % \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
     >>
-    \context Staff = lower <<
-      \clef bass
-      \context Voice =
-        tenors { \voiceOne << \tenor >> }
-      \context Voice =
-        basses { \voiceTwo << \bass >> }
-    >>
-  >>
-\midi { 
-   \context {
-      \Score 
-       tempoWholesPerMinute = #(ly:make-moment 96 4)
-           }
-       }
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
-
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melodya }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
 #(define output-suffix "Melody")
 \book {
-  #(set-global-staff-size 16)
-  %#(layout-set-staff-size 15)
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
-        \melody
+        \melodya
       }
       \new Lyrics \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive }
+      \new Lyrics \lyricsto "tune" { \verseFive}
     >>
-    \include "hymn_melody_layout.ly"
+    \include "hymn_layout.ly"
   }
-\bottom
+  \markup { 
+    \vspace #0.5 
+  }
+  % \bottom
+  \refs
 }

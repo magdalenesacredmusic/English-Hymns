@@ -183,7 +183,7 @@ verseFive = \lyricmode {
     tagline = ""
   }
   % \top
-  \score {
+  \score { \transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -224,7 +224,7 @@ verseFive = \lyricmode {
     tagline = ""
   }
   %\top
-  \score { %\transpose c d
+  \score { \transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -261,7 +261,7 @@ verseFive = \lyricmode {
   \include "hymn_melody_paper.ly"
   %  \top
   \score {
-    %\transpose c bf,
+    \transpose c bf,
     <<
       \new Voice = "tune" {
         \melody

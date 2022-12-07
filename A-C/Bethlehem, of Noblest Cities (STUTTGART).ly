@@ -291,7 +291,7 @@ bassb = \relative c' {
     tagline = ""
   }
   %\top
-  \score {
+  \score { \transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -326,7 +326,7 @@ bassb = \relative c' {
   %%%%%%%%%
   \markup { \caps "Alternative Hamonizations"  }
 \markup { \small {Music: Harmony from  \italic "Hymns Ancient and Modern," 1861  }}
-  \score {
+  \score { \transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melodya }
@@ -350,7 +350,7 @@ bassb = \relative c' {
 \pageBreak
 %%%%%%%%%%
 \markup { \small {Music: Harmony from  \italic "The Hymnal," 1916 }}
-  \score {
+  \score { \transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melodyb }
@@ -384,7 +384,7 @@ bassb = \relative c' {
     tagline = ""
   }
   %\top
-  \score { %\transpose c d
+  \score { \transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -422,7 +422,7 @@ bassb = \relative c' {
   \include "hymn_melody_paper.ly"
  % \top
   \score {
-    %\transpose c bf,
+    \transpose c bf,
     <<
       \new Voice = "tune" {
         \melody

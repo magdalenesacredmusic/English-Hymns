@@ -266,7 +266,7 @@ verseFive = \lyricmode {
     tagline = ""
   }
   %\top
-  \score { %\transpose c d
+  \score { \transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }

@@ -182,7 +182,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOneLL
   A might -- y for --  tress is our God, a bul -- wark ne -- ver fail -- ing;
   Our hel -- per He, a -- mid the flood of mor -- tal ills pre -- vail -- ing:
   For still our an -- cient foe doth seek to work us woe;
@@ -191,7 +191,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwoLL
   Did we in our own strength con -- fide, our striv -- ing would be los -- ing;
   Were not the right Man on our side, the Man of God’s own choos -- ing:
   Dost ask who that may be? Christ Je -- sus, it is He;
@@ -200,7 +200,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThreeLL
   And though this world, with de -- vils filled, should threat -- en to un -- do us,
   We will not fear, for God hath willed His truth to tri -- umph through us:
   The Prince of Dark -- ness grim, we trem -- ble not for him;
@@ -209,7 +209,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFourLL
   That word a -- bove all earth -- ly pow'rs, no thanks to them, a -- bid -- eth;
   The Spi -- rit and the gifts are ours through Him Who with us sid -- eth:
   Let goods and kind -- red go, this mor -- tal life al -- so;

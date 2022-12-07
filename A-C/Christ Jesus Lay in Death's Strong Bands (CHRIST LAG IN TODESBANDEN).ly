@@ -195,7 +195,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \vOne
+  \vOneLL
   Christ Je -- sus lay in Death's strong bands,
   For our of -- fen -- ces gi -- ven;
   But now at God's right hand He stands,
@@ -207,7 +207,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \vTwo
+  \vTwoLL
   No man from Death could vic -- t'ry win,
   O'er all man -- kind he reign -- ed;
   A -- las! that com -- eth of our sin,
@@ -219,7 +219,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \vThree
+  \vThreeLL
   Christ Je -- sus, God's own Son, came down,
   That He might us de -- li -- ver,
   And sin des -- troy -- ing, took his crown
@@ -231,7 +231,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \vFour
+  \vFourLL
   It was a strange and dread -- ful strife,
   When Life and Death con -- tend -- ed;
   The vic -- to -- ry re -- mained with Life,
@@ -244,7 +244,7 @@ verseFour = \lyricmode {
 
 
 verseFive = \lyricmode {
-  \vFive
+  \vFiveLL
   Here the true Pas -- chal Lamb we see,
   Whom God so free -- ly gave us;
   He died on the ac -- curs -- ed tree
@@ -256,7 +256,7 @@ verseFive = \lyricmode {
 }
 
 verseSix = \lyricmode {
-  \vSix
+  \vSixLL
   So let us keep the fes -- ti -- val
   Where -- to the Lord in -- vites us;
   Christ is Him -- self the joy of all,
@@ -268,7 +268,7 @@ verseSix = \lyricmode {
 }
 
 verseSeven = \lyricmode {
-  \vSeven
+  \vSevenLL
   Then let us feast this Eas -- ter day
   On the true Bread of heav -- en;
   The Word of grace hath purged a -- way

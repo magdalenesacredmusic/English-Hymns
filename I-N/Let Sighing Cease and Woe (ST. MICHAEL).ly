@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Jam desinant suspiria," Charles Coffin (1676-1749); tr. William John Blew (1808-1894)
+      }
+      \wordwrap {
+        Music: ST. MICHAEL (OLD 134TH) SM, Louis Bourgeois (1510-59), \italic "Genevan Psalter," 1551; Adapt. William Crotch (1775-1847)
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -51,7 +62,7 @@ melody = \relative c' {
   g b a a |
   b2. d4 |
   c b a a |
-  g2. \bar "||" \break
+  g2. \bar "|" \break
 
   g4 |
   fs e d g |
@@ -110,7 +121,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Let sigh -- ing cease and woe,
   God from on high hath heard,
   Heav'n's gate is op -- 'ning wide, and lo!
@@ -118,7 +129,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Peace! through the deep of night
   The heav'n -- ly choir breaks forth,
   Sing -- ing, with fes -- tal songs and bright,
@@ -126,7 +137,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   The cave of Beth -- le -- hem
   Those wake -- ful shep -- herds seek:
   Let us too rise and greet with them
@@ -134,20 +145,122 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   We en -- ter at the door
   What mar -- vel meets the eye?
   A crib, a moth -- er pale and poor,
   A child of pov -- er -- ty.
 }
 
+extraVerses = 
+ \markup {
+  \fontsize#0.2 {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "  Art Thou the_eternal Son,"
+            "  The eternal Father's ray?"
+            "Whose little hand, Thou infant one,"
+            "  Doth lift the world alway?"
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "  Yea– faith through that dim cloud,"
+            "  Like lightning, darts before,"
+            "And greets Thee, at whose footstool bowed"
+            "  Heav'n's trembling hosts adore."
+          }
+        }
+      }
+      \hspace #0.1  % adds horizontal spacing between columns;
+      % if they are still too close, add more " " pairs
+      % until the result looks good
+      \column {
+        \line {
+          \bold "7. "
+          \column {
+            "  Chaste be our love like Thine;"
+            "  Our swelling souls bring low,"
+            "And in our hearts, O Babe divine"
+            "  Be born, abide, and grow."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "8. "
+          \column {
+            "  So shall Thy birthday morn,"
+            "  Lord Christ, our birthday be,"
+            "Then greet we all, ourselves new-born,"
+            "  Our King's nativity."
+          }
+        }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \extraVerses
+  \markup {
+    \vspace #0.5
+  }
+  % \bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -169,66 +282,15 @@ verseFour = \lyricmode {
         tempoWholesPerMinute = #(ly:make-moment 96 4)
       }
     }
-    \include "hymn_layout.ly"
-  }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \extraVerses
   \markup {
-  \large {
-    \fill-line {
-      \hspace #0.1 % moves the column off the left margin;
-      % can be removed if space on the page is tight
-      \column {
-        \line {
-          \bold "5. "
-          \column {
-            "  Art Thou the eternal Son,"
-            "  The eternal Father's ray?"
-            "Whose little hand, Thou infant one,"
-            "  Doth lift the world alway?"
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "6. "
-          \column {
-            "  Yea– faith through that dim cloud,"
-            "  Like lightning, darts before,"
-            "And greets Thee, at whose footstool bowed"
-            "  Heav'n's trembling hosts adore."
-          }
-        }
-      }
-      \hspace #0.1  % adds horizontal spacing between columns;
-      % if they are still too close, add more " " pairs
-      % until the result looks good
-      \column {
-        \line {
-          \bold "7. "
-          \column {
-            "  Chaste be our love like Thine;"
-            "  Our swelling souls bring low,"
-            "And in our hearts, O Babe divine"
-            "  Be born, abide, and grow."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "8. "
-          \column {
-            "  So shall Thy birthday morn,"
-            "  Lord Christ, our birthday be,"
-            "Then greet we all, ourselves new-born,"
-            "  Our King's nativity."
-          }
-        }
-      }
-      \hspace #0.1 % gives some extra space on the right margin;
-      % can be removed if page space is tight
-    }
+    \vspace #0.5
   }
+  \refs
+  %\bottom
 }
-  \bottom
-}
-
 %%%%%%
 %%%%%%
 %%%%%%
@@ -236,14 +298,16 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -253,63 +317,10 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
+  % \bottom
+  \extraVerses
   \markup {
-  \large {
-    \fill-line {
-      \hspace #0.1 % moves the column off the left margin;
-      % can be removed if space on the page is tight
-      \column {
-        \line {
-          \bold "5. "
-          \column {
-            "  Art Thou the eternal Son,"
-            "  The eternal Father's ray?"
-            "Whose little hand, Thou infant one,"
-            "  Doth lift the world alway?"
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "6. "
-          \column {
-            "  Yea– faith through that dim cloud,"
-            "  Like lightning, darts before,"
-            "And greets Thee, at whose footstool bowed"
-            "  Heav'n's trembling hosts adore."
-          }
-        }
-      }
-      \hspace #0.1  % adds horizontal spacing between columns;
-      % if they are still too close, add more " " pairs
-      % until the result looks good
-      \column {
-        \line {
-          \bold "7. "
-          \column {
-            "  Chaste be our love like Thine;"
-            "  Our swelling souls bring low,"
-            "And in our hearts, O Babe divine"
-            "  Be born, abide, and grow."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "8. "
-          \column {
-            "  So shall Thy birthday morn,"
-            "  Lord Christ, our birthday be,"
-            "Then greet we all, ourselves new-born,"
-            "  Our King's nativity."
-          }
-        }
-      }
-      \hspace #0.1 % gives some extra space on the right margin;
-      % can be removed if page space is tight
-    }
+    \vspace #0.5
   }
+  \refs
 }
-  \bottom
-}
-
-
-

@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Jesu dulcis memoria," St. Bernard, 11th cent.; Tr. Edward Caswall (1814-78)
+      }
+      \wordwrap {
+        Music: ST. AGNES CM, John Bacchus Dykes (1823-76), 1866
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -48,16 +59,16 @@ melody = \relative c'' {
   b4 b b |
   a2 b4 |
   c2 fs,4 |
-  g2. \bar "||"
+  g2. |
 
   d4 d d |
   b'2 a4 |
-  a2. \bar "||"
+  a2. |
 
   c4 c b |
   a2 g4 |
   fs2 e4 |
-  d2. \bar "||"
+  d2. |
 
   d4 e g |
   b2 a4 |
@@ -115,7 +126,7 @@ bass = \relative c' {
 
   a4 g fs |
   g2 e4 |
-  d2. \bar "||"
+  d2. |
 
   a4 a a |
   a2 a4 |
@@ -128,15 +139,15 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
-  \tagIt Je -- sus, the ve -- ry thought of Thee
+  \vOne
+  Je -- sus, the ve -- ry thought of Thee
   With sweet -- ness fills my breast;
-  \tagIt But sweet -- er far Thy face to see,
+  But sweet -- er far Thy face to see,
   And in Thy pre -- sence rest.
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Nor voice can sing, nor heart can frame,
   Nor can the mem' -- ry find,
   A sweet -- er sound than Thy blest name,
@@ -144,7 +155,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   O hope of ev' -- ry con -- trite heart,
   O joy of all the meek,
   To those who fall, how kind Thou art!
@@ -152,7 +163,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   But what to those who find? Ah! this
   Nor tongue nor pen can show;
   The love of Je -- sus! what it is,
@@ -161,20 +172,21 @@ verseFour = \lyricmode {
 
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   Je -- sus, our on -- ly joy be Thou,
   As Thou our prize wilt be;
   Je -- sus, be Thou our glo -- ry now,
   And through e -- ter -- ni -- ty.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -184,6 +196,7 @@ verseFive = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -193,14 +206,55 @@ verseFive = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 100 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -208,23 +262,26 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive }
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
-

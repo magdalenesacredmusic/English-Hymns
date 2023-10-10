@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Based on \italic "Surrexit Christus hodie," 14th cent., Traditional text, various authors
+      }
+      \wordwrap {
+        Music: EASTER HYMN, 77 77 with Alleluias, Alt. from \italic "Lyra Davidica," 1708
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -45,22 +56,45 @@ global = {
 melody = \relative c' {
   \global
   c4 e g c, |
-  f a a( g) \bar "||"
+  f a a( g) |
   e8[( f g c,] f4) e8[ f] |
-  e4( d) c2 \bar "||" \break
+  e4( d) c2 | \break
 
   f4 g a g |
-  f e e( d) \bar "||"
+  f e e( d) |
   e8[( f g c,] f4) e8[ f] |
-  e4( d) c2 \bar "||" \break
+  e4( d) c2 | \break
 
   b'4 c d g, |
-  c d e2 \bar "||"
+  c d e2 |
   b8[( c d g,] c4) b8[ c] |
-  b4( a) g2 \bar "||" \break
+  b4( a) g2 | \break
 
   g8[ a] b[ g] c4 e, |
-  f a a( g) \bar "||"
+  f a a( g) |
+  c8[( b c g] a[ b]) c[ d] |
+  c4( b) c2 \bar "|."
+}
+
+melodya = \relative c' {
+  \global
+  c4 e g c, |
+  f a a( g) |
+  e8[( f g c,] f4) e8[ f] |
+  e4( d) c2 | %\break
+
+  f4 g a g |
+  f e e( d) |
+  e8[( f g c,] f4) e8[ f] |
+  e4( d) c2 | %\break
+
+  b'4 c d g, |
+  c d e2 |
+  b8[( c d g,] c4) b8[ c] |
+  b4( a) g2 | %\break
+
+  g8[ a] b[ g] c4 e, |
+  f a a( g) |
   c8[( b c g] a[ b]) c[ d] |
   c4( b) c2 \bar "|."
 }
@@ -135,7 +169,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOneL
   Je -- sus Christ is ris'n to -- day, Al -- le -- lu -- ia!
   Our tri -- um -- phant ho -- ly day; Al -- le -- lu -- ia!
   Who did once, up -- on the cross, Al -- le -- lu -- ia!
@@ -143,7 +177,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwoL
   Hymns of praise then let us sing Al -- le -- lu -- ia!
   Un -- to Christ our heav'n -- ly King: Al -- le -- lu -- ia!
   Who en -- dured the cross and grave, Al -- le -- lu -- ia!
@@ -151,29 +185,30 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
-  But the pains which He en -- dured Al -- le -- lu -- ia!
+  \vThreeL
+  But the pains which he en -- dured Al -- le -- lu -- ia!
   Our sal -- va -- tion hath pro -- cured: Al -- le -- lu -- ia!
-  Now a -- bove the sky He's King, Al -- le -- lu -- ia!
-  Where the an -- gels ever sing. Al -- le -- lu -- ia!
+  Now a -- bove the sky he's King, Al -- le -- lu -- ia!
+  Where the an -- gels ev -- er sing. Al -- le -- lu -- ia!
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFourL
   Sing we to our God a -- bove— Al -- le -- lu -- ia!
-  Praise e -- ter -- nal as His love; Al -- le -- lu -- ia!
-  Praise Him all ye heav'n -- ly host, Al -- le -- lu -- ia!
+  Praise e -- ter -- nal as his love; Al -- le -- lu -- ia!
+  Praise him all ye heav'n -- ly host, Al -- le -- lu -- ia!
   Fa -- ther, Son, and Ho -- ly Ghost. Al -- le -- lu -- ia!
 }
 
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score { %\transpose c g,
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -192,14 +227,54 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 92 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -207,14 +282,16 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -224,5 +301,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }

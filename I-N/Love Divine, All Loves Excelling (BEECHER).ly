@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Charles Wesley (1707-88), 1747
+      }
+      \wordwrap {
+        Music: BEECHER, 87 87 D, John Zundel (1815-82), 1870
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -85,7 +96,7 @@ alto = \relative c' {
 	d d ef d |
 	f ef8[ f] ef4 d |
 	ef4 g f f |
-	ef ef d2 \bar "|."
+	ef ef d2 %\bar "|."
 }
 
 tenor = \relative c {
@@ -108,7 +119,7 @@ tenor = \relative c {
 	f4 f g bf |
 	bf a a bf |
 	bf bf bf d |
-	c f, f2 \bar "|."
+	c f, f2 %\bar "|."
 }
 
 bass = \relative c {
@@ -131,52 +142,53 @@ bass = \relative c {
 	bf,4 bf bf bf |
 	bf f' fs g |
 	ef ef f f |
-	f f, bf2 \bar "|."
+	f f, bf2 %\bar "|."
 }
 
 verseOne = \lyricmode {
-	\set stanza = "1."
+	\vOneL
 	Love di -- vine, all loves ex -- cel -- ling,
 	Joy of heav'n to earth come down;
 	Fix in us thy hum -- ble dwel -- ling;
 	All thy faith -- ful mer -- cies crown!
-	Je -- sus, Thou art all com -- pas -- sion,
-	Pure un -- bound -- ed love Thou art;
-	Vis -- it us with Thy sal -- va -- tion;
+	Je -- sus, thou art all com -- pas -- sion,
+	Pure un -- bound -- ed love thou art;
+	Vis -- it us with thy sal -- va -- tion;
 	En -- ter ev' -- ry tremb -- ling heart.
 	}
 
 verseTwo = \lyricmode {
-	\set stanza = "2."
+	\vTwoL
 	Come, Al -- migh -- ty to de -- liv -- er,
-	Let us all Thy life re -- ceive;
+	Let us all thy life re -- ceive;
 	Sud -- den -- ly re -- turn and nev -- er,
-	Nev -- er more Thy tem -- ples leave.
+	Nev -- er more thy tem -- ples leave.
 	Thee we would be al -- ways bles -- sing,
-	Serve Thee as Thy hosts a -- bove,
-	Pray and praise Thee with -- out ceas -- ing,
-	Glo -- ry in Thy per -- fect love.
+	Serve thee as thy hosts a -- bove,
+	Pray and praise thee with -- out ceas -- ing,
+	Glo -- ry in thy per -- fect love.
 }
 
 verseThree = \lyricmode {
-	\set stanza = "3."
-	Fin -- ish, then, Thy new cre -- a -- tion;
+	\vThreeL
+	Fin -- ish, then, thy new cre -- a -- tion;
 	Pure and spot -- less let us be.
-	Let us see Thy great sal -- va -- tion
-	Per -- fect -- ly re -- stored in Thee;
+	Let us see thy great sal -- va -- tion
+	Per -- fect -- ly re -- stored in thee;
 	Changed from glo -- ry in -- to glo -- ry,
 	Till in heav'n we take our place,
-	Till we cast our crowns be -- fore Thee,
+	Till we cast our crowns be -- fore thee,
 	Lost in won -- der, love, and praise.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -185,6 +197,7 @@ verseThree = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseOne
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
+     % \new Lyrics \lyricsto soprano \verseFour
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -194,14 +207,54 @@ verseThree = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 88 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+     % \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -209,21 +262,25 @@ verseThree = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
+     % \new Lyrics \lyricsto "tune" { \verseFour }
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }

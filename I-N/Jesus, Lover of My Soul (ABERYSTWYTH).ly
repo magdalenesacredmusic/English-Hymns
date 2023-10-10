@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Charles Wesley (1707-88), 1740
+      }
+      \wordwrap {
+        Music: ABERYSTWYTH 7 77 D, Joseph Parry (1840-1903), 1879
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -149,7 +160,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Je -- sus, lov -- er of my soul,
   Let me to thy bos -- om fly,
   While the near -- er wa -- ters roll,
@@ -161,7 +172,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Oth -- er re -- fuge have I none,
   Hangs my help -- less soul on thee;
   Leave, ah! leave me not a -- lone,
@@ -173,7 +184,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Thou, O Christ, art all I want,
   More than all in thee I find;
   Raise the fal -- len, cheer the faint,
@@ -186,7 +197,7 @@ verseThree = \lyricmode {
 
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Plen -- teous grace with thee is found,
   Grace to cov -- er all my sin;
   Let the heal -- ing streams a -- bound;
@@ -197,13 +208,14 @@ verseFour = \lyricmode {
   Rise to all e -- ter -- ni -- ty.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -222,14 +234,54 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 84 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -237,14 +289,16 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -254,7 +308,8 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
 

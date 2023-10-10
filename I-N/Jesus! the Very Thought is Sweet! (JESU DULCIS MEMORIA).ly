@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Jesu, dulcis memoria," St. Bernard; tr. John Mason Neale (1818-66)
+      }
+      \wordwrap {
+        Music: JESU DULCIS MEMORIA, LM, Cöln Gesangbuch, 1619, Harm. \italic "The English Hymnal," 1906
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -48,10 +59,10 @@ melody = \relative c'' {
   \global
   g2 f4 g a2 a |
   bf a4( g) a1 |
-  g2 f4 g a2 f |
-  g f4( e) d1 \bar "||"
+  g2 f4 g a2 f | \break
+  g f4( e) d1 \bar "|"
 
-  g2 f4 g a2 a |
+  g2 f4 g a2 a | \break
   bf a4( g) a1 |
   d2 d4 c d2. c4 |
   bf2 a g1 \bar "|."
@@ -97,7 +108,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Je -- su! the ve -- ry thought is sweet!
   In that dear name all heart -- joys meet;
   But sweet -- er than the hon -- ey far
@@ -105,7 +116,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   No word is sung more sweet than this:
   No name is heard more full of bliss:
   No thought brings sweet -- er com -- fort nigh,
@@ -113,7 +124,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Je -- su! the hope of souls for -- lorn!
   How good to them for sin that mourn!
   To them that seek Thee, O how kind!
@@ -121,7 +132,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Je -- su, Thou sweet -- ness, pure and blest,
   Truth's Foun -- tain, Light of souls dis -- trest,
   Sur -- pas -- sing all that heart re -- quires,
@@ -129,20 +140,61 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   No tongue of mor -- tal can ex -- press,
   No let -- ters write its bles -- sed -- ness:
   A -- lone who hath Thee in his heart
   Knows, love of Je -- sus! what Thou art.
 }
 
+extraVerses = 
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "O Jesu! King of wondrous might!"
+            "O Victor, glorious from the fight!"
+            "Sweetness that may not be exprest,"
+            "And altogether loveliest!"
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Remain with us, O Lord, to-day!"
+            "In every heart Thy grace display:"
+            "That now the shades of night are fled,"
+            "On Thee our spirits may be fed."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "All honour, laud, and glory be,"
+            "O Jesu, Virgin-born, to Thee!"
+            "All glory, as is ever meet,"
+            "To Father and to Paraclete."
+          }
+        }
+      }
+      \hspace #1.0
+    }
+  }
+}
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -163,53 +215,63 @@ verseFive = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 70 2)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
+  \extraVerses
   \markup {
-  \large {
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "5. "
-          \column {
-            "O Jesu! King of wondrous might!"
-            "O Victor, glorious from the fight!"
-            "Sweetness that may not be exprest,"
-            "And altogether loveliest!"
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "6. "
-          \column {
-            "Remain with us, O Lord, to-day!"
-            "In every heart Thy grace display:"
-            "That now the shades of night are fled,"
-            "On Thee our spirits may be fed."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "7. "
-          \column {
-            "All honour, laud, and glory be,"
-            "O Jesu, Virgin-born, to Thee!"
-            "All glory, as is ever meet,"
-            "To Father and to Paraclete."
-          }
-        }
-      }
-      \hspace #1.0
-    }
+    \vspace #0.5
   }
-}
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \extraVerses
+  \markup {
+    \vspace #0.5
+  }
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -217,65 +279,30 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive}
+      \new Lyrics \lyricsto "tune" { \verseFive }
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
+  % \bottom
+  \extraVerses
   \markup {
-  \large {
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "5. "
-          \column {
-            "O Jesu! King of wondrous might!"
-            "O Victor, glorious from the fight!"
-            "Sweetness that may not be exprest,"
-            "And altogether loveliest!"
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "6. "
-          \column {
-            "Remain with us, O Lord, to-day!"
-            "In every heart Thy grace display:"
-            "That now the shades of night are fled,"
-            "On Thee our spirits may be fed."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "7. "
-          \column {
-            "All honour, laud, and glory be,"
-            "O Jesu, Virgin-born, to Thee!"
-            "All glory, as is ever meet,"
-            "To Father and to Paraclete."
-          }
-        }
-      }
-      \hspace #1.0
-    }
+    \vspace #0.5
   }
+  \refs
 }
-  \bottom
-}
-
-
-

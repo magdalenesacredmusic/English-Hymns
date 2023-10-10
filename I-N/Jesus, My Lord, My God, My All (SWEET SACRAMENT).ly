@@ -2,13 +2,25 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Frederick W. Faber (1814-63)
+          %St. 1-2, F.W. Faber; St. 3, \italic "Mediator Dei Hymnal," ©1955 GIA
+      }
+      \wordwrap {
+        Music: SWEET SACRAMENT, LM with refrain, \italic "Romischkatholishes Gesangbuchlein," 1862
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -60,6 +72,40 @@ melody = \relative c'' {
   af2 f4 |
   ef2 d4 |
   ef2. \bar "||"
+
+  bf'4^\markup \smallCaps Refrain. bf bf |
+  c2 c4 |
+  d2 d4 |
+  ef2. |
+  bf4 af g |
+  c2 af4 |
+  f( bf) af |
+  af( g2) |
+  g4 f ef |
+  af2 f4 |
+  ef2 d4 |
+  ef2. \bar "|."
+}
+
+melodya = \relative c'' {
+  \global
+  bf4 g ef |
+  ef( d) ef |
+  f( bf) af |
+  af( g2)  |
+  g4 f ef |
+  af2 f4 |
+  ef2 d4 |
+  ef2. |
+
+  bf'4 g ef |
+  ef( d) ef |
+  f( bf) af |
+  af( g2)  |
+  g4 f ef |
+  af2 f4 |
+  ef2 d4 |
+  ef2. \bar "||" \break
 
   bf'4^\markup { \italic Refrain} bf bf |
   c2 c4 |
@@ -177,48 +223,68 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Je -- sus, my Lord, my God, my All,
-  How can I love Thee as I ought?
+  How can I love thee as I ought?
   And how re -- vere this won -- drous gift,
   So far sur -- pass -- ing hope or thought?
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Had I but Mar -- y's sin -- less heart,
-  To love Thee with, my dear -- est King;
+  To love thee with, my dear -- est King;
   O! with what bursts of fer -- vent praise,
   Thy good -- ness, Je -- sus would I sing.
 
-  Sweet Sac -- ra -- ment, we Thee a -- dore!
-  O make us love Thee more and more!
-  O make us love Thee more and more.
+  \vOff
+  \override LyricText.extra-offset = #'(0 . -1.3)
+    \override LyricExtender.extra-offset = #'(0 . -1.3)
+    \override LyricHyphen.extra-offset = #'(0 . -1.3) 
+  Sweet Sac -- ra -- ment, we thee a -- dore!
+  O make us 
+  
+  \override LyricText.extra-offset = #'(0 . 0)
+    \override LyricExtender.extra-offset = #'(0 . 0)
+    \override LyricHyphen.extra-offset = #'(0 . 0) 
+      love thee more and more!
+  O make us love thee more and more.
 }
 
+verseThree = \lyricmode {
+  \vThree
+ Thy Bod -- y, Soul, and God -- head, all,
+ O mys -- ter -- y of love di -- vine.
+ I can -- not com -- pass all I have, 
+ For all thou hast and art are mine.
+}
+%{  GIA Verse
 verseThree = \lyricmode {
   \set stanza = "3."
   O! see up -- on the al -- tar placed
   The vic -- tim of di -- vin -- est love!
   Let all the earth be -- low a -- dore,
   And join the choirs of heav'n a -- bove.
-}
+} %}
 
 verseFour = \lyricmode {
-  \set stanza = "4."
-  Sound, then, his prais -- es high -- er still,
+  \vFour
+  Sound, sound his prais -- es high -- er still,
   And come, ye an -- gels, to our aid;
-  For this is God, the ve -- ry God
-  Who hath both men and an -- gels made!
+  'Tis God! 'tis God! the ve -- ry God
+  Whose power both men and an -- gels made!
 }
 
+
+
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -237,14 +303,54 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 100 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -252,14 +358,16 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -269,7 +377,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
-
-

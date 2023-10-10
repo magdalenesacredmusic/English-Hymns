@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Thomas Kelly (1769-1855), 1809
+      }
+      \wordwrap {
+        Music: BRYN CALFARIA 87 87 47, William Owen (1813-93); Harm. \italic "The English Hymnal," 1906
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -47,18 +58,18 @@ melody = \relative c' {
   d4 d g2 a |
   bf4 bf bf2 a |
   bf4 bf d2 c4( bf) |
-  a a g1 \bar "||"
+  a a g1 \bar "|"
 
   d4 d g2 a |
   bf4 bf bf2 a |
   bf4 bf d2 c4( bf) |
-  a a g1 \bar "||"
+  a a g1 \bar "|"
 
   g4 a bf2 g |
   a4 bf c2 a |
-  bf4 c d2 bf4( d) \bar "||"
+  bf4 c d2 bf4( d) \bar "|"
 
-  ef8[ d] c4 d8[ c] bf4 c8[ bf] a8[ g] |
+  ef8[ d] c4 d8[ c] bf4 \bar "" c8[ bf] a8[ g] |
   d'1 bf4 bf |
   d2 c4( bf) a a |
   g1. \bar "|."
@@ -131,60 +142,61 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Look, ye saints, the sight is glo -- rious;
   See the Man of Sor -- rows now!
   From the fight re -- turned vic -- to -- rious,
   Ev -- 'ry knee to him shall bow.
-  Crown him! Crown him! Crown Him!
-  Crown him! Crown him! Crown Him!
+  Crown him! Crown him! Crown him!
+  Crown him! Crown him! Crown him!
   Crowns be -- come the vic -- tor's brow,
   Crowns be -- come the vic -- tor's brow.
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
-  Crown the Sa -- viour! An -- gels, crown Him;
+  \vTwo
+  Crown the Sa -- viour! An -- gels, crown him;
   Rich the tro -- phies Je -- sus brings;
-  On the seat of pow'r en -- throne Him
+  On the seat of pow'r en -- throne him
   While the vault of heav -- en rings.
-  Crown him! Crown him! Crown Him!
-  Crown him! Crown him! Crown Him!
+  Crown him! Crown him! Crown him!
+  Crown him! Crown him! Crown him!
   Crown the Sa -- viour King of kings,
   Crown the Sa -- viour King of kings.
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
-  Sin -- ners in de -- ri -- sion crowned Him
-  Mocki -- ng thus the Sa -- viour's claim;
-  Saints and an -- gels crowd a -- round Him,
-  Own His ti -- tle, praise His Name:
-  Crown him! Crown him! Crown Him!
-  Crown him! Crown him! Crown Him!
+  \vThree
+  Sin -- ners in de -- ri -- sion crowned him
+  Mock -- ing thus the Sa -- viour's claim;
+  Saints and an -- gels crowd a -- round him,
+  Own his ti -- tle, praise his Name:
+  Crown him! Crown him! Crown him!
+  Crown him! Crown him! Crown him!
   Spread a -- broad the vic -- tor's fame,
   Spread a -- broad the vic -- tor's fame.
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Hark, those bursts of ac -- cla -- ma -- tion!
   Hark, those loud tri -- um -- phant chords!
   Je -- sus takes the high -- est sta -- tion;
   Oh, what joy the sight af -- fords!
-  Crown him! Crown him! Crown Him!
-  Crown him! Crown him! Crown Him!
+  Crown him! Crown him! Crown him!
+  Crown him! Crown him! Crown him!
   King of kings, and Lord of lords!
   King of kings, and Lord of lords!
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -203,14 +215,54 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 76 2)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -218,14 +270,16 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -235,6 +289,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
-

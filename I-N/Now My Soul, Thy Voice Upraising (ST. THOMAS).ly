@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Prome vocem, mens, canoram," Claude de Santeüil; tr. H.W. Baker and J. Chandler
+      }
+      \wordwrap {
+        Music: ST. THOMAS  87 87 87, John Francis Wade, 1751, alt. American traditional
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -48,22 +61,22 @@ global = {
 melody = \relative c' {
   \global
   d4 e fs d |
-  e fs g fs \bar "||"
+  e fs g fs |
 
   b a g fs |
-  e e d2 \bar "||"
+  e e d2 |
 
   d'4 cs d a |
-  b a g fs \bar "||"
+  b a g fs |
 
   b4 cs d cs |
-  b b a2 \bar "||"
+  b b a2 |
 
   a4 a fs d |
-  e fs g fs \bar "||"
+  e fs g fs |
 
-  a4 fs b a8[ g] |
-  fs4 e d2 \bar "|."
+  b a g fs |
+  e e d2 \bar "|."
 }
 
 alto = \relative c' {
@@ -83,7 +96,7 @@ alto = \relative c' {
   d4 e d d |
   cs d d8[ cs] d4 |
 
-  d4. cs8 b[ cs] d4 |
+   d d d8[ e] d4 |
   d cs d2 \bar "|."
 }
 
@@ -104,8 +117,8 @@ tenor = \relative c {
   a4 a a a |
   a a g a |
 
-  a a g a8[ b] |
-  a4. g8 fs2 \bar "|."
+ g a b8[ a] a4 |
+	b a8[ g] fs2  \bar "|."
 }
 
 bass = \relative c {
@@ -125,12 +138,12 @@ bass = \relative c {
   fs'4 cs d fs |
   g fs e d |
 
-  fs d g fs8[ g] |
-  a4 a, d2 \bar "|."
+ g fs b,8[ cs] d4 |
+	g, a d2 \bar "|."
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Now, my soul, thy voice up -- rais -- ing,
   Tell in sweet and mourn -- ful strain
   How the Cru -- ci -- fied, en -- dur -- ing
@@ -140,7 +153,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Scourged with un -- re -- lent -- ing fu -- ry
   For the sins which we de -- plore,
   By His liv -- id stripes He heals us,
@@ -150,7 +163,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   See! His hands and feet are fast -- ened
   So He makes His peo -- ple free;
   Not a wound whence blood is flow -- ing
@@ -161,7 +174,7 @@ verseThree = \lyricmode {
 
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Through His heart the spear is pierc -- ing,
   Though His foes have seen Him die;
   Blood and wa -- ter thence are stream -- ing
@@ -171,8 +184,8 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
-  Je -- su, may those pre -- cious foun -- tains
+  \vFive
+  Je -- sus, may those pre -- cious foun -- tains
   Drink to thirst -- ing souls af -- ford:
   Let them be our cup and heal -- ing,
   And at length our full re -- ward;
@@ -181,12 +194,13 @@ verseFive = \lyricmode {
 }
 
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -212,9 +226,50 @@ verseFive = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -222,7 +277,7 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
@@ -240,7 +295,6 @@ verseFive = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
-
-

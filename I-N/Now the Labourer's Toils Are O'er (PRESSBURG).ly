@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Gerard Moultrie, 1863, adapt. \italic "The English Hymnal," 1906
+      }
+      \wordwrap {
+        Music: \italic "Neues Geistreiches Gesangbuch," 1714, from \italic "The English Hymnal," 1906
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -47,19 +60,19 @@ global = {
 melody = \relative c'' {
   \global
   a4 gs a e |
-  c' b8[ a] gs2 \bar "||"
+  c' b8[ a] gs2 |
   
   g!4 a8[ e] f4 g8[ d] |
-  e4. d8 e2 \bar "||"
+  e4. d8 e2 |
   
   e'4 b c g |
-  a g8[ f] e2 \bar "||"
+  a g8[ f] e2 |
   
   g4 g a8[ b] c4 |
   e, d c2 \bar "||"
   
   e'4^\markup {\caps Refrain} e d e8[ b] |
-  c4 b8[ a] gs2 \bar "||"
+  c4 b8[ a] gs2 |
   
   b8[ c] d4 c8[ d] e4 |
   c b a2 \bar "|."
@@ -114,7 +127,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Now the la -- bourer's toils are o'er
   Fought the bat -- tle, won the crown:
   On life's rough and bar -- ren shore
@@ -122,13 +135,14 @@ verseOne = \lyricmode {
   \override LyricText #'font-shape = #'italic
   Grant \revert Lyrics.LyricText #'font-shape
   him,
+  \vOff
   \override LyricText #'font-shape = #'italic
   Lord, e -- ter -- nal rest,
   With the spi -- rits of the blest.
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   An -- gels bear thee to the land
   Where the towers of Si -- on rise;
   Safe -- ly lead thee by the hand
@@ -136,7 +150,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   White -- robed, at the gol -- den gate
   Of the new Je -- ru -- sa -- lem,
   May the host of Mar -- tyrs wait;
@@ -145,7 +159,7 @@ verseThree = \lyricmode {
 
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Friends and dear ones gone be -- fore
   To the land of end -- less peace,
   Meet thee on that fur -- ther shore
@@ -153,7 +167,7 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   Rest in peace: the gates of hell
   Touch thee not, till he shall come
   For the souls he loves so well,-
@@ -161,19 +175,53 @@ verseFive = \lyricmode {
 }
 
 verseSix = \lyricmode {
-  \set stanza = "6."
+  \vSix
   Earth to earth, and dust to dust,
   Clay we give to kin -- dred clay,
   In the sure and cer -- tain trust
   Of the Re -- sur -- rec -- tion day:
 }
 
+
+extraVerses = 
+   \markup {
+  \fontsize #0.2 {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Rest in peace: the gates of hell"
+            "Touch thee not, till he shall come"
+            "For the souls he loves so well,-"
+            "Dear Lord of the heav'nly home:"
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Earth to earth, and dust to dust,"
+            "Clay we give to kindred clay,"
+            "In the sure and certain trust"
+            "Of the Resurrection day:"
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -184,6 +232,7 @@ verseSix = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
+     % \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -193,14 +242,63 @@ verseSix = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 84 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  \extraVerses
+  \markup {
+    \vspace #0.5
+  }
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+     % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \extraVerses
+    \markup {
+    \vspace #0.5
+  }
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -208,7 +306,7 @@ verseSix = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
@@ -219,12 +317,17 @@ verseSix = \lyricmode {
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
+     % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \extraVerses
+    \markup {
+    \vspace #0.5
+  }
+  \refs
 }
-

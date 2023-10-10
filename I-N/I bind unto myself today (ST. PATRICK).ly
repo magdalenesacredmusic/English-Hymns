@@ -1,14 +1,19 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Lorica of St. Patrick, Tr. Cecil Francis Alexander
+      }
+      \wordwrap {
+        Music: ST. PATRICK DLM, ancient Irish Melody, Arr. Charles Villiers Stanford
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -43,7 +48,7 @@ global = {
   \set Staff.midiInstrument = "church organ"
 }
 
-soprano = \relative c' {
+melody = \relative c' {
   \global
   \partial 4
   d4 |
@@ -212,7 +217,7 @@ bass = \relative c {
   <g d'>2
 }
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   I bind un -- to my -- self to -- day _
   The strong name of the Trin -- i -- ty, _
   By in -- vo -- ca -- tion of the same, _
@@ -220,12 +225,12 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   I bind this day to me for -- ev -- er
   By pow'r of faith, Christ’s in -- car -- na -- tion;
   His bap -- _ tism in Jor -- dan riv -- er,
   His death on Cross for my sal -- va -- tion;
-  \set stanza = "2."
+  
   His burst -- ing from the spic -- èd tomb,
   His rid -- ing up the heav'n -- ly way,
   His com -- ing at the day of doom
@@ -233,12 +238,12 @@ verseTwo = \lyricmode {
 }
 
  verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   I bind un -- to my -- self the pow'r _
   Of the great love of Cher -- u -- bim; _
   The sweet 'Well done' in judg -- ment hour, _
   The ser -- vice of the Ser -- a -- phim, _
-    \set stanza = "3."
+  
   Con -- fes -- sors’ faith, A -- pos -- tles’ word,
   The Pa -- triarchs’ prayers, the pro -- phets’ scrolls,
   All good deeds done un -- to the Lord
@@ -246,12 +251,12 @@ verseTwo = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   I bind un -- to my -- self to -- day _
   The vir -- tues of the star lit heav -- en,
   The glo -- rious sun’s life giv -- ing ray, _
   The white -- ness of the moon at e -- ven,
-   \set stanza = "4."
+   
  The flash -- ing of the light -- ning free,
   The whir -- ling wind’s tem -- pes -- tuous shocks,
   The sta -- ble earth, the deep salt sea
@@ -259,12 +264,12 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   I bind un -- to my -- self to -- day _
   The pow'r of God to hold and lead, _
   His eye to watch, His might to stay, _
   His ear to heark -- en to my need. _
-    \set stanza = "5."
+   
   The wis -- dom of my God to teach,
   His hand to guide, His shield to ward;
   The word of God to give me speech,
@@ -297,7 +302,7 @@ verseSeven = \lyricmode {
 %}
 
 verseSix = \lyricmode {
-  \set stanza = "8."
+  \vEight
   I bind un -- to my -- self the Name, _
   The strong Name of the Tri -- ni -- ty, _
   By in -- vo -- ca -- tion of the same, _
@@ -309,25 +314,36 @@ verseSix = \lyricmode {
   Sal -- va -- tion is of Christ the Lord.
 }
 
+endNote =
+ \markup {
+    \fontsize #0.2 {
+      \fill-line {
+        \center-column {
+                \line  {\italic "The hymn," Christ be with me \italic "is traditionally inserted afer verse 5"}
+\line {\italic "to the tune of DEIDRE or GARTAN."}
+}
+  } } }
 
+
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper_multipage.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \soprano }
+        \new Voice = "soprano" { \voiceOne \melody }
         \new Voice = "alto" { \voiceTwo \alto }
       >>
       \new Lyrics  \lyricsto soprano \verseOne
       \new Lyrics  \lyricsto soprano \verseTwo
-     \new Lyrics  \lyricsto soprano \verseThree
-     \new Lyrics \lyricsto soprano \verseFour
-     \new Lyrics \lyricsto soprano \verseFive
-     \new Lyrics \lyricsto soprano \verseSix
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Lyrics \lyricsto soprano \verseSix
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -337,117 +353,94 @@ verseSix = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 100 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \markup {
-    \large {
-      \fill-line {
-        \center-column {
-                \line  {\italic "The hymn," Christ be with me \italic "is traditionally inserted afer verse 5"}
-\line {\italic "to the tune of DEIDRE or GARTAN."}
-}
-  } } }
-    \bottom
-    
-   \markup {
-  \large {
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {\italic "The verses below may be sung as verses 6 and 7."}
-        \line {Christ be with me \italic "would then be sung after verse 7,"}
-       \line {\italic "and verse 6 above would become the 8th and final verse."}
-\vspace #2
-        \line {
-          \bold "6. "
-          \column {
-           "Against the demon snares of sin,"
-  "  The vice that gives temptation force,"
- "The natural lusts that war within,"
-  "  The hostile men that mar my course;"
-  "Or few or many, far or nigh,"
-  "  In ev'ry place and in all hours,"
- "Against their fierce hostility"
- "  I bind to me these holy pow'rs."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "7. "
-          \column {
-            "Against all Satan’s spells and wiles,"
-            "  Against false words of heresy,"
-  "Against the knowledge that defiles,"
-  "  Against the heart’s idolatry,"
- "Against the wizard’s evil craft,"
- "  Against the death-wound and  the burning,"
-  "The choking wave, the poisoned shaft,"
-  "  Protect me, Christ, till Thy returning."
-          }
-        }
-      }
-      \hspace #1.0
-
-    }
+  \refs
+    \markup {
+    \vspace #0.5
   }
-}
-}
+    \endNote
 
-%{verseSix = \lyricmode {
-  \set stanza = "6."
-  A -- gainst the de -- mon snares of sin, _
-  The vice that gives temp -- ta -- tion force,
-  The na -- tural lusts that war with -- in, _
-  The hos -- tile men that mar my course;
-  Or few or man -- y, far or nigh,
-  In ev' -- ry place and in all hours,
-  A -- gainst their fierce hos -- ti -- li -- ty
-  I bind to me these ho -- ly pow'rs.
 }
-
-verseSeven = \lyricmode {
-  \set stanza = "7."
-  A -- gainst all Sa -- tan’s spells and wiles, _
-  A -- gainst false words of he --re -- sy,
-  A -- gainst the know -- ledge that de -- files, _
-  A -- gainst the heart’s i -- do -- la -- try,
-  A -- gainst the wiz -- ard’s e -- vil craft,
-  A -- gainst the death -- wound and  the burn -- ing,
-  The chok -- ing wave, the poi -- soned shaft,
-  Pro -- tect me, Christ, till Thy re -- turning.
-}
-%}
 
 %%%%%%
 %%%%%%
 %%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Lyrics \lyricsto soprano \verseSix
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+    \markup {
+    \vspace #0.5
+  }
+    \endNote
 
+  %\bottom
+}
+%%%%%%
+%%%%%%
+%%%%%%
 #(define output-suffix "Melody")
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
-        \soprano
+        \melody
       }
-      %\new Lyrics \lyricsto "tune" { \verseOne }
-      %\new Lyrics \lyricsto "tune" { \verseTwo }
-      %\new Lyrics \lyricsto "tune" { \verseThree }
-      %\new Lyrics \lyricsto "tune" { \verseFour }
-      %\new Lyrics \lyricsto "tune" { \verseFive}
-      \new Lyrics \lyricsto "tune" { \verseSix}
+      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \lyricsto "tune" { \verseTwo }
+      \new Lyrics \lyricsto "tune" { \verseThree }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      \new Lyrics \lyricsto "tune" { \verseFive}
+      \new Lyrics \lyricsto "tune" { \verseSix }
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+    \refs
+      \markup {
+    \vspace #0.5
+  }
+  \endNote
 }
-

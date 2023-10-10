@@ -2,18 +2,29 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Es ist ein Ros entsprungen," German; St. 1-2 Tr. Theodore Baker (1851-1934), 1894, St. 3 Tr. Harriet R. Krauth (1845-1925)
+      }
+      \wordwrap {
+        Music: ES IST EIN ROS ENTSPRUNGEN 76 76 676, German; Harm. Michael Praetorius (c. 1571-1621)
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
     \column {
-      \line {ES IST EIN' ROS' ENTSPRUNGEN 76 76 676}
+      \line {ES IST EIN ROS ENTSPRUNGEN 76 76 676}
     }
     \right-column{
       \line {German, harm. Michael Praetorius}
@@ -25,7 +36,7 @@ bottom = \markup  {
   \fill-line {
     \null 
     \right-column {
-      \line {\italic "Es ist ein Reis entsprungen,"}
+      \line {\italic "Es ist ein Ros entsprungen,"}
       \line {German, st. 1-2 tr. Theodore Baker, 1894, st. 2-3 tr. H.R. Kraugh}
     }
   } 
@@ -167,7 +178,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Lo, how a rose e'er bloom -- ing,
   From tend -- er stem hath sprung!
   From Jes -- se’s lin -- eage com -- ing,
@@ -179,7 +190,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   I -- sa -- iah 'twas fore -- told it,
   The Rose I have in mind
   With Ma -- ry we be -- hold it,
@@ -204,7 +215,7 @@ verseTwo = \lyricmode {
 
 %% or v. 4
 verseFour = \lyricmode {
-  \set stanza = "3."
+  \vThree
   This Flow'r, whose fra -- grance ten -- der
   With sweet -- ness fills the air,
   Dis -- pels with glo -- rious splen -- dor
@@ -215,13 +226,54 @@ verseFour = \lyricmode {
   And light -- ens ev' -- ry load.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      %\new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  % \bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -243,11 +295,11 @@ verseFour = \lyricmode {
         tempoWholesPerMinute = #(ly:make-moment 96 4)
       }
     }
-    \include "hymn_layout.ly"
-  }
-  \bottom
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
-
 %%%%%%
 %%%%%%
 %%%%%%
@@ -255,16 +307,18 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
-        \melodya
+        \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
-     % \new Lyrics \lyricsto "tune" { \verseThree }
+      %\new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
     >>
     \include "hymn_layout.ly"
@@ -272,6 +326,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
-

@@ -2,13 +2,23 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
-
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Henry van Dyke (1852-1933), alt
+      }
+      \wordwrap {
+        Music: HYMN TO JOY, 87 87 D, L. van Beethoven (1770-1827); Adapt. Edward Hoges (1796-1867)
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -127,7 +137,7 @@ bass = \relative c' {
 %%% Lyrics taken from "Journeysongs" published by OCP.
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Joy -- ful, joy -- ful, we a -- dore you,
   God of glo -- ry, Lord of love;
   Hearts un -- fold like flow'rs be -- fore you,
@@ -139,7 +149,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   All your works with joy sur -- round you,
   Earth adn heav'n re -- flect your rays,
   Stars and an -- gels sing a -- round you,
@@ -151,7 +161,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Al -- ways giv -- ing and for -- giv -- ing,
   Ev -- er bless -- ing, ev -- er blest,
   Well -- spring of the joy of liv -- ing,
@@ -163,7 +173,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Mor -- tals, join the might -- y cho -- rus
   Which the morn -- ing stars be -- gan;
   Love di -- vine is reign -- ing o'er us, 
@@ -174,13 +184,14 @@ verseFour = \lyricmode {
   In the tri -- umph song of life.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score { \transpose c bf,
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -189,7 +200,47 @@ verseFour = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseOne
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
-      %\new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  % \bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -202,11 +253,11 @@ verseFour = \lyricmode {
         tempoWholesPerMinute = #(ly:make-moment 96 4)
       }
     }
-    \include "hymn_layout.ly"
-  }
-  \bottom
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
-
 %%%%%%
 %%%%%%
 %%%%%%
@@ -214,22 +265,25 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
-    %  \new Lyrics \lyricsto "tune" { \verseFour}
+      \new Lyrics \lyricsto "tune" { \verseFour }
     >>
     \include "hymn_layout.ly"
   }
-  \markup {
-    \vspace #0.5
+  \markup { 
+    \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }

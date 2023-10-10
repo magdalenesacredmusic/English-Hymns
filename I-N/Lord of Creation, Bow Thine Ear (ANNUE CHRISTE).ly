@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Annue Christ, saeculorum Domine," before 11th cent.; Tr. Thomas Alexander Lacy (1853-1931)
+      }
+      \wordwrap {
+        Music: ANNUE CHRISTE, 12 12 12 12, from La Feillée, \italic "Méthode du plain-chant;" Harm. \italic "The English Hymnal"
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -48,23 +59,23 @@ global = {
 
 melody = \relative c'' {
   \global
-  g2^\markup { \italic "To be sung in unison."} g4 a |
+  g2 g4 a |
   b2 b |
   b4 a b c |
   <g b>2 a4.( g8) |
-  g1 \bar "||" \break
+  g1 \bar "|" \break
 
   b2 b4 c |
   d2 d |
   g,4 e fs g |
   fs2 e4.( d8) |
-  d1 \bar "||" \break
+  d1 \bar "|" \break
 
   g2 e4 fs |
   g2 g |
   a4 g a b |
   c2 b4.( a8) |
-  a1 \bar "||"
+  a1 \bar "|"
 
   d2 b4 g |
   c2 b |
@@ -75,7 +86,7 @@ melody = \relative c'' {
 
 alto = \relative c' {
   \global
-  <b d>2 << \ignore {\stemDown b4 c}\\{\stemDown \once \override NoteColumn #'force-hshift = #0.5 g'2}>> |
+  <b d>2^\markup \italic Unison. << \ignore {\stemDown b4 c}\\{\stemDown \once \override NoteColumn #'force-hshift = #0.5 g'2}>> |
   <d g>2 <d g>~ |
   <c g'> <d g>4 <e g> |
   d4 e fs2 |
@@ -155,7 +166,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Lord of Cre -- a -- tion, bow Thine ear, O Christ, to hear
   The in -- ter -- ces -- sion of Thy ser -- vant true and dear,
   That we un -- wor -- thy, who have tres -- passed in Thy sight,
@@ -163,7 +174,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   O God our Sa -- viour, look on Thine in -- her -- i -- tance,
   Sealed by the fa -- vour shin -- ing from Thy coun -- te -- nance;
   That no false spir -- it bring to nought the souls of price
@@ -171,7 +182,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   We bear the bur -- den of our guilt and en -- mi -- ty,
   Un -- til Thy par -- don lift the heart from sla -- ve -- ry;
   Then through the spend -- ing of Thy life -- blood, King of grace,
@@ -179,21 +190,21 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   To Thee the glo -- rious Christ, our Sa -- viour man -- i -- fest,
   All wreath vic -- to -- rious, praise and wor -- ship be ad -- drest,
   Whom with the liv -- ing Fa -- ther hum -- bly we a -- dore,
   And the life -- giv -- ing Spir -- it, God for ev -- er -- more.
 }
 
-
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -212,14 +223,54 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 110 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -227,14 +278,16 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -244,6 +297,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
-

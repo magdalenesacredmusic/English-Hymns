@@ -1,14 +1,19 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Samuel Crossman (1623-1683), 1664
+      }
+      \wordwrap {
+        Music: LOVE UNKNOWN  12 12 88, John Ireland (1879-1962), 1918
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -118,7 +123,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-	\set stanza = "1."
+	\vOne
 	My song is love un -- known,
 	My Sa -- viour’s love to me;
 	Love to the love -- less shown,
@@ -128,7 +133,7 @@ verseOne = \lyricmode {
 	}
 
 verseTwo = \lyricmode {
-	\set stanza = "2."
+	\vTwo
 	He came from His blest throne
 	  Sal -- va -- tion to be -- stow;
 	But men made strange, and none
@@ -138,7 +143,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-	\set stanza = "*3."
+	\vThree
 	Some -- times they strew His way,
 	  And His sweet prais -- es sing;
 	Re -- sound -- ing all the day
@@ -148,7 +153,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-	\set stanza = "*4."
+	\vFour
 	Why, what hath my Lord done?
 	  What makes this rage and spite?
 	He made the lame to run,
@@ -157,43 +162,14 @@ verseFour = \lyricmode {
 	Them -- selves dis -- please, and ’gainst Him rise.
 }
 
-\book {
-  \include "hymn_paper.ly"
-  \header {
-    tagline = ""
-  }
-  \top
-  \score {
-    \new ChoirStaff <<
-      \new Staff  <<
-        \new Voice = "soprano" { \voiceOne \melody }
-        \new Voice = "alto" { \voiceTwo \alto }
-      >>
-      \new Lyrics  \lyricsto soprano \verseOne
-      \new Lyrics  \lyricsto soprano \verseTwo
-      \new Lyrics  \lyricsto soprano \verseThree
-      \new Lyrics \lyricsto soprano \verseFour
-      \new Staff  <<
-        \clef bass
-        \new Voice = "tenor" { \voiceOne \tenor }
-        \new Voice = "bass" { \voiceTwo \bass }
-      >>
-    >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 96 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \markup {
-	\large {
+extraVerses = 
+\markup {
+	\fontsize #0.2 {
   \fill-line {
     \hspace #0.1 % moves the column off the left margin;
         % can be removed if space on the page is tight
      \column {
-      \line { \bold "*5. "
+      \line { \bold "5. "
 		\column {
 		"They rise and needs will have"
 		"  My dear Lord made away;"
@@ -208,7 +184,7 @@ verseFour = \lyricmode {
         % if they are still too close, add more " " pairs
         % until the result looks good
      \column {
-      \line { \bold "*6. "
+      \line { \bold "6. "
 		\column {
 		"In life, no house, no home"
 		"  My Lord on earth might have;"
@@ -225,8 +201,9 @@ verseFour = \lyricmode {
 }
 }
 
+extraExtraVerses =
 \markup { 
-	\large {
+	\fontsize #0.2 {
 	\fill-line {
 	\vspace #1.5
 	\column {
@@ -246,9 +223,93 @@ verseFour = \lyricmode {
 	}
   }
 } 
-  \bottom
+
+#(set-global-staff-size 20)
+\book {
+  \include "hymn_paper.ly"
+  \header {
+    tagline = ""
+  }
+  % \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      %\new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  % \bottom
+   \extraVerses
+   \extraExtraVerses
+  \markup {
+    \vspace #0.5
+  }
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+     % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+   \extraVerses
+      \extraExtraVerses
+  \markup {
+    \vspace #0.5
+  }
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -256,7 +317,7 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
@@ -267,100 +328,18 @@ verseFour = \lyricmode {
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
+     % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-\markup { 
-	\normalsize {
-	\fill-line {
-	\hspace #1.0
-	\column {
-		\line { \bold "*5. "
-		\column {
-		"They rise and needs will have"
-		"  My dear Lord made away;"
-		"A murderer they saved,"
-		"  The Prince of life they slay,"
-		"Yet cheerful He to suffering goes,"
-		"That He His foes from thence might free."
-		}
-		}
-		\vspace #0.5
-		\line { \bold "*6. "
-		\column {
-		"In life, no house, no home"
-		"  My Lord on earth might have;"
-		"In death no friendly tomb"
-		"  But what a stranger gave."
-		"What may I say? Heav’n was His home;"
-		"But mine the tomb wherein He lay."
-  		}	
-		}
-		\vspace #0.5
-		\line { \bold "7. "
-		\column {
-		"Here might I stay and sing,"
-		"  No story so divine;"
-		"Never was love, dear King!"
-		"  Never was grief like Thine."
-		"This is my Friend,in Whose sweet praise"
-		"I all my days could gladly spend."
-  		}	
-		}
-		}
-	\hspace #1.0
-
-	}
+   \extraVerses
+      \extraExtraVerses
+  \markup {
+    \vspace #0.5
   }
+  % \bottom
+  \refs
 }
-  \bottom
-}
-
-%{\markup { 
-	\normalsize {
-	\fill-line {
-	\hspace #1.0
-	\column {
-		\line { \bold "*5. "
-		\column {
-		"They rise and needs will have"
-		"  My dear Lord made away;"
-		"A murderer they saved,"
-		"  The Prince of life they slay,"
-		"Yet cheerful He to suffering goes,"
-		"That He His foes from thence might free."
-		}
-		}
-		\vspace #0.5
-		\line { \bold "*6. "
-		\column {
-		"In life, no house, no home"
-		"  My Lord on earth might have;"
-		"In death no friendly tomb"
-		"  But what a stranger gave."
-		"What may I say? Heav’n was His home;"
-		"But mine the tomb wherein He lay."
-  		}	
-		}
-		\vspace #0.5
-		\line { \bold "7. "
-		\column {
-		"Here might I stay and sing,"
-		"  No story so divine;"
-		"Never was love, dear King!"
-		"  Never was grief like Thine."
-		"This is my Friend,in Whose sweet praise"
-		"I all my days could gladly spend."
-  		}	
-		}
-		}
-	\hspace #1.0
-
-	}
-  }
-} %}
-
-

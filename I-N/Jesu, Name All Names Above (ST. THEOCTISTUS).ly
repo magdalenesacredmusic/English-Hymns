@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Greek, Theoctistus of the Studium, C. 890; Tr. John Mason Neale (1818-66)
+      }
+      \wordwrap {
+        Music: ST. THEOCTISTUS, 76 76 88 77, Frederick A. Gore Ouseley (1825-89), 1882
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -44,29 +55,29 @@ global = {
 
 melody = \relative c'' {
   \global
-  b4 b g g |
-  e'4. e8 d2 \bar "||"
+  b4 b g g | \noBreak
+  e'4. e8 d2 \bar "|" \noBreak
 
-  d4 b g c |
-  b2 a \bar "||"
+  d4 b g c | \noBreak
+  b2 a \bar "|"
 
-  b4 fs g b |
-  a e fs2 \bar "||"
+  b4 fs g b | \noBreak
+  a e fs2 \bar "|" \noBreak
 
-  d'4 b a fs |
-  e2 d \bar "||"
+  d'4 b a fs | \noBreak
+  e2 d \bar "|"
 
   \time 2/4 d4 e8[ fs] \bar "|"
   \time 4/4g4 b d4. c8 |
-  c4 b \bar "||"
+  c4 b \bar "|"
 
   e,4 fs8[ gs] |
   a4 c e4. d8 |
-  d4 c \bar "||" \break
+  d4 c \bar "|" \break
 
   c4 b |
   a b c c |
-  b2 \bar "||"
+  b2 \bar "|"
   b4 e, |
   c'4 b8[ a] g4 a |
   g1 \bar "|."
@@ -166,7 +177,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Je -- sus, Name all names a -- bove,
   Je -- sus, best and dear -- est,
   Je -- sus, Fount of per -- fect love,
@@ -178,7 +189,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Je -- sus, o -- pen me the gate
   That of old he en -- tered,
   Who, in that most lost es -- tate,
@@ -190,7 +201,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Thou didst call the Pro -- di -- gal:
   Thou didst par -- don Ma -- ry:
   Thou Whose words can nev -- er fall,
@@ -202,7 +213,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Woe, that I have turn -- ed a -- side
   After flesh -- ly plea -- sure!
   Woe, that I have nev -- er tried
@@ -213,14 +224,99 @@ verseFour = \lyricmode {
   Than the Pas -- sion of The Son!
 }
 
+extraVerses = 
+ \markup {
+  \fontsize #0.2 {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "4. "
+          \column {
+            " Jesus, crowned with Thorns for me,"
+            "   Scourged for my transgression,"
+            " Witnessing, through agony,"
+            "   That Thy good confession!"
+            "Jesus, clad in purple raiment,"
+            "For my evils making payment;"
+            " Let not all Thy woe and pain,"
+            " Let not Calv'ry, be in vain!"
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "5. "
+          \column {
+            " When I reach Death’s bitter sea"
+            "   And its waves roll higher,"
+            " Help the more forsaking me"
+            "   As the storm draws nigher:"
+            "Jesus, leave me not to languish,"
+            "Helpless, hopeless, full of anguish!"
+            " Tell me,— 'Verily I say,"
+            " Thou shalt be with Me today!'"
+          }
+        }
+      }
+      \hspace #1.0
 
+    }
+        \vspace #1
+  }
+}
+
+#(set-global-staff-size 20)
 \book {
-  \include "hymn_paper_multipage.ly.ly"
+  \include "hymn_paper_multipage.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  \extraVerses
+  \markup {
+    \vspace #0.5
+  }
+  % \bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -242,50 +338,15 @@ verseFour = \lyricmode {
         tempoWholesPerMinute = #(ly:make-moment 96 4)
       }
     }
-    \include "hymn_layout.ly"
-  }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \extraVerses
   \markup {
-  \large {
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "4. "
-          \column {
-            " Jesus, crowned with Thorns for me,"
-            "   Scourged for my transgression,"
-            " Witnessing, through agony,"
-            "   That Thy good confession!"
-            "Jesus, clad in purple raiment,"
-            "For my evils making payment;"
-            " Let not all Thy woe and pain,"
-            " Let not Calv'ry, be in vain!"
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "5. "
-          \column {
-            " When I reach Death’s bitter sea"
-            "   And its waves roll higher,"
-            " Help the more forsaking me"
-            "   As the storm draws nigher:"
-            "Jesus, leave me not to languish,"
-            "Helpless, hopeless, full of anguish!"
-            " Tell me,— 'Verily I say,"
-            " Thou shalt be with Me today!'"
-          }
-        }
-      }
-      \hspace #1.0
-
-    }
-        \vspace #1
+    \vspace #0.5
   }
+  \refs
+  %\bottom
 }
-  \bottom
-}
-
 %%%%%%
 %%%%%%
 %%%%%%
@@ -293,14 +354,16 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -310,47 +373,10 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
+  % \bottom
+  \extraVerses
   \markup {
-  \large {
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "4. "
-          \column {
-            " Jesus, crowned with Thorns for me,"
-            "   Scourged for my transgression,"
-            " Witnessing, through agony,"
-            "   That Thy good confession!"
-            "Jesus, clad in purple raiment,"
-            "For my evils making payment;"
-            " Let not all Thy woe and pain,"
-            " Let not Calv'ry, be in vain!"
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "5. "
-          \column {
-            " When I reach Death’s bitter sea"
-            "   And its waves roll higher,"
-            " Help the more forsaking me"
-            "   As the storm draws nigher:"
-            "Jesus, leave me not to languish,"
-            "Helpless, hopeless, full of anguish!"
-            " Tell me,— 'Verily I say,"
-            " Thou shalt be with Me today!'"
-          }
-        }
-      }
-      \hspace #1.0
-
-    }
-    \vspace #1
+    \vspace #0.5
   }
+  \refs
 }
-  \bottom
-}
-
-
-

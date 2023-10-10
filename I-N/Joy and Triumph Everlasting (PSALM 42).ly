@@ -2,10 +2,20 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Supernae matris gaudia," Adam of St. Victor, c. 1150; Tr. Robert Bridges (1844-1930), 1899
+      }
+      \wordwrap {
+        Music: PSALM 42, 87 87 77 88, Louis Bourgeois (1510-59), 1551; Harm. \italic "The English Hymnal," 1906
+      }
+    }
+  }
+}
 \version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
@@ -55,9 +65,9 @@ melody = \relative c'' {
   g a4 b2 c4 |
   \time 4/2 b2 a g1 \bar "||" \break
 
-  \time 3/2 g2 a4 b2 a4 |
-  g fs e2 d |
-  g a4 b2 c4 |
+  \time 3/2 g2 a4 b2 a4 | \noBreak
+  g fs e2 d | \noBreak
+  g a4 b2 c4 | \noBreak
   \time 4/2 b2 a g1 \bar "||" \break
 
   \time 3/2 b2 b4 d2 c4 | \noBreak
@@ -142,11 +152,11 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Joy and tri -- umph ev -- er -- last -- ing
   Hath the heav'n -- ly Church on high;
   For that pure im -- mor -- tal glad -- ness
-  All our feast -- days mourn and sign:
+  All our feast -- days mourn and sigh:
   Yet in death's dark des -- ert wild
   Doth the mo -- ther aid her child,
   Guards ce -- les -- tial thence at -- tend us,
@@ -154,7 +164,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Here the world's per -- pe -- tual war -- fare
   Holds from heav'n the soul a -- part;
   Le -- gioned foes in shad -- owy ter -- ror
@@ -166,7 +176,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   There the bo -- dy hath no tor -- ment,
   There the mind is free from care,
   There is ev' -- ry voice re -- joic -- ing,
@@ -178,7 +188,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   There the seers and fa -- thers ho -- ly,
   There the pro -- phets glo -- ri -- fied,
   All their doubts and dark -- ness end -- ed,
@@ -190,7 +200,7 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   There from low -- li -- ness ex -- alt -- ed
   Dwell -- eth Ma -- ry, Queen of grace,
   Ev -- er with her pre -- sence plead -- ing
@@ -201,13 +211,14 @@ verseFive = \lyricmode {
   Christ of His good mer -- cy lead us.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -227,14 +238,55 @@ verseFive = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 120 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -242,24 +294,26 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive}
+      \new Lyrics \lyricsto "tune" { \verseFive }
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
-

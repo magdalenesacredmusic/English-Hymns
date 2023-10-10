@@ -2,13 +2,25 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Ἰησοῠ γλκύτατε, Theoctistus, c. 890; Tr. J.M. Neale (1818-66), alt. (orig. “Jesu”)
+      }
+      \wordwrap {
+        Music: WERDE MUNTER, 76 76 88 77, Johann Schop (1590-1667), c. 1640 }
+      \line {arr. \italic "The English Hymnal," 1906, after J.S. Bach
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -47,25 +59,25 @@ global = {
 melody = \relative c'' {
   \global
   a4 bf c c |
-  bf a g2 \bar "||"
+  bf a g2 |
 
   a4 bf c bf8[ a] |
-  g2 f \bar "||"
+  g2 f |
 
   a4 bf c c |
-  bf a g2 \bar "||"
+  bf a g2 |
 
   a4 bf c bf8[ a] |
-  g2 f \bar "||"
+  g2 f |
 
   g4 a bf8[ a] bf[ c] |
-  a4 a g g \bar "||"
+  a4 a g g |
 
   bf4 c d c8[ d16 ef] |
-  d4 c8[ bf] bf4 bf \bar "||"
+  d4 c8[ bf] bf4 bf |
 
   a4 bf c c |
-  bf a g2 \bar "||"
+  bf a g2 |
 
   a4 bf c bf8[ a] |
   g4. f8 f2 \bar "|."
@@ -153,7 +165,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Je -- sus, name all names a -- bove;
   Je -- sus, best and dear -- est;
   Je -- sus, Fount of per -- fect love,
@@ -165,7 +177,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Woe that I have turned a -- side
   Af -- ter flesh -- ly plea -- sure!
   Woe that I have nev -- er tried
@@ -177,7 +189,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Je -- sus, crowned with thorns for me,
   Scourged for my trans -- gres -- sion!
   Wit -- ness -- ing, through a -- go -- ny,
@@ -189,7 +201,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Je -- sus, o -- pen me the gate
   That of old He en -- tered
   Who, in that most lost es -- tate,
@@ -200,13 +212,14 @@ verseFour = \lyricmode {
   To a home in Par -- a -- dise!
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -225,14 +238,54 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 88 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -240,14 +293,16 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -257,5 +312,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }

@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Latin/German macaronic carol, Heinrich Suso (1295-1366), 14th cent.; Tr. Robert Lucas de Pearsall (1795-1856), 1837
+      }
+      \wordwrap {
+        Music: IN DULCI JUBILO  Irreg., German; Harm. Bartholemew Gesius (c. 1555-1613), 1601
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -49,7 +60,7 @@ melodyOne = \relative c'' {
 	g2 g4 b2 c4 |
 	d2( e4 d2) d4 |
 	g,2 g4 b2 c4 |
-	d2( e4 d2.) \bar "||" \break
+	d2( e4 d2.) \bar "|" \break
 
 	d2 e4 d2 c4 |
 	b2. 
@@ -61,12 +72,12 @@ melodyOne = \relative c'' {
 	d2 e4 d2 c4 |
 	b2. g2 g4 |
 	a2 a4 b2 a4 |
-	g2( a4 b2.) \bar "||" \break 
+	g2( a4 b2.) \bar "|" \break 
 
 	e,2 e4 fs2 fs4 |
 	g2.( d'2.) |
 	b2 b4 a2 a4 |
-	g2.~ g2 \bar "||"
+	g2.~ g2 \bar "|."
 }
 
 altoOne = \relative c' {
@@ -89,7 +100,7 @@ altoOne = \relative c' {
 	
 	g,2 c4 a2 a4 |
 	e'2( \tieSolid g4~ g2 fs4) |
-	g2 fs4 e2 d4 d2.~ d2 \bar "||"
+	g2 fs4 e2 d4 d2.~ d2
 }
 
 tenorOne = \relative c' {
@@ -108,12 +119,12 @@ tenorOne = \relative c' {
 	b2 c4 b2 e4 |
 	ds2. e2 b4 |
 	c2 d4 d2 c4 |
-	b2( c4 d2.) \bar "||"
+	b2( c4 d2.)
 
 	c2 g4 d'2 d4 |
 	b4.( a8 g4 a2.) |
 	e'2 d4 c4.( b8) a4 |
-	g2.~ g2 \bar "||"
+	g2.~ g2
 }
 
 bassOne = \relative c' {
@@ -137,11 +148,11 @@ bassOne = \relative c' {
 	c,2 c4 d2 d4 |
 	e2.( d2.) |
 	e2 b4 c2 d4 |
-	\tieSolid g,2.~ g2 \bar "||"
+	\tieSolid g,2.~ g2
 }
 
 verseOne = \lyricmode {
-	\set stanza = "1."
+	\vOne
 	\override LyricText #'font-shape = #'italic
 		In dul -- ci ju -- bi -- lo	 \revert LyricText #'font-shape
 	Let us our ho -- mage show:
@@ -156,7 +167,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-	\set stanza = "2."
+	\vTwo
 	\override LyricText #'font-shape = #'italic
 		O Je -- su par -- vu -- le,  \revert LyricText #'font-shape
 	My heart is sore for Thee!
@@ -171,7 +182,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-	\set stanza = "3."
+	\vThree
 	\override LyricText #'font-shape = #'italic
 		O pa -- tris ca -- ri -- tas!
 		O Na -- ti len -- i -- tas!  \revert LyricText #'font-shape
@@ -186,7 +197,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-	\set stanza = "4."
+	\vFour
 	\override LyricText #'font-shape = #'italic
 		U -- bi sunt gau -- di -- a,  \revert LyricText #'font-shape
 	If that they be not there?

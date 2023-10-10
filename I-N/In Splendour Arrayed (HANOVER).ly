@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Anonymous
+      }
+      \wordwrap {
+        Music: HANOVER, 10 10 11 11, William Croft (1678-1727), 1708
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -48,19 +59,19 @@ melody = \relative c' {
   g g a |
   b2 d4 |
   g, a fs |
-  g2 \bar "||" \break
+  g2 \bar "|" \break
 
   a4 |
   b a g |
   fs2 g4 |
   a g8[ fs] e4 |
-  d2 \bar "||" \break
+  d2 \bar "|" \break
 
   fs4 |
   g a b |
   g e c' |
   b a g |
-  d'2 \bar "||" \break
+  d'2 \bar "|" \break
 
   d,4 |
   e fs g |
@@ -154,7 +165,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   In splen -- dour ar -- rayed,
   In ves -- ture of gold,
   The Moth -- er of God
@@ -166,7 +177,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   O Mai -- den thou art
 A Moth -- er re -- nowned;
   A Moth -- er who yet
@@ -178,7 +189,7 @@ As Vir -- gin art crowned;
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   All kin -- dreds and tongues
   Thine Off -- spring a -- dore,
   Cre -- a -- tion must bow
@@ -190,7 +201,7 @@ His foot -- stool be -- fore;
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   The Fa -- ther we praise,
   Who chose for his Son
   A Moth -- er all -- pure,
@@ -201,13 +212,54 @@ verseFour = \lyricmode {
 Who filled her with grace.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  % \bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -229,11 +281,11 @@ Who filled her with grace.
         tempoWholesPerMinute = #(ly:make-moment 96 4)
       }
     }
-    \include "hymn_layout.ly"
-  }
-  \bottom
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
 }
-
 %%%%%%
 %%%%%%
 %%%%%%
@@ -241,14 +293,16 @@ Who filled her with grace.
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -258,6 +312,6 @@ Who filled her with grace.
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
-

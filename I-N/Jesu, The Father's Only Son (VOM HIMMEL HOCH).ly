@@ -6,9 +6,22 @@ http://creativecommons.org/licenses/by-nc/4.0/
 Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Christe Redemptor omnium," 6th cent., Tr. John Mason Neale (1818-66)
+      }
+      \wordwrap {
+        Music: VOM HIMMEL HOCH, LM, Adapt. from Schumann's \italic "Gesangbuch," 1539; Adapt. J.S. Bach
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -124,7 +137,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOneL
   Je -- sus, the Fa -- ther's on -- ly Son,
   Whose death for all re -- demp -- tion won;
   Be -- fore the worlds, of God most high
@@ -132,7 +145,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwoL
   The Fa -- ther's light and splen -- dour thou,
   Their end -- less hope to thee that bow;
   Ac -- cept the prayers and praise to -- day
@@ -140,7 +153,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThreeL
   Sal -- va -- tion's au -- thor, call to mind
   How, tak -- ing form of hu -- man -- kind,
   Born of a Vir -- gin un -- de -- filed,
@@ -148,7 +161,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFourL
   Thus tes -- ti -- fies the pre -- sent day,
   Through ev -- 'ry year in long ar -- ray,
   That Thou, sal -- va -- tion's source a -- lone,
@@ -180,12 +193,55 @@ verseSeven = \lyricmode {
 }
 %}
 
+extraVerses = 
+  \markup {
+  \large {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Whence sky, and stars, and sea's abyss,"
+            "And earth, and all that therein is,"
+            "Shall still, with laud and carol meet,"
+            "The Author of thine advent greet."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "And we who, by thy precious blood"
+            "From sin redeemed, are marked for God,"
+            "On this the day that saw thy birth,"
+            "Sing the new song of ransomed earth:"
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "For that thine advent glory be,"
+            "O Jesu, virgin-born, to thee;"
+            "With Father, and with Holy Ghost,"
+            "From men and from the heav'nly host."
+          }
+        }
+      }
+      \hspace #1.0
+
+    }
+  }
+}
+
+#(set-global-staff-size 20)
 \book {
-  \include "hymn_paper_multipage.ly.ly"
+  \include "hymn_paper_multipage.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -205,54 +261,62 @@ verseSeven = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 100 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
+  \extraVerses
   \markup {
-  \large {
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "5. "
-          \column {
-            "Whence sky, and stars, and sea's abyss,"
-            "And earth, and all that therein is,"
-            "Shall still, with laud and carol meet,"
-            "The Author of thine advent greet."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "6. "
-          \column {
-            "And we who, by thy precious blood"
-            "From sin redeemed, are marked for God,"
-            "On this the day that saw thy birth,"
-            "Sing the new song of ransomed earth:"
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "7. "
-          \column {
-            "For that thine advent glory be,"
-            "O Jesu, virgin-born, to thee;"
-            "With Father, and with Holy Ghost,"
-            "From men and from the heav'nly host."
-          }
-        }
-      }
-      \hspace #1.0
-
-    }
+    \vspace #0.5
   }
-}
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \extraVerses
+  \markup {
+    \vspace #0.5
+  }
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -260,14 +324,16 @@ verseSeven = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -277,46 +343,10 @@ verseSeven = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
+  % \bottom
+  \extraVerses
   \markup {
-  \large {
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "5. "
-          \column {
-            "Whence sky, and stars, and sea's abyss,"
-            "And earth, and all that therein is,"
-            "Shall still, with laud and carol meet,"
-            "The Author of thine advent greet."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "6. "
-          \column {
-            "And we who, by thy precious blood"
-            "From sin redeemed, are marked for God,"
-            "On this the day that saw thy birth,"
-            "Sing the new song of ransomed earth:"
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "7. "
-          \column {
-            "For that thine advent glory be,"
-            "O Jesu, virgin-born, to thee;"
-            "With Father, and with Holy Ghost,"
-            "From men and from the heav'nly host."
-          }
-        }
-      }
-      \hspace #1.0
-
-    }
+    \vspace #0.5
   }
-}
-  \bottom
-  
+  \refs
 }

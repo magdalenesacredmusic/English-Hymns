@@ -2,13 +2,22 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: George Hugh Bourne (1840-1925), 1874
+      }
+      \wordwrap {
+        Music: BRYN CALFARIA, 87 87 47, William Owen (1813-93); Harm. \italic "The English Hymnal," 1906
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -42,16 +51,16 @@ melody = \relative c' {
   d4 d g2 a |
   bf4 bf bf2 a |
   bf4 bf d2 c4( bf) |
-  a a g1 \bar "||" \break
+  a a g1 \bar "|" %\break
 
-  d4 d g2 a | \noBreak
-  bf4 bf bf2 a | \noBreak
-  bf4 bf d2 c4( bf) | \noBreak
-  a a g1 \bar "||" \break
+  d4 d g2 a | %\noBreak
+  bf4 bf bf2 a | %\noBreak
+  bf4 bf d2 c4( bf) | %\noBreak
+  a a g1 \bar "|" %\break
 
   g4 a bf2 g |
   a4 bf c2 a |
-  bf4 c d2 bf4( d) \bar "||" \break
+  bf4 c d2 bf4( d) \bar "|" %\break
 
   ef8[ d] c4 d8[ c] bf4 c8[ bf] a8[ g] |
   d'1 bf4 bf |
@@ -126,7 +135,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Lord, en -- throned, in heav'n -- ly splen -- dour,
   First be -- got -- ten from the dead,
   Thou a -- lone, our strong De -- fend -- er,
@@ -137,7 +146,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Though the low -- liest form doth veil thee
   As of old in Beth -- le -- hem,
   Here as there thine An -- gels hail thee,
@@ -148,7 +157,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Pas -- chal Lamb, thine Of -- f'ring, fin -- ished
   Once for all when thou wast slain,
   In its full -- ness un -- dim -- in -- ished
@@ -159,7 +168,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Life -- im -- part -- ing heav'n -- ly Man -- na,
   Strick -- en Rock with strem -- ing side,
   Heav'n and earth with loud ho -- san -- na
@@ -169,13 +178,14 @@ verseFour = \lyricmode {
   Ris'n, as -- cend -- ed, glo -- ri -- fied!
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -194,14 +204,54 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 76 2)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -209,14 +259,16 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -226,6 +278,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
-

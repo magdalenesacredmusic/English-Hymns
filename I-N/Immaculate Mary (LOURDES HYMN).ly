@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Anonymous
+      }
+      \wordwrap {
+        Music: LOURDES HYMN, 11 11 with refrain, Grenoble, 1882
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -56,7 +67,7 @@ melody = \relative c' {
 	a a b8[ a] |
 	g2. \bar "||" \break
 
-	c2^\markup {\caps Refrain.} c4 |
+	c2^\markup {\smallCaps Refrain.} c4 |
 	b2 b4 |
 	a a a |
 	d2 g,4 | \break
@@ -142,41 +153,43 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-	\set stanza = "1."
+	\vOne
 	Im -- mac -- u -- late Ma -- ry, thy prais -- es we sing, 
 	Who reign -- est in splen -- dor with Je -- sus our King.
 	
+	\vOff
 	\override Lyrics.LyricText.font-shape = #'italic
 	A -- ve, a -- ve, a -- ve Ma -- ri -- a,
 	a -- ve, a -- ve, Ma -- ri -- a.
 }
 
 verseTwo = \lyricmode {
-	\set stanza = "2."
+	\vTwo
 	In heav -- en, the bles -- sed thy glo -- ry pro -- claim;
 	On earth, we thy chil -- dren in -- voke thy fair name.
 }
 
 verseThree = \lyricmode {
-	\set stanza = "3."
+	\vThree
 	Thy name is our pow -- er, thy vir -- tues our light,
 	Thy love is our com -- fort, thy plead -- ing our might.
 }
 
 
 verseFour = \lyricmode {
-	\set stanza = "4."
+	\vFour
 	We pray for our moth -- er, the Church up -- on earth;
 	And bless, dear -- est La -- dy, the land of our birth.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -195,14 +208,54 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 100 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -210,14 +263,16 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -227,8 +282,6 @@ verseFour = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }
-
-
-

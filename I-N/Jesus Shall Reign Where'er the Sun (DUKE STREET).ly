@@ -2,13 +2,24 @@
 The music and poetry produced by this source code are believed to be in the public domain in the United States.
 The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
 http://creativecommons.org/licenses/by-nc/4.0/
-
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 %}
 
-\version "2.18.2"
+\version "2.22.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Isaac Watts (1674-1748), 1719
+      }
+      \wordwrap {
+        Music: DUKE STREET, LM, John Warrington Hatton (1710-93), 1793
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -46,17 +57,17 @@ melody = \relative c' {
   d2 fs4 g |
   a2 b4( cs) |
   d2 cs4( b) |
-  a1 \bar "||" \break
+  a1 \bar "|" \break
 
   a2 a4 a |
   b2 a |
   g fs |
-  e1 \bar "||" \break
+  e1 \bar "|" \break
 
   fs2 fs4 e |
   d( fs) a( d) |
   b( a) g( fs) |
-  e1 \bar "||" \break
+  e1 \bar "|" \break
 
   a2 b4 cs |
   d2. g,4 |
@@ -134,7 +145,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Je -- sus shall reign wher -- e'er the sun
   Does his suc -- ces -- sive jour -- neys run;
   His king -- dom stretch from shore to shore,
@@ -142,7 +153,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   For Him shall end -- less prayer be made,
   And prais -- es throng to crown His head;
   His Name, like sweet per -- fume, shall rise
@@ -150,7 +161,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Peo -- ple and realms of ev' -- ry tongue
   Dwell on His love with sweet -- est song;
   And in -- fant voic -- es shall pro -- claim
@@ -158,7 +169,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Bles -- sings a -- bound wher -- e'er He reigns;
   The pris' -- ner leaps to lose his chains,
   The wea -- ry find e -- ter -- nal rest,
@@ -167,20 +178,21 @@ verseFour = \lyricmode {
 
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   Let ev' -- ry crea -- ture rise and bring
   Pe -- cu -- liar ho -- nors to our King,
   An -- gels des -- cend with songs a -- gain,
   And earth re -- peat the loud A -- men.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
-  \score {
+  % \top
+  \score { %\transpose c bf,
     \new ChoirStaff <<
       \new Staff  <<
         \new Voice = "soprano" { \voiceOne \melody }
@@ -200,14 +212,55 @@ verseFive = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 112 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  % \bottom
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }    
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -215,23 +268,26 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive}
+      \new Lyrics \lyricsto "tune" { \verseFive }
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }

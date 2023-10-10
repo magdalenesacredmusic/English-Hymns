@@ -10,6 +10,19 @@ Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
 \include "english.ly"
 \include "hymn_definitions.ly"
 
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Isaac Watts (1674-1748), 1719
+      }
+      \wordwrap {
+        Music: ANTIOCH, CM with repeat, attr. George Friedrich Handel (1685-1759), 1742; Arr. Lowell Mason (1792-1872), 1863
+      }
+    }
+  }
+}
+
 top = \markup {
   \fill-line {
     \column {
@@ -154,7 +167,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Joy to the world! The Lord is come:
   Let earth re -- ceive her King;
   Let ev -- 'ry heart pre -- pare Him room,
@@ -164,7 +177,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Joy to the earth! The Sa -- vior reigns:
   Let men their songs em -- ploy;
   While fields and floods,
@@ -175,7 +188,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   No more let sins and sor -- rows grow,
   Nor thorns in -- fest the ground;
   He comes to make His bless -- ings flow
@@ -186,7 +199,7 @@ verseThree = \lyricmode {
 
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   He rules the world with truth and grace,
   And makes the na -- tions prove
   The glo -- ries of His righ -- teous -- ness,
@@ -200,6 +213,7 @@ tenorWords = \lyricmode {
   _ _ _ _ _
   _ _ _ _ _
   _ _ _ _ _ _ _
+  \set stanza = "1."
   And heav'n and na -- ture sing,
 }
 
@@ -208,8 +222,9 @@ bassWords = \lyricmode {
   _ _ _ _ _
   _ _ _ _ _
   _ _ _ _ _
-  _ _ _ _ _
-  _ _ _
+  _ _ 
+  \set stanza = "1."
+  And heav'n and na -- ture sing,
   And heav'n and na -- ture sing,
 }
 
@@ -218,7 +233,7 @@ bassWords = \lyricmode {
   \header {
     tagline = ""
   }
-  \top
+  %\top
   \score { %\transpose c g,
     \new ChoirStaff <<
       \new Staff  <<
@@ -229,11 +244,14 @@ bassWords = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
-      \new Staff  <<
+      
+      \new Staff = "staff"  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
         \new Voice = "bass" { \voiceTwo \bass }
       >>
+      \new Lyrics \with { alignAboveContext = "staff" } \lyricsto tenor \tenorWords
+      \new Lyrics \lyricsto bass \bassWords
     >>
     \midi {
       \context {
@@ -243,9 +261,56 @@ bassWords = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  \markup {
+    \vspace #0.5
+  }
+ % \bottom
+ \refs
 }
-
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c bf,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+       \new Staff = "staff"  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+      \new Lyrics \with { alignAboveContext = "staff" } \lyricsto tenor \tenorWords
+      \new Lyrics \lyricsto bass \bassWords
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_hymnal_layout.ly"
+  }   
+   \markup {
+    \vspace #0.5
+  }
+  \refs
+  %\bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -253,14 +318,16 @@ bassWords = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -270,5 +337,6 @@ bassWords = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  % \bottom
+  \refs
 }

@@ -1,35 +1,19 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {TUGWOOD  LM}
-    }
-    \right-column{
-      \line {Nicolas Gatty, 1906}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Hymnum canamus Domino," The Venerable Bede (673-735); Tr. Benjamin Webb (1819-85), \italic "The Hymnal Noted," 1854
+      }
+      \wordwrap {
+        Music: TUGWOOD  LM, Nicolas Gatty (1874-1946), 1906
+      }
     }
   }
-}
-
-bottom = \markup  {
-  \fill-line {
-    \null 
-    \right-column {
-      \line {\italic "Hymnum canamus Domino"}
-      \line {The Venerable Bede (673-735)}
-      \line {Tr. B. Webb, \italic "The Hymnal Noted," 1854}
-    }
-  } 
 }
 
 \header {
@@ -47,19 +31,22 @@ melody = \relative c'' {
 	\global
 	a2 a4 a \bar "|"
 	a a b b \bar "|"
-	a2 \bar "||"
+	a2 \bar ""
 
 	a2 d,4 e \bar "|"
 	fs a g fs \bar "|"
-	e2 \bar "||"
+	e2 \bar ""
 
 	a2 a4 a \bar "|"
 	a fs b cs \bar "|"
-	d2 \bar "||"
+	d2 \bar ""
 
 	g,2 a4 b \bar "|"
 	a d, e e \bar "|"
-	d2 \bar "|."
+\time 1/2	d2 \bar "||"
+
+	\time 4/4 d2 d2 \bar "|."
+	
 }
 
 alto = \relative c' {
@@ -76,6 +63,8 @@ alto = \relative c' {
 	e4( d) cs b 
 	cs d d cs 
 	d2
+	
+	b2 a2
 }
 
 tenor = \relative c {
@@ -92,6 +81,8 @@ tenor = \relative c {
 	b a4 g 
 	a a b a 
 	fs2	
+	
+	g2 fs
 }
 
 bass = \relative c {
@@ -107,10 +98,12 @@ bass = \relative c {
 	e fs4 g
 	g, fs g a 
 	d2
+	
+	g,2 d'2
 }
 
 verseOne = \lyricmode {
-	\set stanza = "1."
+	\vOne
 	Sing we tri -- um -- phan hymns of praise,
 	New hymns to heav'n ex -- ul -- ting raise:
 	Christ, by a road be -- fore un -- trod,
@@ -118,7 +111,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-	\set stanza = "2."
+	\vTwo
 	The ho -- ly ap -- os -- tol -- ic band
 	Up -- on the Mount of Ol -- ives stand,
 	And with the Vir -- gin -- mo -- ther see
@@ -126,38 +119,72 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-	\set stanza = "3."
+	\vThree
 	To whom the an -- gels, draw -- ing nigh,
 	‘Why stand and gaze up -- on the sky?
 	This is the Sa -- vior!’ thus they say,
-	‘This is His no -- ble tri -- umph day!’
+	‘This is his no -- ble tri -- umph day!’
 }
 
 verseFour = \lyricmode {
-	\set stanza = "4."
+	\vFour
 	‘A -- gain ye shall be -- hold Him, so
-	As ye to -- day have seen Him go;
+	As ye to -- day have seen him go;
 	In glo -- rious pomp as -- cend -- ing high,
 	Up to the por -- tals of the sky.’
 }
 
 
 verseFive = \lyricmode {
-	\set stanza = "5."
+	\vFive
 	O grant us thith -- er -- ward to tend,
 	And with un -- wea -- ried hearts as -- cend
-	To -- ward Thy king -- dom’s throne, where Thou
+	To -- ward thy king -- dom’s throne, where thou
 	As is our faith, art seat -- ed now.
+	
+	\set stanza = "7."
+	A -- men.
 }
 
+extraVerses =
+  \markup {
+  \fontsize #0.2 {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "6. "
+          \column {
+            "Be Thou our joy and strong defense,"
+            "Who art our future recompense:"
+            "So shall the light that springs from Thee"
+            "Be ours through all eternity."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+            "O risen Christ, ascended Lord,"
+            "All praise to Thee let earth accord,"
+            "Who art, while endless ages run,"
+            "With Father and with Spirit One.  Amen."
+          }
+        }
+      }
+      \hspace #1.0
 
+    }
+  }
+}
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -178,45 +205,59 @@ verseFive = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 100 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \markup {
-  \large{
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "6. "
-          \column {
-            "Be Thou our joy and strong defense,"
-            "Who art our future recompense:"
-            "So shall the light that springs from Thee"
-            "Be ours through all eternity."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "7. "
-          \column {
-            "O risen Christ, ascended Lord,"
-            "All praise to Thee let earth accord,"
-            "Who art, while endless ages run,"
-            "With Father and with Spirit One."
-          }
-        }
-      }
-      \hspace #1.0
+  
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 
-    }
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
   }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout.ly"
+  }    
+  
+\extraVerses
+\markup {
+  \vspace #0.5
 }
-
-  \bottom
+  %}
+  \refs
 }
-
 %%%%%%
 %%%%%%
 %%%%%%
@@ -224,14 +265,16 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -242,36 +285,10 @@ verseFive = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \markup {
-  \large{
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "6. "
-          \column {
-            "Be Thou our joy and strong defense,"
-            "Who art our future recompense:"
-            "So shall the light that springs from Thee"
-            "Be ours through all eternity."
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "7. "
-          \column {
-            "O risen Christ, ascended Lord,"
-            "All praise to Thee let earth accord,"
-            "Who art, while endless ages run,"
-            "With Father and with Spirit One."
-          }
-        }
-      }
-      \hspace #1.0
-
-    }
-  }
+  \extraVerses
+\markup {
+  \vspace #0.5
 }
-
-  \bottom
+  %}
+  \refs
 }

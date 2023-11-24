@@ -1,35 +1,21 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {DIES EST LAETITIAE  Irreg.}
-    }
-    \column{
-      \line {c. 13th cent., harm. H.R. Schroeder, 1887}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Dies est laetitiae," German, 14th cent. paraphrased by John Mason Neale (1818-66), 1854
+      }
+      \wordwrap {
+        Music: DIES EST LAETITIAE  Irreg., c. 13th cent.; Harm. Hermann Rudolph Schroeder, 1887
+      }
     }
   }
 }
 
-bottom = \markup  {
-  \fill-line {
-    \null 
-    \right-column {
-      \line {\italic "Dies est laetitiae"}
-      \line {German, 14th cent. paraphrased by J.M. Neale, 1854}
-    } 
-  }
-}
 
 global = {
   \key g \major
@@ -43,20 +29,20 @@ melody = \relative c'' {
   g4 g a b |
   c a g2 |
   a4 a e fs |
-  g2 g \bar "||"
+  g2 g |
   g4 g a b |
   c a g2 |
   a4 a e fs |
-  g2 g \bar "||"
+  g2 g |
 
   d'4 d e d |
   b c d2 |
   d4 d e d8[ c] |
-  b4 a g2 \bar "||"
+  b4 a g2 |
   e4 fs g e |
   d2 d |
   g4 g a b|
-  c a g2 \bar "||"
+  c a g2 |
   a4 a e fs |
   g8[ fs] e4 d2 |
   e4 d e a |
@@ -148,7 +134,7 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Roy -- al Day that chas -- est gloom!
   Day by glad -- ness speed -- ed!
   Thou be -- held'st from Ma -- ry's womb
@@ -162,7 +148,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   On the Vir -- gin as He hung,
   God, the world's Cre -- a -- tor,
   Like a rose form li -- ly sprung,–
@@ -176,7 +162,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   As the sun -- beam through the glass
   Pass -- eth but not stain -- eth,
   Thus the Vir -- gin, as she was,
@@ -190,12 +176,13 @@ verseThree = \lyricmode {
 }
 
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -205,6 +192,8 @@ verseThree = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseOne
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
+     % \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -214,14 +203,59 @@ verseThree = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 84 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+     % \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout.ly"
+  }    
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -229,21 +263,31 @@ verseThree = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
+     % \new Lyrics \lyricsto "tune" { \verseFour }
+      % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }

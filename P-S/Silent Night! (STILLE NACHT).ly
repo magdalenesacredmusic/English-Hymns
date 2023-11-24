@@ -1,35 +1,21 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {STILLE NACHT  Irreg.}
-    }
-    \column{
-      \line {Franz Gruber, 1818}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Stille Nacht! Heilige Nacht!" Josef Mohr (1792-1848), 1818; Tr. c. 1850
+      }
+      \wordwrap {
+        Music: STILLE NACHT  Irreg., Franz Xaver Gruber (1787-1863), 1818
+      }
     }
   }
 }
 
-bottom = \markup  {
-  \fill-line {
-    \null 
-    \right-column {
-      \line {\italic "Stille Nacht! Heilige Nacht!"}
-      \line {J. Mohr, 1818; tr. c. 1850}
-    } 
-  }
-}
 
 
 global = {
@@ -106,7 +92,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Si -- lent night! Ho -- ly night!
   All is calm, all is bright
   Round yon vir -- gin moth -- er and child!
@@ -116,7 +102,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Si -- lent night! Ho -- ly night!
   Shep -- herds quake at the sight!
   Glo -- ries stream from heav -- en a -- far,
@@ -126,7 +112,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Si -- lent night! Ho -- ly night!
   Son of God, love's pure light
   Ra -- diant beams from Thy ho -- ly face,
@@ -146,12 +132,59 @@ verseThree = \lyricmode {
 } %}
 
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      %\new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
   \score { %\transpose c d
     \new ChoirStaff <<
       \new Staff  <<
@@ -162,23 +195,23 @@ verseThree = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
      % \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
         \new Voice = "bass" { \voiceTwo \bass }
       >>
     >>
-    \midi {
-      \context {
-        \Score
-        tempoWholesPerMinute = #(ly:make-moment 84 4)
-      }
-    }
-    \include "hymn_layout.ly"
-  }
-  \bottom
+    \include "hymn_hymnal_layout.ly"
+  }    
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
 }
-
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -186,22 +219,31 @@ verseThree = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
-     % \new Lyrics \lyricsto "tune" { \verseFour }
+      %\new Lyrics \lyricsto "tune" { \verseFour }
+      % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }

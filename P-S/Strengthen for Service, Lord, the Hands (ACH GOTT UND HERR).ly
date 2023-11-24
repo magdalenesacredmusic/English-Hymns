@@ -1,34 +1,18 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {ACH GOTT UND HERR   87 87}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Liturgy of Malabar," Tr. Charles William Humphreys (1840-1920) and Percy Dearmer (1867-1936), 1906
+      }
+      \wordwrap {
+        Music: ACH GOTT UND HERR   87 87, alt. from a melody in \italic "As hymnodus sacer," Harm. Johann Sebastian Bach (1685-1750)
+      }
     }
-    \right-column{
-      \line {alt. from a melody in \italic "As hymnodus sacer"}
-      \line {harm. J.S. Bach}
-    }
-  }
-}
-
-bottom = \markup  {
-  \fill-line {
-    \null 
-    \right-column {
-      \line {\italic "Liturgy of Malabar"}
-      \line {tr. Charles William Humphreys and Percy Dearmer, 1906}
-    } 
   }
 }
 
@@ -45,11 +29,11 @@ melody = \relative c'' {
   \partial 4
   bf4 |
   a g f f |
-  g a bf \bar "||"
+  g a bf \bar ""
 
   c4 |
   bf a g a8[ bf] |
-  g2 f4 \bar "||"
+  g2 f4 \bar ""
 
   bf4 |
   a bf c c |
@@ -112,7 +96,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Strength -- en for ser -- vice, Lord, the hands
   That ho -- ly things have tak -- en;
   Let ears that now have heard Thy songs
@@ -120,7 +104,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Lord, may the tongues which ‘Ho -- ly’ sang
   Keep free from all de -- ceiv -- ing;
   The eyes which saw Thy love be bright,
@@ -128,19 +112,20 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   The feet that tread Thy ho -- ly courts
   From light do Thou not ban -- ish;
   The bod -- ies by Thy Bo -- dy fed
   With Thy new life re -- plen -- ish.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -150,6 +135,8 @@ verseThree = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseOne
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
+      %\new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -159,14 +146,59 @@ verseThree = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 84 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+     % \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout.ly"
+  }    
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -174,22 +206,31 @@ verseThree = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
+     % \new Lyrics \lyricsto "tune" { \verseFour }
+      % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
 }
-
+  %}
+  \refs
+}

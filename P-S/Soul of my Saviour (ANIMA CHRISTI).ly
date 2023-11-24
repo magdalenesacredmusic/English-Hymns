@@ -1,35 +1,21 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {ANIMA CHRISTI (MAHER) 10 10 10 10}
-    }
-    \right-column{
-      \line {W.J. Maher}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Anima Christi," Anon., 14th cent.; Tr. Traditional
+      }
+      \wordwrap {
+        Music: ANIMA CHRISTI (MAHER) 10 10 10 10, William J. Maher (1823-77)
+      }
     }
   }
 }
 
-bottom = \markup  {
-  \fill-line {
-    \null 
-    \right-column {
-      \line {\italic "Anima Christi"}
-      \line {Anon., 14th cent.; tr. Traditional}
-    }
-  } 
-}
 
 \header {
   tagline = ""
@@ -52,7 +38,7 @@ melody = \relative c' {
   c2 bf4 c |
   af2 g |
   g4 af g f |
-  ef1 \bar "||" \break
+  ef1 %\bar "||" \break
 
   ef'2 df4 ef |
   c2 bf |
@@ -135,15 +121,15 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
-  \tagIt Soul of my Sa -- vior sanc -- ti -- fy my breast,
-  \tagIt Bod -- y of Christ, be Thou my sav -- ing guest,
-  \tagIt Blood of my Sa -- vior, bathe me in Thy tide,
-  \tagIt Wash me, ye wa -- ters flow -- ing from His side.
+  \vOne
+  Soul of my Sa -- vior sanc -- ti -- fy my breast,
+  Bod -- y of Christ, be Thou my sav -- ing guest,
+  Blood of my Sa -- vior, bathe me in Thy tide,
+  Wash me, ye wa -- ters flow -- ing from His side.
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Strength and pro -- tec -- tion may thy pas -- sion be,
   O bles -- sèd Je -- sus, hear and an -- swer me;
   Deep in Thy wounds, Lord, hide and shel -- ter me,
@@ -151,7 +137,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Guard and de -- fend me from the foe ma -- lign,
   In death's dread mo -- ments make me on -- ly Thine;
   Call me and bid me come to Thee on high
@@ -159,12 +145,13 @@ verseThree = \lyricmode {
 }
 
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score { \transpose c a,
     \new ChoirStaff <<
       \new Staff  <<
@@ -174,6 +161,8 @@ verseThree = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseOne
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
+      %\new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -183,14 +172,59 @@ verseThree = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 96 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { \transpose c a,
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      %\new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout.ly"
+  }    
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -198,22 +232,31 @@ verseThree = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     \transpose c a,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
+      %\new Lyrics \lyricsto "tune" { \verseFour }
+      % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
 }
-
+  %}
+  \refs
+}

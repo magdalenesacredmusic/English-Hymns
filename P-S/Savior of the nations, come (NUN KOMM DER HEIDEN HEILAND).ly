@@ -1,38 +1,21 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {NUN KOMM DER HEIDEN HEILAND  77 77}
-    }
-    \right-column{
-      \line {\italic "Geystliche gesangk Buchleyn," Wittenberg. 1524}
-      \line {harm. Melchior Vulpius (1560-1615)}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Veni, Redemptor gentium," Ambrose of Milan, 4th cent.; Tr. Martin Luther: \italic "Nun komm der heiden heiland;" Tr. William M. Reynolds, (1812-1876)
+      }
+      \wordwrap {
+        Music: NUN KOMM DER HEIDEN HEILAND  77 77, \italic "Geystliche gesangk Buchleyn," Wittenberg. 1524; Harm. Melchior Vulpius (1560-1615)
+      }
     }
   }
 }
 
-bottom = \markup  {
-  \fill-line {
-    \null 
-    \right-column {
-      \line {\italic "Veni, Redemptor gentium"}
-      \line {Ambrose of Milan, 4th cent.}
-      \line {tr. Martin Luther: \italic "Nun komm der heiden heiland"}
-      \line {tr. William M. Reynolds, (1812-1876)}
-    }
-  } 
-}
 
 \header {
   tagline = ""
@@ -106,7 +89,7 @@ c2 g2
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1. "
+  \vOne
 Sav -- ior of the na -- tions, come,
 Vir -- gin's Son, make here thy home!
 Mar -- vel now, O heav'n and earth,
@@ -114,7 +97,7 @@ That the Lord chose such a birth.
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2. "
+  \vTwo
 Not by hu -- man flesh and blood,
 By the Spir -- it of our God,
 Was the Word of God made flesh–
@@ -122,7 +105,7 @@ Wom -- an's Off -- spring, pure and fresh.
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3. "
+  \vThree
 Won -- drous birth! O won -- drous Child
 Of the Vir -- gin un -- de -- filed!
 Though by all the world dis -- owned,
@@ -130,11 +113,15 @@ Still to be in heav'n en -- throned.
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4. "
+  \vFour
 From the Fa -- ther forth He came
 And re -- turn -- eth to the same,
 Cap -- tive lead -- ing death and hell–
 High the song of tri -- umph swell!
+
+\vOff
+\set stanza = "7."
+A -- men.
 }
 
 verseFive = \lyricmode {
@@ -164,12 +151,58 @@ verseSeven = \lyricmode {
 A -- men.
 }
 
+extraVerses = 
+      \markup {
+    \vspace #1
+  \fontsize #0.2 {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Thou, the Father's only Son,"
+  "Hast o'er sin the vict'ry won."
+"Boundless shall thy kingdom be;"
+"When shall we its glories see?"
+          }
+        }
+    \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "Brightly doth thy manger shine,"
+ "Glorious is its light divine."
+  "Let not sin o'er-cloud this light;"
+  "Ever be our faith thus bright."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "7. "
+          \column {
+           "Praise to God the Father sing,"
+  "Praise to God the Son, our King,"
+  "Praise to God the Spirit be"
+  "Ever and eternally. Amen."
+
+          }
+          }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -180,9 +213,7 @@ A -- men.
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
-      \new Lyrics \lyricsto soprano \verseFive
-      \new Lyrics \lyricsto soprano \verseSix
-      \new Lyrics \lyricsto soprano \verseSeven
+      % \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -192,14 +223,59 @@ A -- men.
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 72 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout_ragged.ly"
   }
-  \bottom
+  
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout_ragged.ly"
+  }    
+  
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -207,25 +283,31 @@ A -- men.
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive}
-      \new Lyrics \lyricsto "tune" { \verseSix }
-      \new Lyrics \lyricsto "tune" { \verseSeven }
+      % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
-    \include "hymn_layout.ly"
+    \include "hymn_layout_ragged.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }

@@ -26,7 +26,7 @@ bottom = \markup  {
   \fill-line {
     \null 
     \right-column {
-      \line {\italic "Pange, lingua, gloriosi proelium certaminis"}
+      \line {\italic "Pange, lingua, gloriosi/ Proelium certaminis"}
       \line {Fortunatus; vs. 1-4 tr. Percy Dearmer; vs. 6-10 tr. J.M. Neale}
     } 
   }
@@ -169,7 +169,7 @@ verseTwo = \lyricmode {
   Shamed and sunk in mis -- er -- y,
   When he fell on death by tast -- ing
   Fruit of the for -- bid -- den tree;
-  Tha an -- oth -- er tree was cho -- sen
+  Then an -- oth -- er tree was cho -- sen
   Which the world from death should free.
 }
 
@@ -206,7 +206,10 @@ verseFive = \lyricmode {
 
 
 \book {
-  \include "hymn_paper.ly"
+  \include "hymn_paper_multipage.ly"
+  \paper {
+    ragged-bottom = ##t
+  }
   \header {
     tagline = ""
   }
@@ -235,79 +238,210 @@ verseFive = \lyricmode {
     }
     \include "hymn_layout.ly"
   }
-  \markup {
-  \large {
-    \fill-line {
-      \hspace #1.0
-      \column {
-        \line {
-          \bold "6. "
-          \column {
-            "He endured the nails, the spitting,"
-            "  Vinegar, and spear, and reed;"
-            "From that holy Body broken"
-            "  Blood and water forth proceed:"
-            "Earth, and stars, and sky, and ocean"
-            "  By that flood from stain are freed."
-          }
+      \markup {
+	\large {
+  \fill-line {
+    \hspace #0.1 % moves the column off the left margin;
+        % can be removed if space on the page is tight
+     \column {
+      \line { \bold "5. "
+		\column {
+		 "Thirty years among us dwelling,"
+ " His appointed time fulfilled,"
+  "Born for this, He meets His Passion,"
+  "For that this He freely willed,"
+  "On the Cross the Lamb is lifted"
+  "Where his life blood shall be spilled."
         }
-        \vspace #1
-        \line {
-          \bold "7. "
-          \column {
-            "Faithful Cross! above all other,"
+     	}
+     	\vspace #0.5
+      \line { \bold "7. "
+		\column {
+		  "Faithful Cross! above all other,"
             "  One and only noble tree!"
             "None in foliage, none in blossom,"
             "  None in fruit thy peer may be;"
             "Sweetest wood and sweetest iron!"
             "  Sweetest weight is hung on thee."
-          }
         }
-        \vspace #1
-        \line {
-          \bold "8. "
-          \column {
-            "Bend thy boughs, O Tree of Glory!"
-            "  Thy relaxing sinews bend;"
-            "For awhile the ancient rigour"
-            "  That thy birth bestowed, suspend;"
-            "And the King of heav'nly beauty"
-            "  On thy bosom gently tend!"
-          }
-        }
-        \vspace #1
-        \line {
-          \bold "9. "
-          \column {
-            "Thou alone was counted worthy"
+     	}
+\vspace #0.5
+      \line { \bold "9. "
+		\column {
+		 "Thou alone was counted worthy"
             "  This world's ransom to uphold;"
             "For a shipwreck'd race preparing"
             "  Harbour, like the Ark of old;"
             "With the sacred Blood anointed"
             "  From the smitten Lamb that rolled."
-          }
         }
-        \vspace #1
-        \line {
-          \bold "10. "
-          \column {
-            "To the Trinity be glory"
+     	}
+    }
+    \hspace #0.1  % adds horizontal spacing between columns;
+        % if they are still too close, add more " " pairs
+        % until the result looks good
+     \column {
+      \line { \bold "6. "
+		\column {
+		   "He endured the nails, the spitting,"
+            "  Vinegar, and spear, and reed;"
+            "From that holy Body broken"
+            "  Blood and water forth proceed:"
+            "Earth, and stars, and sky, and ocean"
+            "  By that flood from stain are freed."
+        }
+      	}
+\vspace #0.5
+      \line { \bold "8. "
+		\column {
+		  "Bend thy boughs, O Tree of Glory!"
+            "  Thy relaxing sinews bend;"
+            "For awhile the ancient rigour"
+            "  That thy birth bestowed, suspend;"
+            "And the King of heav'nly beauty"
+            "  On thy bosom gently tend!"
+        }
+      	}
+\vspace #0.5
+      \line { \bold "10. "
+		\column {
+  "To the Trinity be glory"
             "  Everlasting, as is meet;"
             "Equal to the Father, equal"
             "  To the Son, and Paraclete:"
             "Trinal Unity, whose praises"
             "  All created things repeat."
-          }
         }
-      }
-      \hspace #1.0
-
+      	}
     }
+  \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
   }
+}
+}
+\markup {
+  \vspace #1
 }
   \bottom
 }
-
+%%%%%%%%%%%%%
+#(define output-suffix "Hymnal")
+\book {
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \top
+  \score {
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \midi {
+      \context {
+        \Score
+        tempoWholesPerMinute = #(ly:make-moment 96 4)
+      }
+    }
+    \include "hymn_layout.ly"
+  }      
+        \markup {
+	\large {
+  \fill-line {
+    \hspace #0.1 % moves the column off the left margin;
+        % can be removed if space on the page is tight
+     \column {
+      \line { \bold "5. "
+		\column {
+		 "Thirty years among us dwelling,"
+ " His appointed time fulfilled,"
+  "Born for this, He meets His Passion,"
+  "For that this He freely willed,"
+  "On the Cross the Lamb is lifted"
+  "Where his life blood shall be spilled."
+        }
+     	}
+     	\vspace #0.5
+      \line { \bold "7. "
+		\column {
+		  "Faithful Cross! above all other,"
+            "  One and only noble tree!"
+            "None in foliage, none in blossom,"
+            "  None in fruit thy peer may be;"
+            "Sweetest wood and sweetest iron!"
+            "  Sweetest weight is hung on thee."
+        }
+     	}
+\vspace #0.5
+      \line { \bold "9. "
+		\column {
+		 "Thou alone was counted worthy"
+            "  This world's ransom to uphold;"
+            "For a shipwreck'd race preparing"
+            "  Harbour, like the Ark of old;"
+            "With the sacred Blood anointed"
+            "  From the smitten Lamb that rolled."
+        }
+     	}
+    }
+    \hspace #0.1  % adds horizontal spacing between columns;
+        % if they are still too close, add more " " pairs
+        % until the result looks good
+     \column {
+      \line { \bold "6. "
+		\column {
+		   "He endured the nails, the spitting,"
+            "  Vinegar, and spear, and reed;"
+            "From that holy Body broken"
+            "  Blood and water forth proceed:"
+            "Earth, and stars, and sky, and ocean"
+            "  By that flood from stain are freed."
+        }
+      	}
+\vspace #0.5
+      \line { \bold "8. "
+		\column {
+		  "Bend thy boughs, O Tree of Glory!"
+            "  Thy relaxing sinews bend;"
+            "For awhile the ancient rigour"
+            "  That thy birth bestowed, suspend;"
+            "And the King of heav'nly beauty"
+            "  On thy bosom gently tend!"
+        }
+      	}
+\vspace #0.5
+      \line { \bold "10. "
+		\column {
+  "To the Trinity be glory"
+            "  Everlasting, as is meet;"
+            "Equal to the Father, equal"
+            "  To the Son, and Paraclete:"
+            "Trinal Unity, whose praises"
+            "  All created things repeat."
+        }
+      	}
+    }
+  \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+  }
+}
+}
+\markup {
+  \vspace #1
+}
+  \bottom
+}
 %%%%%%
 %%%%%%
 %%%%%%

@@ -1,32 +1,18 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {ST. AGNES  CM}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Vs. 1-3, Anon.; vs. 4,5 James Montgomery (1771-1854), 1825
+      }
+      \wordwrap {
+        Music: ST. AGNES  CM, John Bacchus Dykes (1823-76), 1866
+      }
     }
-    \column{
-      \line {John Bacchus Dykes, 1866}
-    }
-  }
-}
-
-bottom = \markup  {
-  \fill-line {
-    \null 
-    \right-column {
-      \line {Vs. 1-3, Anon.; vs. 4,5 James Montgomery, 1825}
-    } 
   }
 }
 
@@ -46,7 +32,7 @@ melody = \relative c'' {
   g2. |
   d4 d d |
   b'2 a4 |
-  a2. \bar "||"
+  a2. \bar ""
 
   c4 c b |
   a2 g4 |
@@ -115,15 +101,15 @@ bass = \relative c' {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
-  \tagIt Shep -- herd of souls, re -- fresch and bless
+  \vOne
+  Shep -- herd of souls, re -- fresch and bless
   Thy cho -- sen pil -- grim flock
-  \tagIt With man -- na in the wil -- der -- ness,
+  With man -- na in the wil -- der -- ness,
   With wa -- ter from the rock.
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Hun -- gry and thir -- sty, faint and weak,
   As Thou when here be -- low,
   Our souls the joys ce -- les -- tial seek
@@ -131,7 +117,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   We would not live by bread a -- lone,
   But by that word of grace,
   In strength of which we tra -- vel on
@@ -139,7 +125,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Be known to us in break -- ing bread,
   But do not then de -- part;
   Sa -- viour, a -- bide with us, and spread
@@ -147,7 +133,7 @@ verseFour = \lyricmode {
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   There sup with us in love Di -- vine;
   Thy Bo -- dy and Thy Blood,
   That liv -- ing bread, that heav -- 'nly wine,
@@ -155,12 +141,13 @@ verseFive = \lyricmode {
 }
 
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -181,14 +168,59 @@ verseFive = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 84 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout.ly"
+  }    
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -196,24 +228,31 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive }
+      \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
 }
-
+  %}
+  \refs
+}

@@ -1,36 +1,21 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {ST. THOMAS 87 87 87}
-    }
-    \right-column{
-      \line {\italic "Cantus Diversi," John Francis Wade}
-      \line {principally harm. V. Novello; trad. Catholic ending}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Pange lingua, gloriosi/ Corporis mysterium," Thomas Aquinas (1225-74); Tr. Edward Caswall (1814-78), \italic "Lyra Catholica"
+      }
+      \wordwrap {
+        Music: ST. THOMAS 87 87 87, \italic "Cantus Diversi," John Francis Wade (1711-86); Harm. principally Vincent Novello (1781-1861); Trad. USA ending
+      }
     }
   }
 }
 
-bottom = \markup  {
-  \fill-line {
-    \null 
-    \right-column {
-      \line {\italic "Pange lingua, gloriosi"}
-      \line {Thomas Aquinas; tr. Edward Caswall, \italic "Lyra Catholica"}
-    }
-  } 
-}
 
 \header {
   tagline = ""
@@ -59,6 +44,8 @@ melody = \relative c' {
   e fs g fs |
   b a g fs |
   e e d2 \bar "||"
+  
+  d2 d \bar "|."
 }
 
 alto = \relative c' {
@@ -77,7 +64,8 @@ alto = \relative c' {
   cs d d8[ cs] d4 |
   d d d8[ e] d4 |
   d cs d2
-
+  
+  b2 a
 }
 
 tenor = \relative c {
@@ -96,6 +84,7 @@ tenor = \relative c {
   g a b8[ a] a4 |
   b a8[ g] fs2
 
+  g2 fs
 }
 
 bass = \relative c {
@@ -114,10 +103,11 @@ bass = \relative c {
   g fs b,8[ cs] d4 |
   g, a d2
 
+  g,2 d'
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Sing, my tongue, the Sa -- viour's glo -- ry,
   Of His Flesh the mys -- t'ry sing;
   Of the Blood, all price ex -- ceed -- ing,
@@ -127,7 +117,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Of a pure and spot -- less Vir -- gin
   Born for us on earth be -- low,
   He, as Man with man con -- ver -- sing,
@@ -137,7 +127,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   On the night of that Last Sup -- per,
   Seat -- ed with His cho -- sen band,
   He the Pas -- chal vic -- tim eat -- ing,
@@ -146,18 +136,21 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   Word made Flesh, the bread of na -- ture
   By His word to Flesh He turns;
   Wine in -- to His Blood He chang -- es:
   What though sense no change dis -- cerns?
   On -- ly be the heart in earn -- est,
   Faith her les -- son quick -- ly learns.
+  
+  \set stanza = "6."
+  A -- men.
 }
 
 
 verseFive = \lyricmode {
-  \set stanza = "5."
+  \vFive
   Down in a -- dor -- a -- tion fal -- ling,
   Lo! the sa -- cred Host we hail;
   Lo! o'er an -- cient forms de -- part -- ing,
@@ -167,22 +160,60 @@ verseFive = \lyricmode {
 }
 
 verseSix = \lyricmode {
-  \set stanza = "6."
+  \vSix
   To the Ev -- er -- last -- ing Fa -- ther,
   And the Son who reigns on high,
   With the Ho -- ly Ghost pro -- ceed -- ing
   Forth from Each e -- ter -- nal -- ly,
   Be sal -- va -- tion, ho -- nor, bles -- sing,
   Might, and end -- less ma -- jes -- ty.
+  
+  A -- men.
 }
 
+extraVerses =
+ \markup {
+  \fontsize #0.2 {
+    \fill-line {
+      \hspace #1.0
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Down in adoration falling,"
+  "Lo! the sacred Host we hail;"
+  "Lo! o'er ancient forms departing,"
+  "Newer rites of grace prevail;"
+  "Faith, for all defects supplying,"
+  "Where the feeble senses fail."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+            "To the Everlasting Father,"
+  "And the Son who reigns on high,"
+  "With the Holy Ghost proceeding"
+  "Forth from Each eternally,"
+  "Be salvation, honor, blessing,"
+  "Might, and endless majesty."
+          }
+        }
+      }
+      \hspace #1.0
 
+    }
+  }
+}
+
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -193,8 +224,7 @@ verseSix = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
-      \new Lyrics \lyricsto soprano \verseFive
-      \new Lyrics \lyricsto soprano \verseSix
+      % \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -204,14 +234,59 @@ verseSix = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 84 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout.ly"
+  }    
+  
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -219,26 +294,31 @@ verseSix = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
-      \new Lyrics \lyricsto "tune" { \verseFive}
-      \new Lyrics \lyricsto "tune" { \verseSix}
+      % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  
+\extraVerses
+\markup {
+  \vspace #0.5
 }
-
-
+  %}
+  \refs
+}

@@ -1,36 +1,21 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {QUEDLINBURG  10 10 10 10}
-    }
-    \column{
-      \line {From a Chorale by J. C. Kittel, 1732-1809}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Φωστήρες τής άϋλον ούσίς, St. Joseph the Hymnographer, d. 883; Tr. John Mason Neale (1818-66)
+      }
+      \wordwrap {
+        Music: QUEDLINBURG  10 10 10 10, From a Chorale by Johann Christian Kittel (1732-1809)
+      }
     }
   }
 }
 
-bottom = \markup  {
-  \fill-line {
-    \null
-    \right-column {
-      \line {Φωστήρες τής άϋλον ούσίς}
-      \line {St. Joseph the Hymnographer, d. 883}
-      \line {Tr. J.M. Neale}
-    }
-  }
-}
 
 \header {
   tagline = ""
@@ -138,7 +123,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Stars of the morn -- ing, so glo -- rious -- ly bright,
   Filled with ce -- les -- tial res -- plen -- dence and light,
   These that, where night nev -- er fol -- low -- eth day,
@@ -146,7 +131,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   These are thy coun -- sel -- lors, these dost thou own,
   Lord God of Sab -- a -- oth, near --est thy throne;
   These are thy min -- is -- ters, these dost thou send,
@@ -154,7 +139,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   These keep the guard a -- mid Sa -- lem's dear bowers;
   Thrones, Prin -- ci -- pal -- i -- ties, Vir -- tues, and Powers;
   Where, with the Liv -- ing Ones, mys -- ti -- cal Four;
@@ -162,7 +147,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   'Who like the Lord?' thun -- ders Mi -- chael the Chief;
   Ra -- phael, 'the cure of God,' com -- for -- teth grief;
   And, as a Naz -- a -- reth, pro -- phet of peace,
@@ -185,12 +170,49 @@ verseSix = \lyricmode {
   We with the An -- gels may bow and a -- dore.
 }
 
+extraVerses = 
+     \markup {
+    \vspace #1
+  \fontsize #0.2 {
+    \fill-line {
+      \hspace #0.1 % moves the column off the left margin;
+      % can be removed if space on the page is tight
+      \column {
+        \line {
+          \bold "5. "
+          \column {
+            "Then, when the earth was first poised in mid space,"
+  "Then, when the planets first sped on their race,"
+  "Then, when were ended the six days' employ,"
+  "Then all the Sons of God shouted for joy."
+          }
+        }
+        \vspace #1
+        \line {
+          \bold "6. "
+          \column {
+           "Still let them succor us; still let them fight,"
+  "Lord of angelic hosts, battling for right;"
+  "Till, where their anthems they ceaselessly pour,"
+  "We with the Angels may bow and adore."
+
+          }
+          }
+      }
+      \hspace #0.1 % gives some extra space on the right margin;
+      % can be removed if page space is tight
+    }
+  }
+}
+ 
+
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -201,8 +223,7 @@ verseSix = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
-      \new Lyrics \lyricsto soprano \verseFive
-      \new Lyrics \lyricsto soprano \verseSix 
+      % \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -212,14 +233,59 @@ verseSix = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 96 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout.ly"
+  }    
+  
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -227,24 +293,31 @@ verseSix = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour}
-      \new Lyrics \lyricsto "tune" { \verseFive }
-      \new Lyrics \lyricsto "tune" { \verseSix }
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
-  \markup {
-    \vspace #0.5
+  \markup { 
+    \vspace #0.5 
   }
-  \bottom
+  
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }

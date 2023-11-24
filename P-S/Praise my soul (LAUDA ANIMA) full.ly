@@ -1,14 +1,20 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
+
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Henry F. Lyte (1793-1847), 1834
+      }
+      \wordwrap {
+        Music: LAUDA ANIMA  87 87 87, John Goss (1800-1880), 1869
+      }
+    }
+  }
+}
 
 top = \markup {
   \fill-line {
@@ -811,6 +817,7 @@ Praise the High E -- ter -- nal One.
   _ _ _ _ _ _ _
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper_multipage.ly"
   \header {
@@ -857,5 +864,68 @@ Praise the High E -- ter -- nal One.
     
     }
 }
-  \bottom
+  \refs
+}
+
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  \score {
+    <<
+    \new Staff
+      \new Voice = "chorus" { \melody }
+            \new Lyrics  \lyricsto chorus \verseOne
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \soprano }
+        \new Voice = "alto" { \voiceTwo \alto }
+        \new Lyrics  \lyricsto soprano \verseTwo
+      >>
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    >>
+    \layout {
+  indent = 0.0\cm
+  ragged-right = ##f
+  ragged-last = ##f
+  \context {
+    \Score
+    %**** Turns off bar numbering
+    \remove "Bar_number_engraver"
+  }
+  \context {
+    \Staff
+    \remove "Time_signature_engraver"
+    \RemoveEmptyStaves
+  }
+  \context {
+    \Lyrics
+    % **** Prevents lyrics from running too close together
+    %\override LyricSpace #'minimum-distance = #1.2
+    % **** Makes the text of lyrics a little smaller
+    \override LyricText #'font-size = #0.2
+    % **** Moves lines of lyrics closer together
+   % \override VerticalAxisGroup #'minimum-Y-extent = #'(-1 . 1)
+  }
+}
+  }    
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }

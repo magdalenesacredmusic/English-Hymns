@@ -1,32 +1,18 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {IN BABILONE  87 87 D}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Christopher Wordsworth (1807-85), 1862
+      }
+      \wordwrap {
+        Music: IN BABILONE  87 87 D, Dutch Traditional Melody; arr. Julius Röntgen (1855-1932)
+      }
     }
-    \column{
-      \line {Dutch Traditional Melody; arr. J. Röntgen}
-    }
-  }
-}
-
-bottom = \markup  {
-  \fill-line {
-    \null 
-    \right-column {
-      \line {Christopher Wordsworth, 1862}
-    } 
   }
 }
 
@@ -41,22 +27,22 @@ global = {
 melody = \relative c'' {
   \global
   g4 fs8[ e] d4 g |
-  a g8[ a] b4 g \bar "||"
+  a g8[ a] b4 g %\bar "||"
   c4 b8[ a] b4 a8[ g] |
-  fs8[ g] a[ fs] g2 \bar "||"
+  fs8[ g] a[ fs] g2 %\bar "||"
 
   g4 fs8[ e] d4 g |
-  a g8[ a] b4 g \bar "||"
+  a g8[ a] b4 g %\bar "||"
   c4 b8[ a] b4 a8[ g] |
-  fs8[ g] a[ fs] g2 \bar "||"
+  fs8[ g] a[ fs] g2 %\bar "||"
 
   g4 a8[ b] c4 b |
-  a gs a a \bar "||"
+  a gs a a %\bar "||"
   a4 b8[ c] d4 g, |
-  a g8[ fs] e4( d) \bar "||"
+  a g8[ fs] e4( d) %\bar "||"
 
   g4 fs8[ e] d4 g |
-  a g8[ a] b4 g \bar "||"
+  a g8[ a] b4 g %\bar "||"
   c4 b8[ a] b4 a8[ g] |
   fs8[ g] a[ fs] g2 \bar "|."
 }
@@ -131,7 +117,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1. "
+  \vOne
   See the Con -- queror mounts in tri -- umph,
   See the King in roy -- al state
   Rid -- ing on the clouds his char -- iot
@@ -143,7 +129,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2. "
+  \vTwo
   Who is this that comes in glo -- ry,
   With the trump of ju -- bi -- lee?
   Lord of bat -- tles, God of ar -- mies,
@@ -155,7 +141,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3. "
+  \vThree
   Thou hast raised our hu -- man na -- ture
   In the clouds to God's right hand;
   There we sit in heav'n -- ly plac -- es,
@@ -167,7 +153,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4. "
+  \vFour
   Glo -- ry be to God the Fa -- ther;
   Glo -- ry be to
   god the Son,
@@ -225,12 +211,13 @@ verseSeven = \lyricmode {
 %%%%%%%%
 %%%%%%%%
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -241,6 +228,7 @@ verseSeven = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -250,14 +238,59 @@ verseSeven = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 84 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout.ly"
+  }    
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -265,22 +298,31 @@ verseSeven = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
+      % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }

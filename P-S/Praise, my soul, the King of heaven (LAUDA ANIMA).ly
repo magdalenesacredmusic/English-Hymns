@@ -1,34 +1,22 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {LAUDA ANIMA  87 87 87}
-    }
-    \right-column{
-      \line {John Goss (1800-1880), 1869}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: Henry F. Lyte (1793-1847), 1834
+      }
+      \wordwrap {
+        Music: {LAUDA ANIMA  87 87 87, John Goss (1800-1880), 1869
+      }
     }
   }
 }
-
-bottom = \markup  {
-  \fill-line {
-    \null 
-    \right-column {
-      \line {Henry F. Lyte (1793-1847), 1834}
-    }
-  } 
 }
+
 
 \header {
   tagline = ""
@@ -165,7 +153,7 @@ d2
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1. "
+  \vOne
   Praise, my soul, the King of heav -- en,
   To his feet your trib -- ute bring;
   Ran -- somed, healed, re -- stored, for -- giv -- en,
@@ -175,7 +163,7 @@ _ _ _ _ _ _ _ _
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2. "
+  \vTwo
 Praise him for his grace and fa -- vor
 To our fa -- thers in dis -- tress;
 Praise him, still the same for ev -- er,
@@ -185,7 +173,7 @@ Glo --  rious in his faith -- ful -- ness.
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3. "
+  \vThree
 Fa -- ther -- like, he tends and spares us;
 Well our fee -- ble frame he knows;
 in his hands he gent -- ly bears us, 
@@ -195,7 +183,7 @@ Wide -- ly as his mer -- cy flows.
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4. "
+  \vFour
 Frail as sum -- mer's flow'r we flour -- ish,
 Blows the wind and it is gone;
 But while mor -- tals rise and per -- ish,
@@ -205,7 +193,7 @@ Praise the High E -- ter -- nal One.
 }
 
 verseFive = \lyricmode {
-  \set stanza = "5. "
+  \vFive
   An -- gels, help us to a -- dore him;
   Ye be -- hold him face to face;
   Sun and moon, bow down be -- fore him,
@@ -214,12 +202,13 @@ verseFive = \lyricmode {
   Praise with us the God of grace.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -240,14 +229,59 @@ verseFive = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 100 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout.ly"
+  }    
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -255,14 +289,16 @@ verseFive = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
       \new Lyrics \lyricsto "tune" { \verseFour }
@@ -273,5 +309,11 @@ verseFive = \lyricmode {
   \markup { 
     \vspace #0.5 
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }

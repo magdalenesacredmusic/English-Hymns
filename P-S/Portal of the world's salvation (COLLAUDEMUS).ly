@@ -1,35 +1,21 @@
-%{
-The music and poetry produced by this source code are believed to be in the public domain in the United States.
-The source code itself is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License:
-http://creativecommons.org/licenses/by-nc/4.0/
+\version "2.22.2"
 
-Musicam Ecclesiae - sites.google.com/site/musicamecclesiae
-%}
-
-\version "2.18.2"
 \include "english.ly"
 \include "hymn_definitions.ly"
 
-top = \markup {
-  \fill-line {
-    \column {
-      \line {COLLAUDEMUS  87 87 87}
-    }
-    \column{
-      \line {French Carol, \italic "The English Hymnal," 1906}
+refs = \markup {
+  \fontsize #-3 {
+    \left-column {
+      \wordwrap {
+        Text: \italic "Mundi salus affutura," 15th cent.; Tr. Laurence Housman (1865-1959)
+      }
+      \wordwrap {
+        Music: COLLAUDEMUS  87 87 87, French Carol, \italic "The English Hymnal," 1906
+      }
     }
   }
 }
 
-bottom = \markup  {
-  \fill-line {
-    \null
-    \right-column {
-      \line {\italic "Mundi salus affutura"}
-      \line {15th cent.; Tr. Laurence Housman (1865-1959)}
-    }
-  }
-}
 
 \header {
   tagline = ""
@@ -51,7 +37,7 @@ melody = \relative c' {
   a4( bf) c |
   bf( a ) g |
   f2 g4 |
-  g2. | \break
+  g2. | %\break
   
   g4( a) bf |
   c2 c4 |
@@ -60,7 +46,7 @@ melody = \relative c' {
   a( bf) a |
   g2 g4 |
   f( d) e |
-  f2. | \break
+  f2. | %\break
   
   g4( a) bf4 |
   c2 c4 |
@@ -165,7 +151,7 @@ bass = \relative c {
 }
 
 verseOne = \lyricmode {
-  \set stanza = "1."
+  \vOne
   Por -- tal of the world's sal -- va -- tion,
   Lo, a vir -- gin pure and mild,
   Hum -- ble -- heart -- ed, high in sta -- tion,
@@ -175,7 +161,7 @@ verseOne = \lyricmode {
 }
 
 verseTwo = \lyricmode {
-  \set stanza = "2."
+  \vTwo
   Here the ser -- pent's power sub -- du -- ing,
   See the Bush un -- burned by fire,
   Gid -- eon's Fleece of heav -- en's im -- buing,
@@ -185,7 +171,7 @@ verseTwo = \lyricmode {
 }
 
 verseThree = \lyricmode {
-  \set stanza = "3."
+  \vThree
   Jes -- se's Branch re -- ceived its Flow -- er,
   Moth -- er of Em -- man -- u -- el,
   Por -- tal sealed and mys -- tic Bow -- er
@@ -195,7 +181,7 @@ verseThree = \lyricmode {
 }
 
 verseFour = \lyricmode {
-  \set stanza = "4."
+  \vFour
   See in flesh so great a won -- der
   By the power of God or -- dained,-
   Him, whose feet all worlds lay un -- der,
@@ -204,12 +190,13 @@ verseFour = \lyricmode {
   Right -- eous -- ness from heav'n hath rained.
 }
 
+#(set-global-staff-size 20)
 \book {
   \include "hymn_paper.ly"
   \header {
     tagline = ""
   }
-  \top
+  % \top
   \score {
     \new ChoirStaff <<
       \new Staff  <<
@@ -220,6 +207,7 @@ verseFour = \lyricmode {
       \new Lyrics  \lyricsto soprano \verseTwo
       \new Lyrics  \lyricsto soprano \verseThree
       \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
       \new Staff  <<
         \clef bass
         \new Voice = "tenor" { \voiceOne \tenor }
@@ -229,14 +217,59 @@ verseFour = \lyricmode {
     \midi {
       \context {
         \Score
-        tempoWholesPerMinute = #(ly:make-moment 126 4)
+        tempoWholesPerMinute = #(ly:make-moment 80 4)
       }
     }
     \include "hymn_layout.ly"
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
 
+%%%%%%
+%%%%%%
+%%%%%%
+#(set-global-staff-size 16)
+#(define output-suffix "Hymnal")
+\book {
+  \include "lilypond-book-preamble.ly"
+  \include "hymn_hymnal_paper.ly"
+  \header {
+    tagline = ""
+  }
+  %\top
+  \score { %\transpose c d
+    \new ChoirStaff <<
+      \new Staff  <<
+        \new Voice = "soprano" { \voiceOne \melody }
+        \new Voice = "alto" { \voiceTwo \alto }
+      >>
+      \new Lyrics  \lyricsto soprano \verseOne
+      \new Lyrics  \lyricsto soprano \verseTwo
+      \new Lyrics  \lyricsto soprano \verseThree
+      \new Lyrics \lyricsto soprano \verseFour
+      % \new Lyrics \lyricsto soprano \verseFive
+      \new Staff  <<
+        \clef bass
+        \new Voice = "tenor" { \voiceOne \tenor }
+        \new Voice = "bass" { \voiceTwo \bass }
+      >>
+    >>
+    \include "hymn_hymnal_layout.ly"
+  }    
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
+}
 %%%%%%
 %%%%%%
 %%%%%%
@@ -244,22 +277,31 @@ verseFour = \lyricmode {
 \book {
   \include "lilypond-book-preamble.ly"
   \include "hymn_melody_paper.ly"
-  \top
+  %  \top
   \score {
     %\transpose c bf,
     <<
       \new Voice = "tune" {
         \melody
       }
-      \new Lyrics \lyricsto "tune" { \verseOne }
+      \new Lyrics \with {
+        \override VerticalAxisGroup.
+        nonstaff-relatedstaff-spacing.padding = #1.5 } \lyricsto "tune" { \verseOne }
       \new Lyrics \lyricsto "tune" { \verseTwo }
       \new Lyrics \lyricsto "tune" { \verseThree }
-      \new Lyrics \lyricsto "tune" { \verseFour}
+      \new Lyrics \lyricsto "tune" { \verseFour }
+      % \new Lyrics \lyricsto "tune" { \verseFive}
     >>
     \include "hymn_layout.ly"
   }
-  \markup {
-    \vspace #0.5
+  \markup { 
+    \vspace #0.5 
   }
-  \bottom
+  %{
+\extraVerses
+\markup {
+  \vspace #0.5
+}
+  %}
+  \refs
 }
